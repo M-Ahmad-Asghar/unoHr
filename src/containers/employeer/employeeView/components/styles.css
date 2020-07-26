@@ -1,0 +1,9 @@
+.buttonsGroup {
+    margin-top: 60px;
+}
+
+@media screen and (max-width: 1048px) {
+    .buttonsGroup {
+        margin-top: 80px;
+    }
+}

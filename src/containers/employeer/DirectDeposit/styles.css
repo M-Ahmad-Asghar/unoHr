@@ -1,0 +1,37 @@
+.dialogHeader {
+    background-color: #5900b7;
+}
+
+.dialogContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#alert-dialog-title {
+    color: white !important;
+}
+
+.options {
+    padding: 8px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.formMain {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.formFields {
+    width: 80%;
+    padding-top: 25px;
+}
+
+.btnsHolder {
+    padding: 15px;
+}

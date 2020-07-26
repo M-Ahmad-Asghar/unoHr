@@ -1,0 +1,31 @@
+.helpImage {
+    width: 100%;
+    height: 100%;
+}
+
+.helpButton {
+    display: flex;
+    align-self: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    padding: 0px !important;
+    margin-left: 5px !important;
+}
+
+.selectDropdown {
+    width: 100%;
+    padding-left: 4px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 0.9em;
+    border: 1px solid;
+    border-color: #F0F0F0;
+    background-color: white;
+    color: #989898 !important;
+}
+
+.selectDropdown:focus {
+    border-color: #3f51b5;
+    outline: none !important;
+}

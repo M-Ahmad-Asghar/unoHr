@@ -1,0 +1,39 @@
+
+
+.checkout > div {
+    border: 1px solid lightgrey;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 10px #aaaaaa;
+}
+
+.card_error {
+    color: orangered;
+}
+
+.form__button-toolbar {
+    margin-top: 15px !important;
+    margin-left: 30px;
+}
+
+.helpImage {
+    width: 100%;
+    height: 100%;
+}
+
+.helpButton {
+    display: flex;
+    align-self: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    padding: 0px !important;
+    margin-right: -20px !important;
+}
+
+#helpButtonCard {
+    margin-right: -22px !important;
+    margin-top: -28px !important;
+    margin-left: 0px !important;
+    float: right;
+}

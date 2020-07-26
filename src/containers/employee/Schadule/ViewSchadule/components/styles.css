@@ -1,0 +1,33 @@
+#modal .modal-content{
+
+    padding-top: 10px !important;
+    padding-bottom: 10px !important; 
+    padding-left: 0px !important;
+    padding-right: 10px !important;
+}
+
+#modal {
+    width: 250px;
+}
+
+.colorPicker {
+    /* margin-left: -42px; */
+}
+
+.modalBody {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+::placeholder {
+    color: white;
+}
+
+.closeButton {
+    width: 250px;
+    margin-top: 5px;
+}
+
+.modalFooter {
+    padding: 0px !important; 
+}
