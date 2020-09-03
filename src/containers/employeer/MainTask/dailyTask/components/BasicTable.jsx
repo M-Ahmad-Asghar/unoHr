@@ -6,7 +6,7 @@ import {
   Col,
   CardHeader,
   UncontrolledCollapse,
-  ButtonToolbar
+  ButtonToolbar,
 } from "reactstrap";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
@@ -29,7 +29,7 @@ import { PulseLoader } from "react-spinners";
 import {
   deleteTask,
   getTask,
-  completedTask
+  completedTask,
 } from "../../../../../redux/actions/TasksActions";
 import { getEmployees } from "../../../../../redux/actions/employerActions";
 
@@ -63,7 +63,7 @@ class EmployeeTasks extends Component {
       SelectForAllot: "",
       collapse: false,
       deleteLoader: false,
-      completeLoader: false
+      completeLoader: false,
     };
   }
 
@@ -71,7 +71,7 @@ class EmployeeTasks extends Component {
     this.props.getTask(this.props.user.uid);
   }
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     this.setState({ completionNote: e.target.value });
     console.log("========completionNote============================");
     console.log(e.target.value);
@@ -83,7 +83,7 @@ class EmployeeTasks extends Component {
 
     if (this.state.completionNote !== "") {
       this.setState({
-        completeLoader: true
+        completeLoader: true,
       });
       let data = {
         id: this.state.taskDetail.id,
@@ -95,7 +95,7 @@ class EmployeeTasks extends Component {
         PostedTime: this.state.taskDetail.PostedTime,
         taskCompleted: new Date().toString(),
         TaskPurpose: this.state.taskDetail.TaskPurpose,
-        uid: this.state.taskDetail.uid
+        uid: this.state.taskDetail.uid,
       };
 
       console.log("==========data==========================");
@@ -110,39 +110,39 @@ class EmployeeTasks extends Component {
     }
   };
 
-  handleModelState =() =>{
-    this.setState({completionModal:false});
-  }
+  handleModelState = () => {
+    this.setState({ completionModal: false });
+  };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     console.log("===========nextProps=========================");
     console.log(nextProps);
     console.log("====================================");
 
     if (nextProps.loader === "false") {
       this.setState({
-        loader: false
+        loader: false,
       });
     }
     if (nextProps.taskDeleteStatus == "done") {
       this.setState({
         deleteLoader: false,
-        open: false
+        open: false,
       });
     } else if (nextProps.taskDeleteStatus == "error") {
       this.setState({
         deleteLoader: false,
-        open: false
+        open: false,
       });
     }
     if (nextProps.completionStatus == "done") {
       this.setState({
         completeLoader: false,
-        completionModal: false
+        completionModal: false,
       });
     } else if (nextProps.completionStatus == "error") {
       this.setState({
-        completeLoader: false
+        completeLoader: false,
       });
     }
   };
@@ -162,7 +162,7 @@ class EmployeeTasks extends Component {
     this.setState({ open: false });
   };
 
-  handleUpdateDialogOpen = data => {
+  handleUpdateDialogOpen = (data) => {
     console.log("check data ::::: ", data);
     this.setState({ updateDialogOpen: true });
   };
@@ -171,15 +171,22 @@ class EmployeeTasks extends Component {
     this.setState({ updateDialogOpen: false });
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(employeeTask) {
       return (
-        employeeTask.AllotedTo
+        employeeTask.AllotedTo.toLowerCase().includes(
+          searchQuery.toLowerCase()
+        ) ||
+        employeeTask.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        moment(employeeTask.PostedTime)
+          .format("MMM/DD/YYYY")
           .toLowerCase()
-          .includes(searchQuery.toLowerCase()) || 
-          employeeTask.title.toLowerCase().includes(searchQuery.toLowerCase()) || moment(employeeTask.PostedTime)
-          .format("MMM/DD/YYYY").toLowerCase().includes(searchQuery.toLowerCase()) || moment(employeeTask.DueTime)
-          .format("MMM/DD/YYYY").toLowerCase().includes(searchQuery.toLowerCase()) || !searchQuery
+          .includes(searchQuery.toLowerCase()) ||
+        moment(employeeTask.DueTime)
+          .format("MMM/DD/YYYY")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        !searchQuery
       );
     };
   };
@@ -191,9 +198,6 @@ class EmployeeTasks extends Component {
   render() {
     const { items, searchQuery } = this.props;
     const { loader, deleteLoader, completeLoader } = this.state;
-    console.log("============items========================");
-    console.log(items);
-    console.log("====================================");
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>
@@ -220,121 +224,162 @@ class EmployeeTasks extends Component {
           ) : (
             <CardBody style={{ padding: "0px" }}>
               {items.length > 0 ? (
-                items.filter(this.searchingForName(searchQuery)).map((item, index) => {
-                  return (
-                    <Row className="taskRow" key={index} id={`toggler${index}`}>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
+                items
+                  .filter(this.searchingForName(searchQuery))
+                  .map((item, index) => {
+                    console.log("F", item, "888", item.recurringTask);
+                    return (
+                      <Row
+                        className="taskRow"
+                        key={index}
+                        id={`toggler${index}`}
                       >
-                        <p>{item.title}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p>{item.AllotedTo}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p>
-                          {" "}
-                          {moment(item.PostedTime).format("MMM/DD/YYYY hh:mm")}
-                        </p>
-                      </Col>
-
-                      <Col sm={12} md={12} lg={12} xl={12}>
-                        <Divider />
-                        <UncontrolledCollapse
-                          className="with-shadow"
-                          toggler={`#toggler${index}`}
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
                         >
-                          <div>
-                            <h5>Description :</h5>
-                            <p style={{ marginLeft: "10px" }}>
-                              {item.Description}
-                            </p>
-                          </div>
+                          <p>{item.title}</p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p>{item.AllotedTo}</p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p>
+                            {" "}
+                            {moment(item.PostedTime).format(
+                              "MMM/DD/YYYY hh:mm"
+                            )}
+                          </p>
+                        </Col>
 
-                          <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              style={{ textAlign: "center", marginTop: "15px" }}
-                            >
-                              <ButtonToolbar>
-                                <Button
-                                  color="primary"
-                                  onClick={() =>
-                                    this.setState({
-                                      completionModal: true,
-                                      taskDetail: item
-                                    })
-                                  }
-                                >
-                                  Mark as Complete
-                                </Button>
+                        <Col sm={12} md={12} lg={12} xl={12}>
+                          <Divider />
+                          <UncontrolledCollapse
+                            className="with-shadow"
+                            toggler={`#toggler${index}`}
+                          >
+                            {item.image !== undefined && (
+                              <div style={{ padding: 10 }}>
+                                <img
+                                  src={item.image}
+                                  style={{ height: "auto", width: 100 }}
+                                />
+                              </div>
+                            )}
+                            <div>
+                              <h5>Description :</h5>
+                              <p style={{ marginLeft: "10px" }}>
+                                {item.Description}
+                              </p>
+                            </div>
+                            <Row style={{ marginTop: 5 }}>
+                              <Col sm={6} md={4} xl={4}>
+                                <h5>Task For</h5>
+                              </Col>
+                              <Col sm={6} md={4} xl={4}>
+                                <h5>Recurring Task</h5>
+                              </Col>
+                              <Col sm={6} md={4} xl={4}>
+                                <h5>Task Note</h5>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col sm={6} md={4} xl={4}>
+                                {item.TaskPurpose}
+                              </Col>
+                              <Col sm={6} md={4} xl={4}>
+                                {item.recurringTask ? "True" : "False"}
+                              </Col>
+                              <Col sm={6} md={4} xl={4}>
+                                {item.isTaskNote ? "True" : "False"}
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                style={{
+                                  textAlign: "center",
+                                  marginTop: "15px",
+                                }}
+                              >
+                                <ButtonToolbar>
+                                  <Button
+                                    color="primary"
+                                    onClick={() =>
+                                      this.setState({
+                                        completionModal: true,
+                                        taskDetail: item,
+                                      })
+                                    }
+                                  >
+                                    Mark as Complete
+                                  </Button>
 
-                                <Button
-                                  color="primary"
-                                  onClick={() =>
-                                    this.setState({
-                                      taskDetail: item,
-                                      updateDialogOpen: true
-                                    })
-                                  }
-                                >
-                                  Edit
-                                </Button>
+                                  <Button
+                                    color="primary"
+                                    onClick={() =>
+                                      this.setState({
+                                        taskDetail: item,
+                                        updateDialogOpen: true,
+                                      })
+                                    }
+                                  >
+                                    Edit
+                                  </Button>
 
-                                <Button
-                                  color="secondary"
-                                  onClick={() =>
-                                    this.setState({
-                                      delId: item.id,
-                                      open: true,
-                                      taskTitle: item.title
-                                    })
-                                  }
-                                >
-                                  Delete
-                                </Button>
-                                {/* )} */}
-                              </ButtonToolbar>
-                            </Col>
-                          </Row>
-                        </UncontrolledCollapse>
-                      </Col>
-                      <Divider />
-                    </Row>
-                  );
-                })
+                                  <Button
+                                    color="secondary"
+                                    onClick={() =>
+                                      this.setState({
+                                        delId: item.id,
+                                        open: true,
+                                        taskTitle: item.title,
+                                      })
+                                    }
+                                  >
+                                    Delete
+                                  </Button>
+                                  {/* )} */}
+                                </ButtonToolbar>
+                              </Col>
+                            </Row>
+                          </UncontrolledCollapse>
+                        </Col>
+                        <Divider />
+                      </Row>
+                    );
+                  })
               ) : (
                 <div style={{ textAlign: "center" }}>
                   <h3>No Found any Employee Task</h3>
@@ -397,13 +442,16 @@ class EmployeeTasks extends Component {
             id="scroll-dialog-title"
             style={{
               textAlign: "center",
-              borderBottom: "1px solid lightgrey "
+              borderBottom: "1px solid lightgrey ",
             }}
           >
             Update Task
           </DialogTitle>
           <DialogContent style={{ padding: 0 }}>
-            <UpdateForm handleClose={this.handleUpdateDialogClose} item={this.state.taskDetail} />
+            <UpdateForm
+              handleClose={this.handleUpdateDialogClose}
+              item={this.state.taskDetail}
+            />
           </DialogContent>
         </Dialog>
 
@@ -461,25 +509,22 @@ class EmployeeTasks extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.TaskReducer.AllTask,
   user: state.userReducer.user,
   loader: state.TaskReducer.loader,
   taskDeleteStatus: state.TaskReducer.taskDeleteStatus,
   loading: state.TaskReducer.loading,
-  completionStatus: state.TaskReducer.completionStatus
+  completionStatus: state.TaskReducer.completionStatus,
 });
 
 export default reduxForm({
-  form: "ee_task_detail" // a unique identifier for this form
+  form: "ee_task_detail", // a unique identifier for this form
 })(
-  connect(
-    mapStateToProps,
-    {
-      getTask,
-      getEmployees,
-      deleteTask,
-      completedTask
-    }
-  )(EmployeeTasks)
+  connect(mapStateToProps, {
+    getTask,
+    getEmployees,
+    deleteTask,
+    completedTask,
+  })(EmployeeTasks)
 );

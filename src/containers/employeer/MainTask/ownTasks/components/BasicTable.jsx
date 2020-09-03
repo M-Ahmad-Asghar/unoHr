@@ -91,21 +91,11 @@ class ListTasks extends Component {
   };
 
   handleInputChange(telNumber, selectedCountry) {
-    console.log(
-      "input changed. number: ",
-      telNumber,
-      "selected country: ",
-      selectedCountry
-    );
+   
   }
 
   handleInputBlur(telNumber, selectedCountry) {
-    console.log(
-      "Focus off the ReactTelephoneInput component. Tel number entered is: ",
-      telNumber,
-      " selected country is: ",
-      selectedCountry
-    );
+   
   }
 
   openDialog = () => {
@@ -140,9 +130,7 @@ class ListTasks extends Component {
   };
 
   numberChangeHandler = number => {
-    console.log("number checker", number);
-
-    this.setState({
+      this.setState({
       mobileNumber: number
     });
   };
@@ -210,10 +198,7 @@ class ListTasks extends Component {
 
   searchingForName = searchQuery => {
     return function(employeeTask) {
-      console.log('EMPLOYEE TASK', employeeTask);
-      console.log("searchQuery", searchQuery);
-      
-      return (
+        return (
         employeeTask.AllotedTo
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) || 
@@ -227,7 +212,6 @@ class ListTasks extends Component {
   render() {
     const { loader, data, deleteLoader } = this.state;
     let { searchQuery } = this.props;
-    console.log("from props search",searchQuery);
     
     return (
       <Col md={12} lg={12} xl={12}>
@@ -251,9 +235,9 @@ class ListTasks extends Component {
             </div>
           ) : (
             <CardBody style={{ padding: "0px" }}>
-              {console.log("One item ======> ", data)}
               {data.length > 0 ? (
                 data.filter(this.searchingForName(searchQuery)).map((item, index) => {
+        
                   return (
                     <React.Fragment>
                       <Row className="taskRow" key={index} id={`toggler${index}`}>
@@ -306,6 +290,28 @@ class ListTasks extends Component {
                                       {item.Description}
                                     </p>
                                   </div>
+                                  <Row style={{ marginTop: 5 , marginLeft:20}}>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Task For</h5>
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Recurring Task</h5>
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Task Note</h5>
+                                  </Col>
+                                </Row>
+                                <Row style={{ marginLeft:20 }}>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.TaskPurpose}
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.recurringTask ? "True" : "False"}
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.isTaskNote ? "True" : "False"}
+                                  </Col>
+                                </Row>
                                   <Row>
                                     <Col xs={8} sm={9} md={10} lg={10} xl={10}>
                                       <div
@@ -343,13 +349,6 @@ class ListTasks extends Component {
                                                 this.checkNumberStatus();
 
                                                 this.numberChangeHandler(number);
-                                                console.log(
-                                                  "onPhoneNumberChange",
-                                                  value,
-                                                  status,
-                                                  // number,
-                                                  this.state.mobileNumber
-                                                );
                                                 if (status) {
                                                   this.setState({
                                                     numberStatus: true
@@ -404,7 +403,28 @@ class ListTasks extends Component {
                                       {item.Description}
                                     </p>
                                   </div>
-
+                                  <Row style={{ marginTop: 5, marginLeft:20 }}>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Task For</h5>
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Recurring Task</h5>
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    <h5>Task Note</h5>
+                                  </Col>
+                                </Row>
+                                <Row style={{marginLeft:20 }}>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.TaskPurpose}
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.recurringTask ? "True" : "False"}
+                                  </Col>
+                                  <Col sm={6} md={4} xl={4}>
+                                    {item.isTaskNote ? "True" : "False"}
+                                  </Col>
+                                </Row>
                                   <Row>
                                     <Col
                                       sm={12}
