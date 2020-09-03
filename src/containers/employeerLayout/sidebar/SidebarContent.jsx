@@ -81,6 +81,14 @@ class SidebarContent extends Component {
           </SidebarCategory>
         </ul>
         <ul className="sidebar__block">
+          <SidebarLink
+            title="Reward Employee"
+            route="/home/employeer/reward-employee"
+            onClick={this.hideSidebar}
+            icon="address-book"
+          />
+        </ul>
+        <ul className="sidebar__block">
           <SidebarCategory title="Manage Payroll" icon="dollar-sign">
             <SidebarLink
               title="Run Payroll"

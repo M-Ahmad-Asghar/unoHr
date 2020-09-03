@@ -50,12 +50,13 @@ class TopbarProfile extends Component {
         )}
         <Collapse isOpen={this.state.collapse} className="topbar__menu-wrap">
           <div className="topbar__menu">
-            <TopbarMenuLink
-              title="View Profile"
-              icon="user"
-              path="/home/employeer/profile"
-            />
-
+            <span onClick={this.toggle}>
+              <TopbarMenuLink
+                title="View Profile"
+                icon="user"
+                path="/home/employeer/profile"
+              />
+            </span>
             <div className="topbar__link" onClick={this.logOut}>
               <span className={`topbar__link-icon lnr lnr-exit`} />
               <p className="topbar__link-title">Log Out</p>
