@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { auth, db } from "../../boot/firebase";
 
 export const UPDATE_EMPLOYER = "UPDATE_EMPLOYER";
-export const UPDATE_EMPLOYEE = "UPDATE_EMPLOYEE";
+export const UPDATE_EMPLOYEE_PROFILE = "UPDATE_EMPLOYEE_PROFILE";
 
 //for empolyer
 
@@ -56,7 +56,7 @@ export function updateEmployee(data, cb) {
         toast.success("successfully updated");
 
         dispatch({
-          type: UPDATE_EMPLOYEE,
+          type: UPDATE_EMPLOYEE_PROFILE,
           payload: data,
         });
         cb();

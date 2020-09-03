@@ -7,21 +7,47 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide() {
+export default function AlertDialogSlide(props) {
   const [open, setOpen] = React.useState(false);
-
+  const { empArray } = props;
+  
   const handleClickOpen = () => {
-    setOpen(true);
+    if (
+      props.sendGiftTo === "" ||
+      props.comment === "" ||
+      props.dollars === ""
+    ) {
+      toast.error("please select all fields!");
+    } else {
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+  
+  const sendGift=()=>{
+    
+    let data = {
+      empName: empArray[0],
+      empId: empArray[1],
+      empEmail: empArray[2],
+      employerUid: props.uid,
+      comment: props.comment,
+      stripe_customer_id: props.stripeCustomer,
+      amount: props.dollars,
+      transectionAt: new Date().toString(),
+    };
+    console.log("==========>", data);
+    props.sendGiftReward(data);
+  }
 
   return (
     <div>
@@ -43,7 +69,7 @@ export default function AlertDialogSlide() {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {"Send USD 5 as Reward to Naveed Rajput"}
+          {`Send USD ${props.dollars} as Reward to ${empArray[0]}`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
@@ -57,7 +83,7 @@ export default function AlertDialogSlide() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={sendGift} color="primary">
             OK
           </Button>
         </DialogActions>

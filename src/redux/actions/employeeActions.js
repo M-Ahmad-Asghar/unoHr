@@ -110,6 +110,7 @@ export function resetSignUpLoader() {
 }
 
 export function updateEmployee(data) {
+  console.log("your data is here============>", data);
   return dispatch => {
     db.collection("employees")
       .doc(data.docid)
@@ -121,6 +122,7 @@ export function updateEmployee(data) {
         toast.success("Employee updated successfully!");
       })
       .catch(function(error) {
+        console.log("error is here===========>",error);
         dispatch({
           type: UPDATE_EMPLOYEE_ERR
         });
