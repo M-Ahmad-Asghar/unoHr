@@ -35,7 +35,11 @@ class TopbarProfile extends Component {
     const { user } = this.props;
     return (
       <div className="topbar__profile">
-        <button className="topbar__avatar" onClick={this.toggle}>
+        <button
+          className="topbar__avatar"
+          onClick={this.toggle}
+          style={{ display: "flex", alignItems: "center" }}
+        >
           <p className="topbar__avatar-name">{user.name}</p>
           <DownIcon className="topbar__icon" />
         </button>
