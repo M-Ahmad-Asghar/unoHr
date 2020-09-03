@@ -6,9 +6,15 @@ import BasicTable from "./components/BasicTable";
 import { getEmployees } from "../../../../redux/actions/employerActions";
 import { getTask } from "../../../../redux/actions/TasksActions";
 import SearchBar from "../SearchBar";
+import moment from "moment";
 
-const backStyleSearchBox = {  width: '97%', padding: '8px', margin: '0px 0px 20px 15px', backgroundColor: '#ffffff', borderRadius: '4px' };
-
+const backStyleSearchBox = {
+  width: "97%",
+  padding: "8px",
+  margin: "0px 0px 20px 15px",
+  backgroundColor: "#ffffff",
+  borderRadius: "4px",
+};
 
 class EmployeeTask extends Component {
   constructor(props) {
@@ -18,63 +24,73 @@ class EmployeeTask extends Component {
       DueDate: "",
       loader: true,
       dataLength: true,
-      data: [], 
-      searchQuery: ''
+      data: [],
+      searchQuery: "",
+      filterDate: new Date(),
     };
   }
-  
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
-        data: nextProps.items
+        data: nextProps.items,
       });
     }
   };
 
-  onSearchChange = name => event => {
+  onSearchChange = (name) => (event) => {
     this.setState({
-      [name]: event.target.value
-    })
-  }
-  
-  filterMessages=(query)=>{
+      [name]: event.target.value,
+    });
+  };
+
+  filterMessages = (query) => {
     this.setState({
-      searchQuery : query,
-    })
-  }
+      searchQuery: query,
+    });
+  };
+  handleDate = (date) => {
+    this.setState({
+      filterDate: date,
+      searchQuery: moment(date).format("MMM/DD/YYYY"),
+    });
+  };
 
   render() {
-    const { data } = this.state;
+    const { data, filterDate } = this.state;
     const { t } = this.props;
 
     console.log(data);
     return (
       <Container>
         <Row>
-          <SearchBar title='List Of Employee Task' filter={ this.filterMessages } placeholder="Search by Name, Title, Date" />
+          <SearchBar
+            title="List Of Employee Task"
+            filter={this.filterMessages}
+            placeholder="Search by Name, Title, Date"
+            date={filterDate}
+            filterDate={this.handleDate}
+            calendar={true}
+          />
         </Row>
         <Row>
-          <BasicTable searchQuery ={ this.state.searchQuery } />
+          <BasicTable searchQuery={this.state.searchQuery} />
         </Row>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.TaskReducer.AllTask,
   user: state.userReducer.user,
-  loader: state.TaskReducer.loader
+  loader: state.TaskReducer.loader,
 });
 
 export default translate("common")(
-  connect(
-    mapStateToProps,
-    {
-      getTask,
-      getEmployees
-    }
-  )(EmployeeTask)
+  connect(mapStateToProps, {
+    getTask,
+    getEmployees,
+  })(EmployeeTask)
 );

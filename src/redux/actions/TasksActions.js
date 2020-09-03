@@ -1,5 +1,6 @@
 import { db } from "../../boot/firebase";
 import { toast } from "react-toastify";
+import axios from "axios";
 // add task type const
 export const ADD_TASK = "ADD_TASK";
 // add paperwork type const
@@ -30,7 +31,7 @@ export const DELETE_OWN_TASK_ERR = "DELETE_OWN_TASK_ERR";
 
 // add task function
 export function addTask(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .add(data)
       .then(function(docRef) {
@@ -40,10 +41,37 @@ export function addTask(data) {
 
         dispatch({
           type: ADD_TASK,
-          payload: dataToStore
+          payload: dataToStore,
         });
       })
       .catch(function(error) {
+        toast.error("Error occured. Please try again later");
+      });
+  };
+}
+
+export function addEmpTask(data) {
+  return (dispatch) => {
+    axios
+      .post(
+        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/addEmpTask",
+        data
+      )
+      .then((res) => {
+        console.log("res while add task", res.data);
+
+        if (res.data === "successfully added") {
+          dispatch({
+            type: ADD_TASK,
+          });
+        } else {
+          toast.error("Error occured. Please try again later");
+        }
+      })
+      .catch((err) => {
+        console.log("=========in while adding doc============");
+        console.log(err);
+        console.log("====================================");
         toast.error("Error occured. Please try again later");
       });
   };
@@ -82,7 +110,7 @@ export function addTask(data) {
 export function getTask(data) {
   console.log("data", data);
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .where("uid", "==", data)
       .onSnapshot(function(querySnapshot) {
@@ -101,7 +129,7 @@ export function getTask(data) {
 
         dispatch({
           type: GET_TASK,
-          payload: datatoStore
+          payload: datatoStore,
         });
       });
   };
@@ -110,22 +138,22 @@ export function getTask(data) {
 // update action
 
 export function updateTask(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .doc(data.id)
       .set(data)
       .then(function(docRef) {
         dispatch({
           type: UPDATE_TASK,
-          payload: data
+          payload: data,
         });
-        toast.success("successfully updated")
+        toast.success("successfully updated");
       })
       .catch(function(error) {
-      toast.error("Error ocurred! try again later")
-      dispatch({
-        type: UPDATE_TASK_ERR,
-      });
+        toast.error("Error ocurred! try again later");
+        dispatch({
+          type: UPDATE_TASK_ERR,
+        });
       });
   };
 }
@@ -133,14 +161,14 @@ export function updateTask(data) {
 // to add completed task
 export function completedTask(data) {
   console.log("good! you are at Action file: ", data);
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .doc(data.id)
       .set(data)
       .then(function(docRef) {
         dispatch({
           type: COMPL_TASK,
-          payload: data
+          payload: data,
         });
         toast.success("Successfully Completed");
       })
@@ -148,7 +176,7 @@ export function completedTask(data) {
         toast.error("Error occured! try again later");
 
         dispatch({
-          type: COMPL_TASK_ERR
+          type: COMPL_TASK_ERR,
         });
       });
   };
@@ -157,14 +185,14 @@ export function completedTask(data) {
 // action for delete task
 
 export function deleteTask(id) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .doc(id)
       .delete()
       .then(function() {
         dispatch({
           type: DELETE_TASK,
-          payload: id
+          payload: id,
         });
         toast.success("Successfully Deleted");
       })
@@ -173,7 +201,7 @@ export function deleteTask(id) {
         toast.error("Error occured! try again later");
 
         dispatch({
-          type: DELETE_TASK_ERR
+          type: DELETE_TASK_ERR,
         });
       });
   };
@@ -181,7 +209,7 @@ export function deleteTask(id) {
 
 // Get all Completed task
 export function getCompletedTask(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("tasks")
       .where("uid", "==", data)
       .onSnapshot(function(querySnapshot) {
@@ -197,7 +225,7 @@ export function getCompletedTask(data) {
         });
         dispatch({
           type: GT_COMP_TASK,
-          payload: datatoStore
+          payload: datatoStore,
         });
       });
   };
@@ -205,7 +233,7 @@ export function getCompletedTask(data) {
 
 //  add own task function
 export function addOwnTask(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("owntask")
       .add(data)
       .then(function(docRef) {
@@ -222,7 +250,7 @@ export function addOwnTask(data) {
 
         dispatch({
           type: ADD_OWN_TASK,
-          payload: dataToStore
+          payload: dataToStore,
         });
       })
       .catch(function(error) {
@@ -237,7 +265,7 @@ export function addOwnTask(data) {
 }
 
 export function getOwnTask(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("owntask")
       .where("uid", "==", data)
 
@@ -254,7 +282,7 @@ export function getOwnTask(data) {
 
         dispatch({
           type: GET_OWN_TASK,
-          payload: datatoStore
+          payload: datatoStore,
         });
       })
       .catch(function(error) {
@@ -271,14 +299,14 @@ export function getOwnTask(data) {
 // action for delete own task
 
 export function deletOwnTask(id) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("owntask")
       .doc(id)
       .delete()
       .then(function() {
         dispatch({
           type: DELETE_OWN_TASK,
-          payload: id
+          payload: id,
         });
         toast.success("Successfully Deleted");
       })
@@ -286,7 +314,7 @@ export function deletOwnTask(id) {
         toast.error("Error occur, try again later");
 
         dispatch({
-          type: DELETE_OWN_TASK_ERR
+          type: DELETE_OWN_TASK_ERR,
         });
       });
   };
