@@ -5,44 +5,49 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import { addTask, addOwnTask } from "../../../../../redux/actions/TasksActions";
+import {
+  addTask,
+  addOwnTask,
+  addEmpTask,
+} from "../../../../../redux/actions/TasksActions";
 import { PulseLoader } from "react-spinners";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import DateFnsUtils from "@date-io/date-fns";
+import { Input, Switch, FormControlLabel } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
-  DatePicker
+  DatePicker,
 } from "material-ui-pickers";
 import moment from "moment";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../../assets/help.png";
 import "../styles/style.css";
-
-const styles = theme => ({
+import { storage } from "../../../../../boot/firebase";
+const styles = (theme) => ({
   root: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   formControl: {
     margin: theme.spacing.unit,
-    width: "100%"
+    width: "100%",
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2
-  }
+    marginTop: theme.spacing.unit * 2,
+  },
 });
 
 class AddForm extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -52,19 +57,27 @@ class AddForm extends Component {
       Description: "",
       AllotedTo: "",
       TaskPurpose: "My Own",
+      taskState: "normal",
       DueTime: new Date(),
       employees: [],
-      loader: false
+      loader: false,
+      recurringTask: false,
+      isTaskNote: false,
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ AllotedTo: event.target.value });
   };
 
   TaskPurposeHandler(event) {
     this.setState({
-      TaskPurpose: event.target.value
+      TaskPurpose: event.target.value,
+    });
+  }
+  TaskStateHandler(event) {
+    this.setState({
+      taskState: event.target.value,
     });
   }
 
@@ -74,34 +87,55 @@ class AddForm extends Component {
     this.setState({ employees: empolyeesList });
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.taskAddStatus == "done") {
       toast.success("Task add successfully");
       this.props.history.push("/home/employeer/employeeTask");
       this.setState({
-        loader: false
+        loader: false,
       });
     } else if (nextProps.taskAddStatus == "done own") {
       toast.success("Task add successfully");
 
       this.props.history.push("/home/employeer/ownTask");
       this.setState({
-        loader: false
+        loader: false,
       });
     }
   };
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
+  handleSwitch = (e) => {
+    const { name, checked } = e.target;
+    this.setState({ [name]: checked });
+  };
 
-  handleDateChange = date => {
+  handleDateChange = (date) => {
     this.setState({ DueTime: date });
   };
 
-  addNewTask = e => {
+  // Image select
+  imageSelect = (e) => {
+    let fullPath = e.target.files[0];
+
+    if (fullPath != null) {
+      const type = fullPath.type;
+      const ext = type.split("/");
+      if (ext[0] == "image") {
+        this.setState({
+          image: fullPath,
+        });
+      } else {
+        toast.error("Select only images");
+      }
+    }
+  };
+
+  addNewTask = (e) => {
     e.preventDefault();
 
     if (this.state.title == "" || this.state.Description == "") {
@@ -113,23 +147,10 @@ class AddForm extends Component {
       toast.error("Allote this task to someone or change to my own task");
     } else {
       this.setState({
-        loader: true
+        loader: true,
       });
       if (this.state.TaskPurpose == "Employee") {
-        let fields = this.state.AllotedTo.split(",");
-
-        let data = {
-          title: this.state.title,
-          Description: this.state.Description,
-          AllotedTo: fields[0],
-          DueTime: this.state.DueTime.toString(),
-          PostedTime: new Date().toString(),
-          TaskPurpose: this.state.TaskPurpose,
-          uid: this.props.user.uid,
-          employeeid: fields[1]
-        };
-
-        this.props.addTask(data);
+        this.addEmpolyeeTask();
       } else {
         let date = {
           title: this.state.title,
@@ -138,17 +159,86 @@ class AddForm extends Component {
           DueTime: this.state.DueTime.toString(),
           PostedTime: new Date().toString(),
           TaskPurpose: this.state.TaskPurpose,
-          uid: this.props.user.uid
+          taskState: this.state.taskState,
+          uid: this.props.user.uid,
+          isTaskNote: this.state.isTaskNote,
+          recurringTask: this.state.recurringTask,
         };
         this.props.addOwnTask(date);
-     
       }
     }
   };
+  addEmpolyeeTask = async () => {
+    let { AllotedTo, employees, recurringTask, image } = this.state;
+    let empObj = {};
+    // ////////////////////////////////////////
+    if (AllotedTo === "Common") {
+      let employeeContacts = [];
+      employees.forEach((item) => {
+        employeeContacts.push(item.cell);
+      });
+      empObj = {
+        cell: employeeContacts,
+        AllotedTo: AllotedTo,
+      };
+    } else {
+      let fields = AllotedTo.split(",");
 
+      empObj = {
+        AllotedTo: fields[0],
+        employeeid: fields[1],
+        cell: fields[2],
+      };
+    }
+    if (recurringTask) {
+      toast.error("Recurring Task");
+    } else {
+      if (image === "") {
+        let data = {
+          title: this.state.title,
+          Description: this.state.Description,
+          DueTime: this.state.DueTime.toString(),
+          PostedTime: new Date().toString(),
+          TaskPurpose: this.state.TaskPurpose,
+          taskState: this.state.taskState,
+          uid: this.props.user.uid,
+          isTaskNote: this.state.isTaskNote,
+          recurringTask: this.state.recurringTask,
+          ...empObj,
+        };
+        this.props.addEmpTask(data);
+      } else {
+        const imagePath = `taskImages/${this.props.user.uid}/${image.name}`;
+        await storage.ref(imagePath).put(image);
+        const url = await storage.ref(imagePath).getDownloadURL();
+
+        let data = {
+          title: this.state.title,
+          Description: this.state.Description,
+          DueTime: this.state.DueTime.toString(),
+          PostedTime: new Date().toString(),
+          TaskPurpose: this.state.TaskPurpose,
+          taskState: this.state.taskState,
+          uid: this.props.user.uid,
+          isTaskNote: this.state.isTaskNote,
+          recurringTask: this.state.recurringTask,
+          image: url,
+          ...empObj,
+        };
+        this.props.addEmpTask(data);
+      }
+    }
+  };
   render() {
     const { handleSubmit, reset, t, classes } = this.props;
-    const { employees, loader, DueTime } = this.state;
+    const {
+      employees,
+      loader,
+      DueTime,
+      recurringTask,
+      isTaskNote,
+      TaskPurpose,
+    } = this.state;
 
     return (
       <Col md={12} lg={12}>
@@ -164,9 +254,12 @@ class AddForm extends Component {
                     placeholder="Enter The Title "
                     onChange={this.onChangeHandler}
                   />
-                  <Tooltip TransitionComponent={Zoom} title="Enter the task title">
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Enter the task title"
+                  >
                     <IconButton className="helpButton">
-                      <img className="helpImage" src={HelpIcon} alt="help"/>
+                      <img className="helpImage" src={HelpIcon} alt="help" />
                     </IconButton>
                   </Tooltip>
                 </div>
@@ -180,9 +273,12 @@ class AddForm extends Component {
                     placeholder="Enter the detail"
                     onChange={this.onChangeHandler}
                   />
-                  <Tooltip TransitionComponent={Zoom} title="Enter the task description">
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Enter the task description"
+                  >
                     <IconButton className="helpButton">
-                      <img className="helpImage" src={HelpIcon} alt="help"/>
+                      <img className="helpImage" src={HelpIcon} alt="help" />
                     </IconButton>
                   </Tooltip>
                 </div>
@@ -197,16 +293,19 @@ class AddForm extends Component {
                     onChange={this.TaskPurposeHandler.bind(this)}
                     inputProps={{
                       name: "age",
-                      id: "age-simple"
+                      id: "age-simple",
                       // className: "selectInput"
                     }}
                   >
                     <MenuItem value="Employee">Employee</MenuItem>
                     <MenuItem value="My Own">My Own</MenuItem>
                   </Select>
-                  <Tooltip TransitionComponent={Zoom} title="Select the person to asign the task">
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Select the person to asign the task"
+                  >
                     <IconButton className="helpButton">
-                      <img className="helpImage" src={HelpIcon} alt="help"/>
+                      <img className="helpImage" src={HelpIcon} alt="help" />
                     </IconButton>
                   </Tooltip>
                 </div>
@@ -224,7 +323,7 @@ class AddForm extends Component {
                       onChange={this.handleChange}
                       inputProps={{
                         name: "age",
-                        id: "age-simple"
+                        id: "age-simple",
                       }}
                     >
                       {employees.length > 0 ? (
@@ -232,7 +331,13 @@ class AddForm extends Component {
                           return (
                             <MenuItem
                               key={index}
-                              value={emply.name + "," + emply.employeeid}
+                              value={
+                                emply.name +
+                                "," +
+                                emply.employeeid +
+                                "," +
+                                emply.cell
+                              }
                             >
                               {emply.name}
                             </MenuItem>
@@ -249,6 +354,30 @@ class AddForm extends Component {
               )}
 
               <div className="form__form-group">
+                <span className="form__form-group-label">Task State</span>
+                <div className="form__form-group-field selectEmply selectPurpose">
+                  <Select
+                    value={this.state.taskState}
+                    onChange={this.TaskStateHandler.bind(this)}
+                    inputProps={{
+                      name: "age",
+                      id: "age-simple",
+                      // className: "selectInput"
+                    }}
+                  >
+                    <MenuItem value="normal">Normal</MenuItem>
+                    <MenuItem value="major">Major</MenuItem>
+                    <MenuItem value="critical">Critical</MenuItem>
+                  </Select>
+                  <Tooltip TransitionComponent={Zoom} title="Select task state">
+                    <IconButton className="helpButton">
+                      <img className="helpImage" src={HelpIcon} alt="help" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
+
+              <div className="form__form-group">
                 <span className="form__form-group-label">Due Date</span>
                 <div className="form__form-group-field selectEmply">
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -256,17 +385,67 @@ class AddForm extends Component {
                       margin="normal"
                       value={DueTime}
                       onChange={this.handleDateChange}
-                      formatDate={date => moment(date).format("DD-MM-YYYY")}
+                      formatDate={(date) => moment(date).format("DD-MM-YYYY")}
                     />
                   </MuiPickersUtilsProvider>
-                  <Tooltip TransitionComponent={Zoom} title="Select due date for task">
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Select due date for task"
+                  >
                     <IconButton className="helpButton">
-                      <img className="helpImage" src={HelpIcon} alt="help"/>
+                      <img className="helpImage" src={HelpIcon} alt="help" />
                     </IconButton>
                   </Tooltip>
                 </div>
               </div>
-
+              {TaskPurpose !== "My Own" && (
+                <>
+                  <div className="form__form-group">
+                    <span className="form__form-group-label">Image</span>
+                    <div className="form__form-group-field selectEmply">
+                      <input
+                        name="title"
+                        type="file"
+                        accept="image/*"
+                        onChange={this.imageSelect}
+                      />
+                      <Tooltip TransitionComponent={Zoom} title="Upload Image">
+                        <IconButton className="helpButton">
+                          <img
+                            className="helpImage"
+                            src={HelpIcon}
+                            alt="help"
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </div>
+                </>
+              )}
+              <div className="form__form-group">
+                <FormControlLabel
+                  label="Task Never End"
+                  control={
+                    <Switch
+                      checked={recurringTask}
+                      onChange={this.handleSwitch}
+                      name="recurringTask"
+                      color="primary"
+                    />
+                  }
+                />
+                <FormControlLabel
+                  label="Task Completion Note"
+                  control={
+                    <Switch
+                      checked={isTaskNote}
+                      onChange={this.handleSwitch}
+                      name="isTaskNote"
+                      color="primary"
+                    />
+                  }
+                />
+              </div>
               <ButtonToolbar className="form__button-toolbar">
                 {loader ? (
                   <Button color="success" disabled>
@@ -287,17 +466,16 @@ class AddForm extends Component {
 }
 
 AddForm.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.userReducer.user,
   employees: state.employerReducer.employees,
   taskAddStatus: state.TaskReducer.taskAddStatus,
-  loading: state.TaskReducer.loading
+  loading: state.TaskReducer.loading,
 });
 
-export default connect(
-  mapStateToProps,
-  { addTask, addOwnTask }
-)(withRouter(withStyles(styles)(AddForm)));
+export default connect(mapStateToProps, { addTask, addOwnTask, addEmpTask })(
+  withRouter(withStyles(styles)(AddForm))
+);
