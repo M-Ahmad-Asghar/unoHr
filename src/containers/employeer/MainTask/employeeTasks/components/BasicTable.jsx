@@ -73,9 +73,6 @@ class EmployeeTasks extends Component {
 
   onChangeHandler = e => {
     this.setState({ completionNote: e.target.value });
-    console.log("========completionNote============================");
-    console.log(e.target.value);
-    console.log("====================================");
   };
 
   CompleteTask = () => {
@@ -97,10 +94,6 @@ class EmployeeTasks extends Component {
         TaskPurpose: this.state.taskDetail.TaskPurpose,
         uid: this.state.taskDetail.uid
       };
-
-      console.log("==========data==========================");
-      console.log(data);
-      console.log("====================================");
       this.props.completedTask(data);
       // toast.success("Task completed successfully");
       // console.log("Task completed successfully");
@@ -115,9 +108,6 @@ class EmployeeTasks extends Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    console.log("===========nextProps=========================");
-    console.log(nextProps);
-    console.log("====================================");
 
     if (nextProps.loader === "false") {
       this.setState({
@@ -163,7 +153,6 @@ class EmployeeTasks extends Component {
   };
 
   handleUpdateDialogOpen = data => {
-    console.log("check data ::::: ", data);
     this.setState({ updateDialogOpen: true });
   };
 
@@ -191,9 +180,7 @@ class EmployeeTasks extends Component {
   render() {
     const { items, searchQuery } = this.props;
     const { loader, deleteLoader, completeLoader } = this.state;
-    console.log("============items========================");
-    console.log(items);
-    console.log("====================================");
+
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>
@@ -273,12 +260,43 @@ class EmployeeTasks extends Component {
                           className="with-shadow"
                           toggler={`#toggler${index}`}
                         >
+  
+                          {item.image !== undefined && (
+                            <div style={{ padding: 10 }}>
+                              <img
+                                src={item.image}
+                                style={{ height: "auto", width: 100 }}
+                              />
+                            </div>
+                          )}
                           <div>
                             <h5>Description :</h5>
                             <p style={{ marginLeft: "10px" }}>
                               {item.Description}
                             </p>
                           </div>
+                          <Row style={{ marginTop: 5 }}>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Task For</h5>
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Recurring Task</h5>
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Task Note</h5>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.TaskPurpose}
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.recurringTask ? "True" : "False"}
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.isTaskNote ? "True" : "False"}
+                            </Col>
+                          </Row>
 
                           <Row>
                             <Col

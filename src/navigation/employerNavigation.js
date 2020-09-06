@@ -42,6 +42,8 @@ import PaperWork from '../containers/employeer/Paperwork';
 import PaperwrokForms from '../containers/employeer/Paperwork/PaperwrokForms';
 import PdfRecords from '../containers/employeer/PdfRecords';
 import DailyTask from '../containers/employeer/MainTask/dailyTask'
+import RewardEmployee from "../containers/employeer/rewardEmployee";
+
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
   <Route
     {...rest}
@@ -75,6 +77,10 @@ const wrappedRoutesEmployeer = () => (
       <Route path="/home/employeer/settings" component={Settings} />
       <Route path="/home/employeer/changeaddress" component={ChangeAddress} />
       <Route
+        path="/home/employeer/reward-employee"
+        component={RewardEmployee}
+      />
+      <Route
         path="/home/employeer/employeeCreation"
         component={employeeCreation}
       />
@@ -101,7 +107,7 @@ const wrappedRoutesEmployeer = () => (
       <Route path="/home/employeer/paperWork" component={PaperWork} />
       <Route path="/home/employeer/paperWrokForms" component={PaperwrokForms} />
       <Route path="/home/employeer/pdfRecords" component={PdfRecords} />
-  
+
       <Route
         path="/home/employeer/transactionhistory"
         component={TransactionHistory}

@@ -8,29 +8,31 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import { CalendarToday } from "@material-ui/icons";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "material-ui-pickers";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: "97%",
     marginLeft: "15px",
     marginBottom: "20px",
-    borderRadius: "4px"
+    borderRadius: "4px",
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
+    marginRight: 20,
   },
   title: {
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
-      color: "#000"
-    }
+      color: "#000",
+    },
   },
   search: {
     position: "relative",
@@ -39,14 +41,14 @@ const styles = theme => ({
     borderColor: "#000",
     backgroundColor: "#8a8c8e",
     "&:hover": {
-      backgroundColor: fade("#8a8c8e", 0.85)
+      backgroundColor: fade("#8a8c8e", 0.85),
     },
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing.unit,
-      width: "auto"
-    }
+      width: "auto",
+    },
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -55,11 +57,11 @@ const styles = theme => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputRoot: {
     color: "inherit",
-    width: "100%"
+    width: "100%",
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -72,14 +74,24 @@ const styles = theme => ({
     [theme.breakpoints.up("sm")]: {
       width: 180,
       "&:focus": {
-        width: 200
-      }
-    }
-  }
+        width: 200,
+      },
+    },
+  },
 });
 
 function Bar(props) {
-  const { classes, title, filter, placeholder, button, callBack } = props;
+  const {
+    classes,
+    title,
+    filter,
+    placeholder,
+    button,
+    callBack,
+    date,
+    filterDate,
+    calendar = false,
+  } = props;
   return (
     <div className={classes.root}>
       <AppBar style={{ backgroundColor: "#ffffff" }} position="static">
@@ -92,6 +104,20 @@ function Bar(props) {
           >
             {title}
           </Typography>
+          {calendar && (
+            <>
+              <IconButton onClick={() => alert("hi")}>
+                <CalendarToday />
+              </IconButton>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  margin="normal"
+                  value={date}
+                  onChange={filterDate}
+                />
+              </MuiPickersUtilsProvider>
+            </>
+          )}
           <div className={classes.grow} />
           {button ? (
             <Button
@@ -100,7 +126,7 @@ function Bar(props) {
                 backgroundColor: "#4056B5",
                 color: "white",
                 margin: 0,
-                textTransform: "none"
+                textTransform: "none",
               }}
             >
               {placeholder}
@@ -111,13 +137,13 @@ function Bar(props) {
                 <SearchIcon />
               </div>
               <InputBase
-                onChange={e => {
+                onChange={(e) => {
                   filter(e.target.value);
                 }}
                 placeholder={placeholder}
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput
+                  input: classes.inputInput,
                 }}
               />
             </div>
@@ -129,7 +155,7 @@ function Bar(props) {
 }
 
 Bar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Bar);

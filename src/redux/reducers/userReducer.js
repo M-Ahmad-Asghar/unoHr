@@ -8,8 +8,10 @@ import {
   CHANGE_ADDRESS_ERR,
   UPDATE_FACILITY,
   UPDATE_FACILITY_ERR,
-  SET_DEFAULT
+  SET_DEFAULT,
 } from "../actions/userActions";
+
+import { UPDATE_EMPLOYER } from "../actions/profileAction";
 
 var initialState = {
   isLoading: "nill",
@@ -20,7 +22,7 @@ var initialState = {
   getuserErr: "sadf",
   adressStatus: "not done",
   loader: new Date(),
-  updateFacilityStatus: "not done"
+  updateFacilityStatus: "not done",
 };
 
 export default function(state = initialState, action) {
@@ -31,7 +33,20 @@ export default function(state = initialState, action) {
         userStatus: true,
         LogoutDone: "notdone",
         user: action.payload,
-        isLoading: "move"
+        isLoading: "move",
+      };
+    }
+
+    case UPDATE_EMPLOYER: {
+      let lastUser = { ...state.user };
+      let getPayload = action.payload;
+      lastUser[getPayload.name] = getPayload.value;
+      
+      console.log("your update user is", lastUser);
+      
+      return {
+        ...state,
+        user: lastUser,
       };
     }
 
@@ -40,14 +55,14 @@ export default function(state = initialState, action) {
         ...state,
         userStatus: true,
         LogoutDone: "notdone",
-        user: action.payload
+        user: action.payload,
       };
     }
 
     case GETUSERERR: {
       return {
         ...state,
-        getuserErr: new Date()
+        getuserErr: new Date(),
       };
     }
 
@@ -57,7 +72,7 @@ export default function(state = initialState, action) {
         isLoading: "ssadf",
         LogoutDone: "done",
         userStatus: false,
-        user: {}
+        user: {},
       };
     }
     case CHANGE_ADDRESS: {
@@ -72,7 +87,7 @@ export default function(state = initialState, action) {
         ...state,
         adressStatus: "done",
         user: newObj,
-        loader: new Date()
+        loader: new Date(),
       };
     }
 
@@ -80,14 +95,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         adressStatus: "error",
-        loader: new Date()
+        loader: new Date(),
       };
     }
     case UPDATE_FACILITY: {
       return {
         ...state,
         updateFacilityStatus: "done",
-        loader: new Date()
+        loader: new Date(),
       };
     }
 
@@ -95,14 +110,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         updateFacilityStatus: "error",
-        loader: new Date()
+        loader: new Date(),
       };
     }
     case SET_DEFAULT: {
       return {
         ...state,
         updateFacilityStatus: "not done",
-        loader: new Date()
+        loader: new Date(),
       };
     }
 

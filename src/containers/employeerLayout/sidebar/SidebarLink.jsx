@@ -5,7 +5,7 @@ import { NavLink, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SidebarLink = ({ title, icon, newLink, route, onClick }) => (
-  console.log(route),
+  // console.log(route),
   (
     <NavLink
       to={route}

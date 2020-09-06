@@ -5,14 +5,14 @@ import { translate } from "react-i18next";
 import BasicTable from "./components/BasicTable";
 import { getEmployees } from "../../../../redux/actions/employerActions";
 import { getTask } from "../../../../redux/actions/TasksActions";
-import AppBar from "./components/appBar";
 import moment from "moment";
+import SearchBar from "../SearchBar";
 const backStyleSearchBox = {
   width: "97%",
   padding: "8px",
   margin: "0px 0px 20px 15px",
   backgroundColor: "#ffffff",
-  borderRadius: "4px"
+  borderRadius: "4px",
 };
 
 class EmployeeTask extends Component {
@@ -24,40 +24,52 @@ class EmployeeTask extends Component {
       loader: true,
       dataLength: true,
       data: [],
-      searchQuery: ""
+      searchQuery: "",
+      filterDate: new Date(),
     };
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
-        data: nextProps.items
+        data: nextProps.items,
       });
     }
   };
 
-  onSearchChange = name => event => {
+  onSearchChange = (name) => (event) => {
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
     });
   };
 
-  filterMessages = query => {
+  filterMessages = (query) => {
     this.setState({
-      searchQuery: query
+      searchQuery: query,
     });
   };
 
+  handleDate = (date) => {
+    this.setState({
+      filterDate: date,
+      searchQuery: moment(date).format("MMM/DD/YYYY"),
+    });
+  };
   render() {
-    const { data } = this.state;
+    const { data, filterDate } = this.state;
     const { t } = this.props;
-
-    console.log(data);
     return (
       <Container>
         <Row>
-          <AppBar title={moment().format("dddd")} />
+          <SearchBar
+            title="Daily Tasks"
+            filter={this.filterMessages}
+            placeholder="Search by Name, Title, Date"
+            date={filterDate}
+            filterDate={this.handleDate}
+            calendar={true}
+          />
         </Row>
         <Row>
           <BasicTable searchQuery={this.state.searchQuery} />
@@ -67,18 +79,15 @@ class EmployeeTask extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.TaskReducer.AllTask,
   user: state.userReducer.user,
-  loader: state.TaskReducer.loader
+  loader: state.TaskReducer.loader,
 });
 
 export default translate("common")(
-  connect(
-    mapStateToProps,
-    {
-      getTask,
-      getEmployees
-    }
-  )(EmployeeTask)
+  connect(mapStateToProps, {
+    getTask,
+    getEmployees,
+  })(EmployeeTask)
 );

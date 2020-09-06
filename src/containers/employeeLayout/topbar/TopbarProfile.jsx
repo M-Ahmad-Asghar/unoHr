@@ -12,7 +12,7 @@ class TopbarProfile extends Component {
   constructor() {
     super();
     this.state = {
-      collapse: false
+      collapse: false,
     };
   }
 
@@ -35,7 +35,11 @@ class TopbarProfile extends Component {
     const { user } = this.props;
     return (
       <div className="topbar__profile">
-        <button className="topbar__avatar" onClick={this.toggle}>
+        <button
+          className="topbar__avatar"
+          onClick={this.toggle}
+          style={{ display: "flex", alignItems: "center" }}
+        >
           <p className="topbar__avatar-name">{user.name}</p>
           <DownIcon className="topbar__icon" />
         </button>
@@ -44,12 +48,13 @@ class TopbarProfile extends Component {
         )}
         <Collapse isOpen={this.state.collapse} className="topbar__menu-wrap">
           <div className="topbar__menu">
-            <TopbarMenuLink
-              title="View Profile"
-              icon="user"
-              path="/home/employee/profile"
-            />
-
+            <span onClick={this.toggle}>
+              <TopbarMenuLink
+                title="View Profile"
+                icon="user"
+                path="/home/employee/profile"
+              />
+            </span>
             <div className="topbar__link" onClick={this.logOut}>
               <span className={`topbar__link-icon lnr lnr-exit`} />
               <p className="topbar__link-title">Log out</p>
@@ -67,7 +72,7 @@ function mapStateToProps(state) {
   return {
     user: state.employeeUserReducer.currentEmp,
     err: state.employeeUserReducer.getUserErr,
-    LogoutEmp: state.employeeUserReducer.LogoutEmp
+    LogoutEmp: state.employeeUserReducer.LogoutEmp,
   };
 }
 

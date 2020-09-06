@@ -10,6 +10,8 @@ import {
     FORGETPASSWORDERR
   } from "../actions/employeeUserActions";
   
+  import { UPDATE_EMPLOYEE_PROFILE } from "../actions/profileAction";
+
   var initialState = {
     loader: "nill",
     hasErroredErr: false,
@@ -32,6 +34,19 @@ import {
           LogoutEmp: "notdefine",
           currentEmp: action.payload,
           loader: "move"
+        };
+      }
+
+      case UPDATE_EMPLOYEE_PROFILE: {
+        let lastUser = { ...state.currentEmp };
+        let getPayload = action.payload;
+        lastUser[getPayload.name] = getPayload.value;
+        
+        console.log("your update user is", lastUser);
+        
+        return {
+          ...state,
+          currentEmp: lastUser,
         };
       }
   
