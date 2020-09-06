@@ -1,0 +1,447 @@
+body {
+	margin: 0;
+	-webkit-tap-highlight-color: transparent;
+    font-size: 16px;
+    font-family: Sen !important;
+    line-height: 1.6;
+    color: rgb(61, 64, 66);
+    background-color: #fff;
+}
+
+/* code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+.nav-wrapper{
+    padding: 0 16px;
+
+}
+.wrapper {
+    margin-right: auto; /* 1 */
+    margin-left:  auto; /* 1 */
+    max-width: 1170px; /* 2 */
+
+    padding: 0 16px;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+@media screen and (min-width: 1170px){
+    .wrapper {
+        width: 1170px;
+        margin-right: auto; /* 1 */
+        margin-left:  auto; /* 1 */
+        padding: 0 16px;
+    }
+    .nav-wrapper {
+        width: 1170px;
+        margin-right: auto; /* 1 */
+        margin-left:  auto; /* 1 */
+        padding: 0 16px;
+    }
+    .heroTextWrap {
+        width: 444px;
+    }
+    .faq-list-wrapper {
+        margin-top: 50px;
+    }
+    .about {
+        text-align: left;
+        width: 50%;
+        margin-top: 64px;
+        margin-bottom: 0px;
+    }
+}
+
+/* ------------------------------ Nav Bar Start ----------------------------- */
+.toolbar{
+    padding: 16px 16px !important;
+}
+.nav-height {
+    min-height: 73px;
+}
+.grow {
+    flex-grow: 1;}
+.appBar {
+    color: '#3D4042';
+    background-color: white;
+    padding: 0 2%;
+}
+.toolBar {
+    margin: 0 2%;
+    display: flex;
+    justify-content: space-between;
+}
+.navItems{
+    margin: 0 auto;
+}
+.logo {
+    max-width: 128px;
+    max-height: 128px;
+}
+.navListContainer {
+    margin-block-start: '1em';
+}
+.navList {
+    list-style: 'none';
+    display: 'inline';
+    margin: 0 16px;
+}
+.unoBtton {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 24px;
+    border-width: initial;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.6;
+    position: relative;
+    font-family: inherit;
+}
+.empBtton {
+    background-color: rgb(63, 81, 181);
+    margin-right: 8px;
+}
+.signupButton {
+	white-space: nowrap;
+	background: rgb(242, 79, 40);
+    padding: 8px 20px;
+    margin-left: 100px;
+}
+.inputRoot {
+    color: inherit,
+}
+/* ------------------------------- Nav Bar End ------------------------------ */
+
+
+/* ------------------------------- Main Start ------------------------------- */
+
+.heroContainer {
+    padding-top: 32px;
+    padding-bottom: 60px;
+    margin: 0, '4%';
+}
+.heroTitle {
+    font-size: 40px;
+    color: 'rgb(37, 39, 40)';
+    margin-bottom: 32px;
+}
+.heroText {
+    color: '#6E7477';
+    font-size: 20px;
+}
+.heroTextContainer {
+    margin-top: 125;
+    margin-bottom: 13px5;
+}
+
+/* -------------------------------- Main End -------------------------------- */
+
+
+
+/* ----------------------------- Features start ----------------------------- */
+
+.features {
+    padding: 0 !important;
+    justify-content: space-between;
+}
+
+.feature {
+    padding: 0;
+}
+
+/* ------------------------------ Features End ------------------------------ */
+
+
+
+/* ------------------------------ Pricing Start ----------------------------- */
+
+.pricing-title {
+    margin-bottom: 64px;
+}
+
+.signup-button-pricing {
+    text-decoration: none;
+    white-space: nowrap;
+    color: rgb(255, 255, 255);
+    align-self: center;
+    text-align: center;
+    margin: 30px 0px 0px;
+    text-decoration: none;
+    border-style: none;
+    outline: 0px;
+    padding: 11px 48px 12px;
+    border-radius: 24px;
+    transition: all 0.2s ease-in-out 0s;
+    background: rgb(63, 81, 181);
+}
+.card {
+	text-align: left;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(34, 39, 43, 0.06) 50px 36px 64px 50px;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 32px;
+    break-inside: avoid;
+    border-style: none;
+    border-radius: 64px;
+    outline: none !important;
+}
+.cars2Footer {
+    font-size: small;
+    color: #BDC0C2;
+    font-weight: 400;
+}
+
+.centered {
+	margin: 0 auto;
+	text-align: center;
+    display: block;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  FAQ Start                                 */
+/* -------------------------------------------------------------------------- */
+
+.faq-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.faq-list-wrapper {
+    padding: 0px;
+    margin: 30px 0px 0px;
+    list-style: none;
+    width: 100%;
+}
+.faq-list-wrapper li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.faq-li-body-wrapper {
+    flex: 0 1 50%;
+}
+.faq-animation {}
+.faq-button {
+    text-align: left;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(34, 39, 43, 0.06) 0px 36px 64px;
+    margin-bottom: 4px;
+    break-inside: avoid;
+    display: inline-block;
+    border-style: none;
+    border-radius: 24px;
+    padding: 16px;
+    outline: none !important;
+    align-items: flex-start;
+    width: 100%;
+}
+.faq-button-body {
+    display: flex;
+}
+.faq-plus-minus-container {
+    color: #febb75;
+    display: none;
+    font-size: 24px;
+    line-height: 1;
+    margin-right: 16px;
+    margin-top: 2px;
+}
+.faq-plus-minus-container svg {
+    display: block;
+    width: 1em;
+}
+.faq-plus-minus-container svg path{
+    fill: currentcolor;
+}
+.faq-list-title {
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: bold;
+    font-family: Sen;
+    color: rgb(61, 64, 66);
+}
+.faq-text {
+    color: rgb(110, 116, 119);
+    padding: 16px 16px 16px 0px;
+    margin: 0px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    font-family: Sen;
+}
+.faq-text a {
+    text-decoration: underline;
+    color: -webkit-link;
+}
+
+
+/* --------------------- Plus Minus Animation Start- FAQ -------------------- */
+
+.closed .vertical {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(-90deg);
+}
+.closed .horizontal {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(-90deg);
+    opacity: 1;
+}
+.opened {
+    opacity: 1;
+}
+.opened .vertical {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(90deg);
+}
+.opened .horizontal {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(90deg);
+    opacity: 0;
+}
+.circle-plus {
+    height: 4em;
+    width: 4em;
+    font-size: 1em;
+    opacity: 0.7;
+}
+.circle-plus .circle {
+    position: relative;
+    width: 2.55em;
+    height: 2.5em;
+    border-radius: 100%;
+    border: solid 0.5em #dfdad7;
+}
+.circle-plus .circle .horizontal {
+    position: absolute;
+    background-color: #f00;
+    width: 30px;
+    height: 5px;
+    left: 50%;
+    margin-left: -15px;
+    top: 50%;
+    margin-top: -2.5px;
+}
+.circle-plus .circle .vertical {
+    position: absolute;
+    background-color: #f00;
+    width: 5px;
+    height: 30px;
+    left: 50%;
+    margin-left: -2.5px;
+    top: 50%;
+    margin-top: -15px;
+}
+
+/* ---------------------- Plus Minus Animation End- FAQ --------------------- */
+
+
+/* -------------------------------------------------------------------------- */
+/*                                   FAQ End                                  */
+/* -------------------------------------------------------------------------- */
+
+/* ---------------   About/ Contact Form */
+.aboutTextContainer {
+    margin-bottom: 32px;
+}
+.contactContainer{
+    display: flex;
+    margin-bottom: 16px;
+}
+.aboutIconText{
+    margin: 0;
+}
+.contactFormTitle {
+    margin: 0 0 32px;
+}
+.contactFormWrapper{
+    text-align: left;
+    border: medium none;
+    outline: currentcolor none medium !important;
+    box-shadow: rgba(63, 81, 181, 0.14) 0px 24px 32px;
+    background-color: rgb(63, 81, 181);
+    border-radius: 24px;
+    color: rgb(255, 255, 255);
+    max-width: 544px;
+    padding: 24px;
+    position: relative;
+    width: 100%;
+    break-inside: avoid;
+}
+.eUMQjj{
+    margin-bottom: 16px;
+}
+.contactFormInputContainer{
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    box-shadow: rgb(228, 230, 231) 0px 0px 0px 1px inset;
+    transition: all 0.2s ease-in-out 0s;
+    box-sizing: border-box;
+    width: 100%;
+}
+.contactFormInputLabel{
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+.contactFormInput {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+    padding: 15px 16px 14px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #a8acaf;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;
+    border: medium none;
+    outline: currentcolor none medium !important;
+    transition: all 0.2s ease-in-out 0s;
+    appearance: none;
+    box-sizing: border-box;
+}
+.send-request {
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    margin: 32px 0px 0px;
+    font-family: Sen;
+    font-weight: bold;
+    line-height: 1.6;
+    text-decoration: none;
+    border: none;
+    border-style: none;
+    padding: 11px 48px 12px;
+    border-radius: 24px;
+    transition: all 0.2s ease-in-out 0s;
+    background: rgb(242, 79, 40);
+}
+.ReactCollapse--collapse{
+    height: 0px;
+    overflow: hidden;
+}
+.eUMQjj .ReactCollapse--collapse{
+    transition: height 200ms ease-in-out 0s;
+}
+
+textarea {
+    min-height: 180px !important;
+}
+
+@media screen and (min-width: 768px){
+    .contactFormWrapper {
+        padding: 64px;
+        border-radius: 64px;
+    }
+    .faq-plus-minus-container {
+        display: block;
+    }
+}
