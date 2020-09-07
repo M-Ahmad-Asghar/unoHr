@@ -85,32 +85,32 @@ const Features = (props) => {
             </div>
             <Grid container spacing={40} className='features'>
                 <Grid item sm={12} lg={4} md={6} style={{overflow: 'hidden'}} className='feature'>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} src={task} alt="task" className={'centered'}/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={task} alt="task" className={'centered'}/>
                     <h3 className={classes.imageTitle}>Task Manager</h3>
                     <p className={classes.imageText}>Manage daily tasks to employees. Engage with employees with Tasks, SMS & email reminders to complete tasks.</p>
                 </Grid>
                 <Grid item sm={12} lg={4} md={6}>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} className={'centered'} src={paperless} alt="mobile"/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} className={'centered'} src={paperless} alt="mobile"/>
                     <h3 className={classes.imageTitle}>Paperless On-Boarding</h3>
                     <p className={classes.imageText}>Setup your account and register with the IRS and State if needed. Employee onboarding & background checks.</p>
                 </Grid>
                 <Grid item sm={12} lg={4} md={6}>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} src={payroll} alt="payroll" className={'centered'}/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={payroll} alt="payroll" className={'centered'}/>
                     <h3 className={classes.imageTitle}>Payroll Management</h3>
                     <p className={classes.imageText}>Generate payroll calculations & statements for employee and employer. Prepare and file monthly/quarterly taxes.</p>
                 </Grid>
                 <Grid item sm={12} lg={4} md={6}>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} src={timetrack} alt="time tracking" className={'centered'}/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={timetrack} alt="time tracking" className={'centered'}/>
                     <h3 className={classes.imageTitle}>Time Tracking</h3>
                     <p className={classes.imageText}>Track and approve employee time for payroll. Employee daily check-in and check-out, weekly review and submit for payroll.</p>
                 </Grid>
                 <Grid item sm={12} lg={4} md={6}>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} src={tax} alt="tax" className={'centered'}/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={tax} alt="tax" className={'centered'}/>
                     <h3 className={classes.imageTitle}>Tax Paperwork & Records</h3>
                     <p className={classes.imageText}>Year-end preparation and distribution of W-2, W-3 and Schedule H. Records for employees, tax and payroll are archived for easy access.</p>
                 </Grid>
                 <Grid item sm={12} lg={4} md={6}>
-                    <img style={{ 'max-width': '256px', 'max-height': '192px'}} src={alerts} alt="alerts" className={'centered'}/>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={alerts} alt="alerts" className={'centered'}/>
                     <h3 className={classes.imageTitle}>Alerts & Notifications</h3>
                     <p className={classes.imageText}>Alerts and email notifications that are automatically triggered when a certain criteria is enabled by the users.</p>
                 </Grid>

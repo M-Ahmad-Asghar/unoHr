@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { Grid } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 
 const styles = theme => ({
@@ -87,14 +83,12 @@ const FAQ = (props) => {
     const handleExpandClick = () => {
         setExpanded(expanded => (!expanded ));
     };
-    console.log('====================================');
-    console.log('expanded:>> ', typeof(expanded));
-    console.log('====================================');
     return (
         <div className={classes.FAQContainer}>
             <div >
                 <center>
                     <h2 className={classes.FAQTitle}>FAQ</h2>
+                    {console.log('PROPS:>>  >>: ', props)}
                 </center>
             </div>
             <div className="faq-wrapper">
@@ -103,6 +97,7 @@ const FAQ = (props) => {
                         <div className="faq-li-body-wrapper">
                             <div className="faq-animation">
                                 <button className="faq-button " onClick={handleOpenClose}>
+                                    {console.log('calling from 1')}
                                     <div className="faq-button-body">
                                         <span className="faq-plus-minus-container">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -136,10 +131,12 @@ const FAQ = (props) => {
                             </div>
                         </div>
                     </li>
+
                     <li className="">
                         <div className="faq-li-body-wrapper">
                             <div className="faq-animation">
                                 <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
                                     <div className="faq-button-body">
                                         <span className="faq-plus-minus-container">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -177,6 +174,279 @@ const FAQ = (props) => {
                             </div>
                         </div>
                     </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">What taxes are paid and how are they collected?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                            Every pay period household employer taxes are 1) Payroll tax withheld from the
+                                            employee and 2) the employer tax contribution. Both of these amounts are withdrawn
+                                            from Employer bank account and remitted along with paperwork.
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">What Forms are needed for Household Employer?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                <b>Form SS-4:</b> Fill out Form SS-4 or apply online through the IRS to obtain your federal Employee
+                                                Identification Number (FEIN) which you’ll need for tax forms. <br/>
+                                                <b>Form I-9:</b> Have your nanny
+                                                complete this form when hired and be sure she provides you with documents proving employment eligibility.
+                                                <br/>
+                                                <b>Form W-2:</b> Complete Form W-2 if you pay Social Security and Medicare wages of $2,200 or more or
+                                                if you deduct income taxes from your employee’s pay. Give Copies B, C and 2 to your employee. Copy A
+                                                (along with Form W-3) goes to the Social Security. <br/>
+                                                <b>Schedule H:</b> If you pay your nanny wages of $2,200 or more or if you paid $1,000 or more in a
+                                                calendar quarter you must file Schedule H with your federal income tax return
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">What laws apply to household employers?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                Depending on your residency and tax situation many laws apply to the household employer. Please consult
+                                                your tax advisor. We do not provide legal or employment advice. Here are some the laws that commonly apply to household employers:$
+                                            </p>
+                                            <ol className="faq-text"><li>Employer Taxes</li><li>Minimum Wage laws</li><li>Overtime Laws</li></ol>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">Do you find employees for me?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                No, we do not find employees with our service. Our services begin once you identify and decide
+                                                to hire an employee. We do rest of the work from that point on.
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">DO I have to provide vacation, holiday, and sick pay?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                Household employers generally do not need to provide vacation or holiday pay.
+                                                Household employers in some cities and states are required to provide sick pay for their
+                                                employees (typically based on their employee&#39;s hours worked).
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">How are you different from other people?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                Our all-in-one platform is designed to do all functions to manager household employees. Those
+                                                functions are: On-Boarding, background checks, task manager, timesheets, payroll and employee
+                                                rewards. Our platform is built from scratch to meet the needs of household employers and you
+                                                can use the app entirely on any smartphone (IOS or Android).
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">Do I have to provide worker's compensation insurance?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                            <b>Depending on where you live</b> , states require household employers to carry a workers’ compensation policy
+                                            depending on whether your employee works part-time or full-time. This type of policy will provide compensation
+                                            to an employee who is injured on the job. Even if your state does not require it, we strongly advise you to
+                                            obtain coverage for your employee. We provide links to obtain workers compensation.
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li className="">
+                        <div className="faq-li-body-wrapper">
+                            <div className="faq-animation">
+                                <button className="faq-button " onClick={handleOpenClose}>
+                                {console.log('calling from 2')}
+                                    <div className="faq-button-body">
+                                        <span className="faq-plus-minus-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {
+                                                !toggle ? (
+                                                    <path d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path>
+                                                ) :  (
+                                                    <path d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path>
+                                                )
+                                            }
+                                        </svg>
+                                        </span>
+                                        <div>
+                                            <p className="faq-list-title">What your fees, contracts and cancellation terms?</p>
+                                            <Collapse in={toggle} timeout="auto" unmountOnExit>
+                                            <p color="gray.1" className="faq-text">
+                                                Our pricing is simple and straightforward, $40 per month that includes 1 employee with standard background
+                                                check. No contracts, hidden fees, no additional sign-up, quarterly, annual and a la carte costs. Each
+                                                additional employee $10 per month.
+                                            </p>
+                                            </Collapse>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
                 </ul>
             </div>
         </div>

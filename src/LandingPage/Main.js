@@ -54,7 +54,7 @@ const Main = (props) => {
     return (
         <div className="wrapper">
         <div className={clsx(classes.heroContainer)}>
-            <Grid container spacing={4}>
+            <Grid container spacing={8}>
                 <Grid item xs={12} lg={4} className={clsx(classes.heroTextContainer, 'heroTextWrap')}>
                     <div>
                         <Typography variant="h4" className={classes.heroTitle}>
@@ -65,18 +65,18 @@ const Main = (props) => {
                             that can be entirely run on smartphones and tablets.
                         </p>
                         <br/> <br/>
-                        <span style={ { 'font-size': '15px', 'color': '#6E7477' } }> On-boarding |Task Manager |  Timesheets | Payroll | Tax Filings </span>
+                        <span style={ { 'fontSize': '15px', 'color': '#6E7477' } }> On-boarding |Task Manager |  Timesheets | Payroll | Tax Filings </span>
                         <br/>
                         <br/>
                     </div>
 
-                    <div style={ { 'margin-top': '32px' } }>
-                        <img style={ {width: 148,'margin-right': '8px' } } src="http://uno.surge.sh/static/app-store-e91688a43ed733ae3cb09644705112b7.svg" alt="apple"/>
+                    <div style={ { 'marginTop': '32px' } }>
+                        <img style={ {width: 148, 'marginRight': '8px' } } src="http://uno.surge.sh/static/app-store-e91688a43ed733ae3cb09644705112b7.svg" alt="apple"/>
                         <img style={ {width: 163 } } src="http://uno.surge.sh/static/google-play-ae5962682f9c55fd1d9a47392977a5c3.svg" alt="android"/>
                     </div>
                 </Grid>
                 <Grid item xs={12} lg={8} style={{'overflow': 'hidden'}}>
-                    <img style={ {'max-width': '700px', 'object-fit': 'fit'} } className={classes.maxWidth} src={mobile} alt="mobile"/>
+                    <img style={ {'maxWidth': '700px', 'objectFit': 'fit'} } className={classes.maxWidth} src={mobile} alt="mobile"/>
                 </Grid>
             </Grid>
         </div>

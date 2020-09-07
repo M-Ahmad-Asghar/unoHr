@@ -3,15 +3,11 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
+import ReactShadowScroll from 'react-shadow-scroll';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from  'clsx';
 
 import logo from './images/logo.png';
@@ -62,6 +58,8 @@ const NavBar = (props) => {
     const { classes } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+    const { EmployerApp, EmployeeApp } = props;
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -122,14 +120,14 @@ const NavBar = (props) => {
                 <p>Contact</p>
             </MenuItem>
             <MenuItem>
-                <a href="#" className={clsx('empBtton', 'unoBtton')}>
-                    <span>Employer</span>
-                </a>
+                <button className={clsx('empBtton', 'unoBtton')} onClick={EmployerApp}>
+                    Employer
+                </button>
             </MenuItem>
             <MenuItem>
-                <a href="#" className={clsx('empBtton', 'unoBtton')}>
-                    <span>Employee</span>
-                </a>
+                <button className={clsx('empBtton', 'unoBtton')} onClick={EmployeeApp}>
+                    Employee
+                </button>
             </MenuItem>
             <MenuItem>
                 <div>
@@ -149,7 +147,8 @@ const NavBar = (props) => {
     };
     return (
         <div className={classes.root}>
-            <AppBar position="static" className={classes.appBar} onScroll={handleScroll}>
+            <ReactShadowScroll>
+            <AppBar position="fixed" className={classes.appBar} onScroll={handleScroll}>
                 <Toolbar className='nav-wrapper toolbar'>
                     <div className={classes.sectionDesktop}>
                         <div className="">
@@ -164,16 +163,12 @@ const NavBar = (props) => {
                                 <li className={classes.navList}> FAQ </li>
                                 <li className={classes.navList}> Contact </li>
                             </ul>
-                            <a href="#" className={clsx('empBtton', 'unoBtton')}>
-                                <span>
-                                    Employer
-                                </span>
-                            </a>
-                            <a href="#" className={clsx('empBtton', 'unoBtton')}>
-                                <span>
-                                    Employee
-                                </span>
-                            </a>
+                            <button className={clsx('empBtton', 'unoBtton')} onClick={EmployerApp}>
+                                Employer
+                            </button>
+                            <button className={clsx('empBtton', 'unoBtton')} onClick={EmployeeApp}>
+                                Employee
+                            </button>
 
                         </div>
                         <div>
@@ -195,6 +190,7 @@ const NavBar = (props) => {
             </AppBar>
             {renderMenu}
             {renderMobileMenu}
+            </ReactShadowScroll>
         </div>
 
     );

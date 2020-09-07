@@ -45,6 +45,9 @@ body {
     .faq-list-wrapper {
         margin-top: 50px;
     }
+    .cards-container {
+        grid-template-columns: repeat(3,1fr);
+    }
     .about {
         text-align: left;
         width: 50%;
@@ -52,6 +55,20 @@ body {
         margin-bottom: 0px;
     }
 }
+
+@media screen and (max-width: 768px){
+    .contactFormWrapper {
+        padding: 64px;
+        border-radius: 64px;
+    }
+    .faq-plus-minus-container {
+        display: block;
+    }
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* ------------------------------ Nav Bar Start ----------------------------- */
 .toolbar{
@@ -159,10 +176,19 @@ body {
 
 /* ------------------------------ Pricing Start ----------------------------- */
 
+.cKOUfV{
+    position: relative;
+}
+.cards-container {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-gap: 30px;
+}
 .pricing-title {
     margin-bottom: 64px;
 }
-
 .signup-button-pricing {
     text-decoration: none;
     white-space: nowrap;
@@ -190,12 +216,37 @@ body {
     border-radius: 64px;
     outline: none !important;
 }
+.card2Title {
+    display: flex;
+    justify-content: center;
+    color: rgb(63, 81, 181);
+}
+.card2Body { text-align: left;}
+.card2List {
+    list-style: outside none none;
+    padding: 0;
+}
+.card2ListItems {
+    padding: 16px 0;
+    border-bottom: 1px solid rgb(228, 230, 231);
+}
+.listStyleIconContainer {
+    display: inline-block;
+    font-size: 24px;
+    margin-bottom: -6px;
+    margin-right: 16px;
+    color: rgb(63, 81, 181);
+    box-sizing: border-box;
+}
+.listStyleIcon {
+    display: block;
+    width: 1em;
+}
 .cars2Footer {
     font-size: small;
     color: #BDC0C2;
     font-weight: 400;
 }
-
 .centered {
 	margin: 0 auto;
 	text-align: center;
@@ -347,6 +398,11 @@ body {
 .aboutTextContainer {
     margin-bottom: 32px;
 }
+.contactsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .contactContainer{
     display: flex;
     margin-bottom: 16px;
@@ -370,6 +426,7 @@ body {
     position: relative;
     width: 100%;
     break-inside: avoid;
+    margin: 0;
 }
 .eUMQjj{
     margin-bottom: 16px;
@@ -436,12 +493,28 @@ textarea {
     min-height: 180px !important;
 }
 
-@media screen and (min-width: 768px){
-    .contactFormWrapper {
-        padding: 64px;
-        border-radius: 64px;
-    }
-    .faq-plus-minus-container {
-        display: block;
-    }
+/* ------------------------------ Footer Start ------------------------------ */
+
+.footer-wrapper {
+    padding: 18px 0;
+    border-top: 1px solid rgb(228, 230, 231);
 }
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    color: rgb(189, 192, 194);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    font-family: Sen,
+}
+.footer-container a {
+    text-decoration: none;
+    color: rgb(189, 192, 194);
+}
+.terms-privacy {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ------------------------------- Footer End ------------------------------- */

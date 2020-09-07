@@ -157,29 +157,29 @@ const Pricing = (props) => {
                 <p className={classes.pricingTitleSub}>No Contract | No Sign-up Fee | No Direct Deposit Fee | No Filing Fees</p>
             </div>
             <div className='animation'>
-                <Grid container spacing={32} className={classes.cardContainer}>
-                    <Grid item lg={4} md={12} className={classes.cardsItem}>
-                        <div className='card'>
-                            <p  className={classes.cardText}>
-                                <b>Our 30-day guarantee</b> if you decide to close your account within 30 days
-                                of signing up, we`ll refund 100% of your payment
-                            </p>
-                            <br/>
-                            <a href="#" className={classes.card1Link}> View Terms & Conditions </a>
+                <div className="cKOUfV">
+                    <div className="cards-container">
+                        <div className="card">
+                            <div className=''>
+                                <p  className="">
+                                    <b>Our 30-day guarantee</b> if you decide to close your account within 30 days
+                                    of signing up, we`ll refund 100% of your payment
+                                </p>
+                                <br/>
+                                <a href="#" className=""> View Terms & Conditions </a>
+                            </div>
                         </div>
-                    </Grid>
-                    <Grid item lg={4} md={12} className={classes.cardsItem}>
-                        <div className='card'>
-                            <div className={classes.card2Title}>
+                        <div className="card">
+                            <div className='card2Title'>
                                 <p style={{fontSize: 30, margin: 0, lineHeight: 1.3, fontWeight: 'bold'}}>$</p>
                                 <p style={{fontSize: '6rem', margin: 0, lineHeight: 1}}>40</p>
                                 <p style={{fontSize: 30, margin: 0, lineHeight: 1.3, fontWeight: 'bold'}}> <br/>/ month</p>
                             </div>
-                            <div className={classes.card2Body}>
-                                <ul className={classes.card2List}>
-                                    <li className={classes.card2ListItems}>
-                                        <span className={classes.listStyleIconContainer}>
-                                            <svg className={classes.listStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
+                            <div className='card2Body'>
+                                <ul className='card2List'>
+                                    <li className='card2ListItems'>
+                                        <span className='listStyleIconContainer'>
+                                            <svg className='listStyleIcon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
                                             14.496C9.6615 14.6536 9.75 14.8672 9.75 15.09V20.16C9.75 20.3828 9.8385 20.5964 9.99603 20.754C10.1536 20.9115 10.3672 21
                                             10.59 21H13.41C13.5203 21 13.6295 20.9783 13.7315 20.9361C13.8334 20.8938 13.926 20.832 14.004 20.754C14.082 20.676 14.1438
                                             20.5834 14.1861 20.4815C14.2283 20.3795 14.25 20.2703 14.25 20.16V15.09C14.25 14.8672 14.3385 14.6536 14.496 14.496C14.6536
@@ -193,9 +193,9 @@ const Pricing = (props) => {
                                         </span>
                                         All Features Included
                                     </li>
-                                    <li className={classes.card2ListItems}>
-                                        <span className={classes.listStyleIconContainer}>
-                                            <svg className={classes.listStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
+                                    <li className='card2ListItems'>
+                                        <span className='listStyleIconContainer'>
+                                            <svg className='listStyleIcon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
                                             14.496C9.6615 14.6536 9.75 14.8672 9.75 15.09V20.16C9.75 20.3828 9.8385 20.5964 9.99603 20.754C10.1536 20.9115 10.3672 21
                                             10.59 21H13.41C13.5203 21 13.6295 20.9783 13.7315 20.9361C13.8334 20.8938 13.926 20.832 14.004 20.754C14.082 20.676 14.1438
                                             20.5834 14.1861 20.4815C14.2283 20.3795 14.25 20.2703 14.25 20.16V15.09C14.25 14.8672 14.3385 14.6536 14.496 14.496C14.6536
@@ -208,9 +208,9 @@ const Pricing = (props) => {
                                             13.8464 3.24603 14.004C3.40356 14.1615 3.61722 14.25 3.84 14.25Z" fill="currentColor"></path></svg>
                                         </span>
                                         <b>1</b> Employee Included*</li>
-                                    <li className={classes.card2ListItems}>
-                                        <span className={classes.listStyleIconContainer}>
-                                            <svg className={classes.listStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
+                                    <li className='card2ListItems'>
+                                        <span className='listStyleIconContainer'>
+                                            <svg className='listStyleIcon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
                                             14.496C9.6615 14.6536 9.75 14.8672 9.75 15.09V20.16C9.75 20.3828 9.8385 20.5964 9.99603 20.754C10.1536 20.9115 10.3672 21
                                             10.59 21H13.41C13.5203 21 13.6295 20.9783 13.7315 20.9361C13.8334 20.8938 13.926 20.832 14.004 20.754C14.082 20.676 14.1438
                                             20.5834 14.1861 20.4815C14.2283 20.3795 14.25 20.2703 14.25 20.16V15.09C14.25 14.8672 14.3385 14.6536 14.496 14.496C14.6536
@@ -223,9 +223,9 @@ const Pricing = (props) => {
                                             13.8464 3.24603 14.004C3.40356 14.1615 3.61722 14.25 3.84 14.25Z" fill="currentColor"></path></svg>
                                         </span>
                                         <b>Standard</b> Background check**</li>
-                                    <li className={classes.card2ListItems}>
-                                        <span className={classes.listStyleIconContainer}>
-                                            <svg className={classes.listStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
+                                    <li className='card2ListItems'>
+                                        <span className='listStyleIconContainer'>
+                                            <svg className='listStyleIcon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.84 14.25H8.91C9.13278 14.25 9.34644 14.3385 9.50397
                                             14.496C9.6615 14.6536 9.75 14.8672 9.75 15.09V20.16C9.75 20.3828 9.8385 20.5964 9.99603 20.754C10.1536 20.9115 10.3672 21
                                             10.59 21H13.41C13.5203 21 13.6295 20.9783 13.7315 20.9361C13.8334 20.8938 13.926 20.832 14.004 20.754C14.082 20.676 14.1438
                                             20.5834 14.1861 20.4815C14.2283 20.3795 14.25 20.2703 14.25 20.16V15.09C14.25 14.8672 14.3385 14.6536 14.496 14.496C14.6536
@@ -250,15 +250,13 @@ const Pricing = (props) => {
                                 </p>
                             </div>
                         </div>
-                    </Grid>
-                    <Grid item lg={4} md={12} sm={12} className={classes.cardsItem}>
-                        <div className='card'>
-                            <p  className={classes.cardText}>
+                        <div className="card">
+                            <p  className="">
                                 <b>AARP and Veteran Discount</b> We offer eligible AARP and Veterans discount of 10% at SignUp.
                             </p>
                         </div>
-                    </Grid>
-                </Grid>
+                    </div>
+                </div>
             </div>
         </div>
     );

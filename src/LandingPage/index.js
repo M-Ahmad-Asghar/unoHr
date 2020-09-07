@@ -1,11 +1,14 @@
 import React from 'react';
+import NavBar from './Navbar';
 import Main from './Main';
 import Features from './Features';
 import Pricing from './Pricing';
 import FAQ from './FAQ';
 import About from './About';
+import Footer from './Footer';
+
 import './Landinpage.css';
-import NavBar from './Navbar';
+
 const Landing = () => {
     return (
         <>
@@ -17,6 +20,7 @@ const Landing = () => {
                 <FAQ/>
                 <About/>
             </div>
+            <Footer/>
         </>
     );
 }
