@@ -1,189 +1,128 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Container, Col, Row } from "reactstrap";
-import icon1 from "../assets/icon/1.png";
-import icon2 from "../assets/icon/2.png";
-import icon3 from "../assets/icon/3.png";
-import icon4 from "../assets/icon/4.png";
-import icon5 from "../assets/icon/5.png";
-import icon6 from "../assets/icon/6.png";
+import React from 'react';
+import { Grid } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import task from './images/task.svg';
+import paperless from './images/paperless.svg';
+import payroll from './images/payroll.svg';
+import timetrack from './images/timetrack.svg';
+import tax from './images/tax.svg';
+import alerts from './images/alerts.svg';
+import { withStyles } from '@material-ui/core/styles';
 
-class Features extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-  }
+const styles = theme => ({
+    featuresContainer: {
+        paddingTop: 96,
+        paddingBottom: 96,
+        margin: [[0, '4%']],
+    },
+    featuresTitle: {
+        fontSize: 30,
+        fontWeight: 600,
+        color: '#252728',
+        marginBottom: 16
+    },
+    featuresImage: {
+        margin: [[0, 'auto']],
+    },
+    imageTitle: {
+        margin: [[16, 0]],
+        textAlign: 'center',
+        fontSize: 24,
+        fontWeight: 600,
+    },
+    imageText: {
+        textAlign: 'center',
+        color: 'rgb(110, 116, 119)',
+        fontSize: 16,
+        display: 'block',
+        width: 320,
+        margin: [[0, 'auto']]
+    },
+});
 
-  render() {
+
+// const useStyles = makeStyles((theme) => ({
+//     featuresContainer: {
+//         paddingTop: 96,
+//         paddingBottom: 96,
+//         margin: [[0, '4%']],
+//     },
+//     featuresTitle: {
+//         fontSize: 30,
+//         fontFamily: 'sans-serif',
+//         color: '#252728',
+//         marginBottom: 16
+//     },
+//     featuresImage: {
+//         margin: [[0, 'auto']],
+//     },
+//     imageTitle: {
+//         margin: [[16, 0]],
+//         textAlign: 'center',
+//         fontSize: 24
+//     },
+//     imageText: {
+//         textAlign: 'center',
+//         color: 'rgb(110, 116, 119)',
+//         fontSize: 16,
+//         display: 'block',
+//         width: 320,
+//         margin: [[0, 'auto']]
+//     },
+// }));
+
+
+const Features = (props) => {
+    const { classes } = props;
     return (
-      <Row className="featureRow" id="features">
-        {/* <Col md={4} /> */}
-        <Col sm={12} md={12}>
-          <Row>
-            <Col sm={12}>
-              <div>
-                <h2 className="title">
-                  Features of <span>UNOHR</span>
-                </h2>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon1} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Paperless On-Boarding</h3>
-                    </div>
-                  </Col>
-                </Row>
-                <div>
-                  <p>
-                    Setup your account with full profile. Register tax accounts
-                    with the IRS and State. Process Form I-9. Employee(s)
-                    on-boarding with checklist.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon2} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Tax Paperwork</h3>
-                    </div>
-                  </Col>
-                </Row>
-
-                <div>
-                  <p>
-                    Year-end preparation and distribution of W-2 for each
-                    employee. Prepare and file W-3 and state paperwork. Prepare
-                    Schedule H.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon3} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Records</h3>
-                    </div>
-                  </Col>
-                </Row>
-
-                <div>
-                  <p>
-                    Electronic records for all employees including payroll and
-                    tax records are archived for easy access.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon4} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Payroll Management</h3>
-                    </div>
-                  </Col>
-                </Row>
-
-                <div>
-                  <p>
-                    Generate payroll calculations & statements for employee and
-                    employer. Prepare and file monthly/quarterly taxes.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon5} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Time Tracking</h3>
-                    </div>
-                  </Col>
-                </Row>
-
-                <div>
-                  <p>
-                    Track and approve employee time for payroll. Employee daily
-                    check-in and check-out, weekly review and submit for
-                    payroll.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-
-            <Col sm={6} md={6}>
-              <li>
-                <Row>
-                  <Col sm={1}>
-                    <div className="feature-icon">
-                      <img src={icon6} alt="icon" />
-                    </div>
-                  </Col>
-                  <Col sm={11} md={11}>
-                    <div className="feature-subtitle">
-                      <h3>Tasks, Alerts & Notifications</h3>
-                    </div>
-                  </Col>
-                </Row>
-
-                <div>
-                  <p>
-                    Manage daily tasks to employees. Engage with employees with
-                    Tasks, SMS & email reminders to complete tasks.{" "}
-                  </p>
-                </div>
-              </li>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+        <div className={classes.featuresContainer}>
+            <div >
+                <center>
+                    <h2 className={classes.featuresTitle}>Features</h2>
+                </center>
+            </div>
+            <Grid container spacing={40} className='features'>
+                <Grid item sm={12} lg={4} md={6} style={{overflow: 'hidden'}} className='feature'>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={task} alt="task" className={'centered'}/>
+                    <h3 className={classes.imageTitle}>Task Manager</h3>
+                    <p className={classes.imageText}>Manage daily tasks to employees. Engage with employees with Tasks, SMS & email reminders to complete tasks.</p>
+                </Grid>
+                <Grid item sm={12} lg={4} md={6}>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} className={'centered'} src={paperless} alt="mobile"/>
+                    <h3 className={classes.imageTitle}>Paperless On-Boarding</h3>
+                    <p className={classes.imageText}>Setup your account and register with the IRS and State if needed. Employee onboarding & background checks.</p>
+                </Grid>
+                <Grid item sm={12} lg={4} md={6}>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={payroll} alt="payroll" className={'centered'}/>
+                    <h3 className={classes.imageTitle}>Payroll Management</h3>
+                    <p className={classes.imageText}>Generate payroll calculations & statements for employee and employer. Prepare and file monthly/quarterly taxes.</p>
+                </Grid>
+                <Grid item sm={12} lg={4} md={6}>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={timetrack} alt="time tracking" className={'centered'}/>
+                    <h3 className={classes.imageTitle}>Time Tracking</h3>
+                    <p className={classes.imageText}>Track and approve employee time for payroll. Employee daily check-in and check-out, weekly review and submit for payroll.</p>
+                </Grid>
+                <Grid item sm={12} lg={4} md={6}>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={tax} alt="tax" className={'centered'}/>
+                    <h3 className={classes.imageTitle}>Tax Paperwork & Records</h3>
+                    <p className={classes.imageText}>Year-end preparation and distribution of W-2, W-3 and Schedule H. Records for employees, tax and payroll are archived for easy access.</p>
+                </Grid>
+                <Grid item sm={12} lg={4} md={6}>
+                    <img style={{ 'maxWidth': '256px', 'maxHeight': '192px'}} src={alerts} alt="alerts" className={'centered'}/>
+                    <h3 className={classes.imageTitle}>Alerts & Notifications</h3>
+                    <p className={classes.imageText}>Alerts and email notifications that are automatically triggered when a certain criteria is enabled by the users.</p>
+                </Grid>
+            </Grid>
+        </div>
     );
-  }
 }
 
-Features.propTypes = {};
+Features.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
-function mapStateToProps(state, ownProps) {
-  return {};
-}
+export default withStyles(styles)(Features);
 
-export default connect(mapStateToProps)(Features);
+// export default Features;
