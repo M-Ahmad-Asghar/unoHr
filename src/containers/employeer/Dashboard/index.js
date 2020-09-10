@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { connect } from "react-redux";
 import { getEmployees } from "../../../redux/actions/employerActions";
-import { getTask } from "../../../redux/actions/TasksActions";
+import { getTask, getLogs } from "../../../redux/actions/TasksActions";
 import { countEmployerPaperWork } from "../../../redux/actions/paperWorkActions";
 import { countEmployerShifts } from "../../../redux/actions/shiftAction";
 import { getEmployerPayStubs } from "../../../redux/actions/paystubsActions";
@@ -33,12 +33,13 @@ class Dashboard extends PureComponent {
     employee: "Naveed",
     status: "active",
     arrowDown: true,
-    greet: "Good Morning"
+    greet: "Good Morning",
   };
 
   componentWillMount() {
     this.props.getEmployees(this.props.user.uid);
     this.props.getTask(this.props.user.uid);
+    this.props.getLogs(this.props.user.uid);
     this.props.countEmployerPaperWork(this.props.user.uid);
     this.props.countEmployerShifts(this.props.user.uid);
     this.props.getEmployerPayStubs(this.props.user.uid);
@@ -58,49 +59,49 @@ class Dashboard extends PureComponent {
     }
 
     this.setState({
-      greet
+      greet,
     });
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.done === "move") {
       this.setState({
         loader: false,
-        employees: nextProps.employees
+        employees: nextProps.employees,
       });
     }
 
     if (nextProps.loader === "false") {
       let selectedTasks = [];
       selectedTasks = nextProps.AllTask.filter(
-        task =>
+        (task) =>
           moment(task.DueTime).format("MMM DD, YYYY") ===
           moment().format("MMM DD, YYYY")
       );
       this.setState({
         loader: false,
         selectedTasks,
-        tasks: nextProps.AllTask
+        tasks: nextProps.AllTask,
       });
     }
 
     if (nextProps.countStatus === "done") {
       this.setState({
         loader: false,
-        papersCount: nextProps.count
+        papersCount: nextProps.count,
       });
     }
 
     if (nextProps.employerShiftCountStatus === "done") {
       this.setState({
         loader: false,
-        shiftsCount: nextProps.employerShiftCount
+        shiftsCount: nextProps.employerShiftCount,
       });
     }
 
     if (nextProps.employerPaystubsStatus === "done") {
       this.setState({
-        employerPaystubs: nextProps.employerPaystubs
+        employerPaystubs: nextProps.employerPaystubs,
       });
     }
 
@@ -108,10 +109,10 @@ class Dashboard extends PureComponent {
       if (nextProps.empAttendances.length > 0) {
         let employees = this.state.employees;
         let statements = [];
-        employees.map(emp => {
+        employees.map((emp) => {
           let sameEmpAtt = [];
           sameEmpAtt = nextProps.empAttendances.filter(
-            att => att.employeeUid === emp.employeeid
+            (att) => att.employeeUid === emp.employeeid
           );
           sameEmpAtt = sameEmpAtt.sort(function(a, b) {
             return (
@@ -143,12 +144,12 @@ class Dashboard extends PureComponent {
           }
           statements.push({
             name: emp.name,
-            statement
+            statement,
           });
         });
         this.setState({
           statements,
-          empAttendances: nextProps.empAttendances
+          empAttendances: nextProps.empAttendances,
         });
       }
     }
@@ -161,7 +162,7 @@ class Dashboard extends PureComponent {
       shiftsCount,
       papersCount,
       employerPaystubs,
-      statements
+      statements,
     } = this.state;
 
     return (
@@ -182,7 +183,7 @@ class Dashboard extends PureComponent {
   }
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store) => {
   return {
     user: store.userReducer.user,
     done: store.employerReducer.done,
@@ -197,7 +198,7 @@ const mapStateToProps = store => {
     employerPaystubs: store.payStubsReducer.employerPaystubs,
     employerPaystubsStatus: store.payStubsReducer.employerPaystubsStatus,
     empAttendances: store.attendanceReducer.empAttendances,
-    getEmpAttendancesStatus: store.attendanceReducer.getEmpAttendancesStatus
+    getEmpAttendancesStatus: store.attendanceReducer.getEmpAttendancesStatus,
   };
 };
 
@@ -209,6 +210,7 @@ export default connect(
     countEmployerShifts,
     countEmployerPaperWork,
     getEmployerPayStubs,
-    getAttendance
+    getAttendance,
+    getLogs
   }
 )(Dashboard);

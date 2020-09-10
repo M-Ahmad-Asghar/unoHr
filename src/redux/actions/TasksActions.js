@@ -29,6 +29,9 @@ export const GET_OWN_TASK = "GET_OWN_TASK";
 export const DELETE_OWN_TASK = "DELETE_OWN_TASK";
 export const DELETE_OWN_TASK_ERR = "DELETE_OWN_TASK_ERR";
 
+//get logs
+export const GET_ALL_LOG = "GET_ALL_LOG";
+
 // add task function
 export function addTask(data) {
   return (dispatch) => {
@@ -317,5 +320,32 @@ export function deletOwnTask(id) {
           type: DELETE_OWN_TASK_ERR,
         });
       });
+  };
+}
+
+export function getLogs(data) {
+  return (dispatch) => {
+    db.collection('taskLogs')
+      .where('uid', '==', data)
+      .onSnapshot(
+        function (querySnapshot) {
+          let datatoStore = [];
+          querySnapshot.forEach(function (doc) {
+            const data = doc.data();
+            const key = doc.id;
+            datatoStore.push({...data, key});
+
+            return datatoStore;
+          });
+
+          dispatch({
+            type: GET_ALL_LOG,
+            payload: datatoStore,
+          });
+        },
+        function (error) {
+          console.log('error', error);
+        },
+      );
   };
 }

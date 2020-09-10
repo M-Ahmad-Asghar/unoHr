@@ -10,7 +10,11 @@ import { ADD_OWN_TASK } from "../actions/TasksActions";
 import { GET_OWN_TASK } from "../actions/TasksActions";
 
 import { PAPERWORK_TASK } from "../actions/TasksActions";
-import { DELETE_OWN_TASK, DELETE_OWN_TASK_ERR } from "../actions/TasksActions";
+import {
+  DELETE_OWN_TASK,
+  DELETE_OWN_TASK_ERR,
+  GET_ALL_LOG,
+} from "../actions/TasksActions";
 
 const initialState = {
   AllTask: [],
@@ -24,10 +28,24 @@ const initialState = {
   deleteOwnStatus: "not Done",
   taskDeleteStatus: "not done",
   completionStatus: "not done",
-  updateTaskStatus: "not done"
+  updateTaskStatus: "not done",
+  logs: []
 };
 export default (state = initialState, action) => {
   switch (action.type) {
+
+    //get all logs
+    case GET_ALL_LOG:
+        action.payload.sort(function(a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.taskCompleted) - new Date(a.taskCompleted);
+        });
+      return {
+        ...state,
+        logs: action.payload
+      };
+
     // get all tasks
     case GET_TASK:
       let tasksArray = action.payload;
