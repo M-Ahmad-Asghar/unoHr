@@ -1,10 +1,10 @@
 import React from 'react';
-import NavBar from './Navbar';
+import NavBar from './NavBar';
 import Main from './Main';
-import Features from './Features';
+import Features from './features';
 import Pricing from './Pricing';
 import FAQ from './FAQ';
-import About from './About';
+import About from './about';
 import Footer from './Footer';
 
 import './Landinpage.css';
