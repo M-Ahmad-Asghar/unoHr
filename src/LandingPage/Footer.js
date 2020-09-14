@@ -3,8 +3,8 @@ import { Grid } from "@material-ui/core";
 
 const Footer = () => {
     return (
-        <div className='footer-wrapper'>
-            <Grid container className="wrapper footer-container">
+        <div className='lp-footer-wrapper'>
+            <Grid container className="lp-wrapper lp-footer-container">
                 <Grid item sm={12} lg={9}>
                     <p>
                     © 2020 WorkScaler, inc. unoHR is a service of Workscaler, Inc.
@@ -12,7 +12,7 @@ const Footer = () => {
                 </Grid>
 
                 <Grid item sm={12} lg={3}>
-                    <div className="terms-privacy">
+                    <div className="lp-terms-privacy">
                         <div>
                             <a href="#">Privacy Policy</a>
                         </div>
