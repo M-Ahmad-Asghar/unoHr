@@ -12,15 +12,18 @@ import './Landinpage.css';
 const Landing = () => {
     return (
         <>
-            <NavBar/>
-            <Main/>
-            <div className='wrapper'>
-                <Features/>
-                <Pricing/>
-                <FAQ/>
-                <About/>
+            <div className="lp-body-styles">
+                <NavBar/>
+                <Main/>
+                <div className='lp-wrapper'>
+                    <Features/>
+                    <Pricing/>
+                    <FAQ/>
+                    <About/>
+                </div>
+                <Footer/>
             </div>
-            <Footer/>
+
         </>
     );
 }

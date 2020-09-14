@@ -32,6 +32,11 @@ const styles = theme => ({
         margin: [[0, '2%']],
         padding: 16,
     },
+    navItemsContainer: {
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
     navList: {
         listStyle: 'none',
         display: 'inline',
@@ -39,15 +44,20 @@ const styles = theme => ({
         marginRight: 16
     },
     sectionDesktop: {
-        display: 'flex',
+        display: 'none',
         width: '100%',
-        justifyContent: 'space-around',
         [theme.breakpoints.up('md')]: {
             display: 'flex',
         },
     },
+    mobielNavBar: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
     sectionMobile: {
         display: 'flex',
+        width: '100%',
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
@@ -120,18 +130,18 @@ const NavBar = (props) => {
                 <p>Contact</p>
             </MenuItem>
             <MenuItem>
-                <button className={clsx('empBtton', 'unoBtton')} onClick={EmployerApp}>
+                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployerApp}>
                     Employer
                 </button>
             </MenuItem>
             <MenuItem>
-                <button className={clsx('empBtton', 'unoBtton')} onClick={EmployeeApp}>
+                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployeeApp}>
                     Employee
                 </button>
             </MenuItem>
             <MenuItem>
                 <div>
-                    <button className={clsx('signupButton', 'unoBtton')}>
+                    <button className={clsx('lp-signupButton', 'lp-unoBtton')}>
                         Signup
                     </button>
                 </div>
@@ -139,60 +149,54 @@ const NavBar = (props) => {
         </Menu>
     );
 
-    const handleScroll = () => {
-        let i;
-        console.log('====================================');
-        console.log(i++);
-        console.log('====================================');
-    };
     return (
         <div className={classes.root}>
-            <ReactShadowScroll>
-            <AppBar position="fixed" className={classes.appBar} onScroll={handleScroll}>
-                <Toolbar className='nav-wrapper toolbar'>
+
+            <AppBar position="fixed" className={classes.appBar} >
+                <Toolbar className='lp-nav-wrapper lp-toolbar'>
+
                     <div className={classes.sectionDesktop}>
-                        <div className="">
-                            <img className='logo' src={logo} alt="logo"/>
-                        </div>
-                        <div className='navItems'>
-
-                            <ul style={{display: 'inline'}}>
-                                <li className={classes.navList}> Home </li>
-                                <li className={classes.navList}> Features </li>
-                                <li className={classes.navList}> Pricing </li>
-                                <li className={classes.navList}> FAQ </li>
-                                <li className={classes.navList}> Contact </li>
-                            </ul>
-                            <button className={clsx('empBtton', 'unoBtton')} onClick={EmployerApp}>
-                                Employer
-                            </button>
-                            <button className={clsx('empBtton', 'unoBtton')} onClick={EmployeeApp}>
-                                Employee
-                            </button>
-
-                        </div>
-                        <div>
-                            <button className={clsx('signupButton', 'unoBtton')}>
-                                Signup
-                            </button>
+                        <div className={classes.navItemsContainer}>
+                            <div className="">
+                                <img className='lp-logo' src={logo} alt="logo"/>
+                            </div>
+                            <div className='lp-navItems'>
+                                <ul style={{display: 'inline'}}>
+                                    <li className={classes.navList}> Home </li>
+                                    <li className={classes.navList}> Features </li>
+                                    <li className={classes.navList}> Pricing </li>
+                                    <li className={classes.navList}> FAQ </li>
+                                    <li className={classes.navList}> Contact </li>
+                                </ul>
+                                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployerApp}>
+                                    Employer
+                                </button>
+                                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployeeApp}>
+                                    Employee
+                                </button>
+                            </div>
+                            <div>
+                                <button className={clsx('lp-signupButton', 'lp-unoBtton')}>
+                                    Signup
+                                </button>
+                            </div>
                         </div>
                     </div>
-
                     <div className={classes.sectionMobile}>
-                        <div className="">
-                            <img className='logo' src={logo} alt="logo"/>
+                        <div className={classes.mobielNavBar}>
+                            <div style={{display: 'inline'}}>
+                                <img className='lp-logo' src={logo} alt="logo"/>
+                            </div>
+                            <IconButton className={classes.menuButton} color="inherit" onClick={handleMobileMenuOpen}>
+                                <MenuIcon />
+                            </IconButton>
                         </div>
-                        <IconButton className={classes.menuButton} color="inherit" onClick={handleMobileMenuOpen}>
-                            <MenuIcon />
-                        </IconButton>
                     </div>
                 </Toolbar>
             </AppBar>
             {renderMenu}
             {renderMobileMenu}
-            </ReactShadowScroll>
         </div>
-
     );
 }
 

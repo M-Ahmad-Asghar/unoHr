@@ -27,35 +27,13 @@ const styles = theme => ({
     }
 });
 
-// const useStyles = makeStyles((theme) => ({
-//     heroContainer: {
-//         paddingTop: 32,
-//         paddingBottom: 60,
-//         margin: [[0, '4%']],
-//     },
-//     heroTitle: {
-//         fontSize: 40,
-//         fontFamily: 'sans-serif',
-//         color: 'rgb(37, 39, 40)',
-//         marginBottom: 32
-//     },
-//     heroText: {
-//         color: '#6E7477',
-//         fontSize: 20
-//     },
-//     heroTextContainer: {
-//         marginTop: 125,
-//         marginBottom: 135
-//     }
-// }));
-
 const Main = (props) => {
     const { classes } = props;
     return (
-        <div className="wrapper">
+        <div className="lp-wrapper">
         <div className={clsx(classes.heroContainer)}>
             <Grid container spacing={8}>
-                <Grid item xs={12} lg={4} className={clsx(classes.heroTextContainer, 'heroTextWrap')}>
+                <Grid item xs={12} lg={4} className={clsx(classes.heroTextContainer, 'lp-heroTextWrap')}>
                     <div>
                         <Typography variant="h4" className={classes.heroTitle}>
                             Simplest way to manage household employees
@@ -76,7 +54,7 @@ const Main = (props) => {
                     </div>
                 </Grid>
                 <Grid item xs={12} lg={8} style={{'overflow': 'hidden'}}>
-                    <img style={ {'maxWidth': '700px', 'objectFit': 'fit'} } className={classes.maxWidth} src={mobile} alt="mobile"/>
+                    <img style={ {'maxWidth': '700px', 'objectFit': 'fit'} } src={mobile} alt="mobile"/>
                 </Grid>
             </Grid>
         </div>

@@ -41,44 +41,6 @@ const styles = theme => ({
     }
 });
 
-
-// const useStyles = makeStyles((theme) => ({
-//     aboutContainer: {
-//         paddingTop: 96,
-//         paddingBottom: 96,
-//         margin: [[0, '4%']],
-//     },
-//     aboutTitle: {
-//         fontSize: 30,
-//         lineHeight: 1.3,
-//         fontFamily: 'sans-serif',
-//         color: '#252728',
-//         marginBottom: 16
-//     },
-//     aboutTextContainer: {},
-//     aboutText: {
-//         fontSize: 16,
-//         fontWeight: 400,
-//         width: '50%',
-//         lineHeight: 1.6,
-//         color: 'rgb(110, 116, 119)',
-//         opacity: 1,
-//         marginBottom: 32,
-//     },
-//     aboutIconContainer: {
-//         display: 'inline-block',
-//         fontSize: 24,
-//         marginBottom: -6,
-//         marginRight: 16,
-//         color: 'rgb(63, 81, 181)',
-//         boxSizing: 'border-box',
-//     },
-//     aboutStyleIcon: {
-//         display: 'block',
-//         width: '1em',
-//     }
-// }));
-
 const About = (props) => {
     const { classes } = props;
 
@@ -86,9 +48,9 @@ const About = (props) => {
         <div className={classes.aboutContainer}>
         <Grid container >
             <Grid item lg={6} md={12}>
-                <div className='about'>
+                <div className='lp-about'>
                     <h2 className={classes.aboutTitle}>About us</h2>
-                    <div className='aboutTextContainer'>
+                    <div className='lp-aboutTextContainer'>
                         <p className={classes.aboutText}>
                         unoHR is all-in-one innovative, simple to use household employee management software
                         that helps employers with all features needed to manage onboarding, background checks,
@@ -97,8 +59,8 @@ const About = (props) => {
                         Notifications, makes it easier not to miss daily tasks & deadlines.
                         </p>
                     </div>
-                    <div className='contactsWrapper'>
-                        <div className="contactContainer">
+                    <div className='lp-contactsWrapper'>
+                        <div className="lp-contactContainer">
                             <span className={classes.aboutIconContainer}>
                                 <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.9951 22.17C11.2863
                                 22.3844 11.6384 22.5001 12.0001 22.5001C12.3617 22.5001 12.7138 22.3844 13.0051 22.17C15.0445
@@ -111,9 +73,9 @@ const About = (props) => {
                                 8.25006 9C8.25006 8.00544 8.64514 7.05161 9.34841 6.34835C10.0517 5.64509 11.0055 5.25 12.0001 5.25Z"
                                 fill="currentColor"></path></svg>
                             </span>
-                            <p className='aboutIconText'>717 K Street STE207,<br/> Sacramento, CA 95814 <br/> United States</p>
+                            <p className='lp-aboutIconText'>717 K Street STE207,<br/> Sacramento, CA 95814 <br/> United States</p>
                         </div>
-                        <div className="contactContainer">
+                        <div className="lp-contactContainer">
                             <span className={classes.aboutIconContainer}>
                                 <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path d="M7.7025 22.5H16.2975C17.1469 22.5 17.9614 22.1626 18.562 21.562C19.1626 20.9614 19.5 20.1469
@@ -178,9 +140,9 @@ const About = (props) => {
                                     8.84235L9.77998 8.8611Z" fill="currentColor"></path>
                                 </svg>
                             </span>
-                            <p className='aboutIconText'>800-555-1212</p>
+                            <p className='lp-aboutIconText'>800-555-1212</p>
                         </div>
-                        <div className="contactContainer">
+                        <div className="lp-contactContainer">
                             <span className={classes.aboutIconContainer}>
                                 <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path d="M10.2937 15.0975C10.0157 15.3753 9.83855 15.738 9.79031 16.128C9.74207 16.518 9.82555 16.9129 10.0275
@@ -197,7 +159,7 @@ const About = (props) => {
                                 10.2683 15.03 10.3575L10.2937 15.0975Z" fill="currentColor"></path>
                                 </svg>
                             </span>
-                            <p className='aboutIconText'>support@unohr.com</p>
+                            <p className='lp-aboutIconText'>support@unohr.com</p>
                         </div>
                     </div>
 
@@ -205,14 +167,14 @@ const About = (props) => {
                 </div>
             </Grid>
             <Grid item width="100%" lg={6} md={12} sm={12}>
-                <div color="gray.7" className="contactFormWrapper">
-                    <h3 className='contactFormTitle'>Contact us </h3>
+                <div color="gray.7" className="lp-contactFormWrapper">
+                    <h3 className='lp-contactFormTitle'>Contact us </h3>
                     <form action="">
                         {/** @NAME */}
                         <div className="eUMQjj">
-                            <label htmlFor="" className="contactFormInputLabel"> First Name</label>
-                            <div className="contactFormInputContainer">
-                                <input className="contactFormInput"
+                            <label htmlFor="" className="lp-contactFormInputLabel"> First Name</label>
+                            <div className="lp-contactFormInputContainer">
+                                <input className="lp-contactFormInput"
                                 name="name" type="text" id="name"
                                 placeholder="i.e. John Doe"/>
                             </div>
@@ -220,9 +182,9 @@ const About = (props) => {
                         </div>
                         {/** @COMPANY */}
                         <div className="eUMQjj">
-                            <label htmlFor="" className="contactFormInputLabel">Company</label>
-                            <div className="contactFormInputContainer">
-                                <input className="contactFormInput"
+                            <label htmlFor="" className="lp-contactFormInputLabel">Company</label>
+                            <div className="lp-contactFormInputContainer">
+                                <input className="lp-contactFormInput"
                                 name="company" type="text" id="company"
                                 placeholder="i.e. Best Trade Ltd."/>
                             </div>
@@ -230,9 +192,9 @@ const About = (props) => {
                         </div>
                         {/** @EMAIL */}
                         <div className="eUMQjj">
-                            <label htmlFor="" className="contactFormInputLabel">Company</label>
-                            <div className="contactFormInputContainer">
-                                <input className="contactFormInput"
+                            <label htmlFor="" className="lp-contactFormInputLabel">Email</label>
+                            <div className="lp-contactFormInputContainer">
+                                <input className="lp-contactFormInput"
                                 name="email" type="email" id="email"
                                 placeholder="i.e. john.doe@email.com"/>
                             </div>
@@ -240,15 +202,15 @@ const About = (props) => {
                         </div>
                         {/** @MESSAGE */}
                         <div className="eUMQjj">
-                            <label htmlFor="" className="contactFormInputLabel">Company</label>
-                            <div className="contactFormInputContainer">
-                                <textarea className="contactFormInput"
+                            <label htmlFor="" className="lp-contactFormInputLabel">Message</label>
+                            <div className="lp-contactFormInputContainer">
+                                <textarea className="lp-contactFormInput lp-contact-textarea"
                                 name="message" type="text-area" id="message"
                                 placeholder="Message"></textarea>
                             </div>
                             <div className="ReactCollapse--collapse"></div>
                         </div>
-                        <button className="send-request">Send Request</button>
+                        <button className="lp-send-request">Send Request</button>
                     </form>
                 </div>
             </Grid>

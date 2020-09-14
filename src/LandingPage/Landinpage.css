@@ -1,4 +1,4 @@
-body {
+.lp-body-styles {
 	margin: 0;
 	-webkit-tap-highlight-color: transparent;
     font-size: 16px;
@@ -8,47 +8,41 @@ body {
     background-color: #fff;
 }
 
-/* code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
-.nav-wrapper{
+.lp-nav-wrapper{
     padding: 0 16px;
-
 }
-.wrapper {
+.lp-wrapper {
     margin-right: auto; /* 1 */
     margin-left:  auto; /* 1 */
     max-width: 1170px; /* 2 */
-
     padding: 0 16px;
 }
 *, ::after, ::before {
     box-sizing: border-box;
 }
 @media screen and (min-width: 1170px){
-    .wrapper {
+    .lp-wrapper {
         width: 1170px;
         margin-right: auto; /* 1 */
         margin-left:  auto; /* 1 */
         padding: 0 16px;
     }
-    .nav-wrapper {
+    .lp-nav-wrapper {
         width: 1170px;
         margin-right: auto; /* 1 */
         margin-left:  auto; /* 1 */
         padding: 0 16px;
     }
-    .heroTextWrap {
+    .lp-heroTextWrap {
         width: 444px;
     }
-    .faq-list-wrapper {
+    .lp-faq-list-wrapper {
         margin-top: 50px;
     }
-    .cards-container {
+    .lp-pricing-cards-container {
         grid-template-columns: repeat(3,1fr);
     }
-    .about {
+    .lp-about {
         text-align: left;
         width: 50%;
         margin-top: 64px;
@@ -57,54 +51,54 @@ body {
 }
 
 @media screen and (max-width: 768px){
-    .contactFormWrapper {
+    .lp-contactFormWrapper {
         padding: 64px;
         border-radius: 64px;
     }
-    .faq-plus-minus-container {
+    .lp-faq-plus-minus-container {
         display: block;
     }
-    .cards-container {
+    .lp-pricing-cards-container {
         grid-template-columns: 1fr;
     }
 }
 
 
 /* ------------------------------ Nav Bar Start ----------------------------- */
-.toolbar{
+.lp-toolbar{
     padding: 16px 16px !important;
 }
-.nav-height {
+.lp-nav-height {
     min-height: 73px;
 }
-.grow {
+.lp-grow {
     flex-grow: 1;}
-.appBar {
+.lp-appBar {
     color: '#3D4042';
     background-color: white;
     padding: 0 2%;
 }
-.toolBar {
+.lp-toolBar {
     margin: 0 2%;
     display: flex;
     justify-content: space-between;
-}
-.navItems{
+}lp-
+.lp-navItems{
     margin: 0 auto;
 }
-.logo {
+.lp-logo {
     max-width: 128px;
     max-height: 128px;
 }
-.navListContainer {
+.lp-navListContainer {
     margin-block-start: '1em';
 }
-.navList {
+.lp-navList {
     list-style: 'none';
     display: 'inline';
     margin: 0 16px;
 }
-.unoBtton {
+.lp-unoBtton {
     font-size: 16px;
     font-weight: bold;
     color: white;
@@ -118,17 +112,16 @@ body {
     position: relative;
     font-family: inherit;
 }
-.empBtton {
+.lp-empBtton {
     background-color: rgb(63, 81, 181);
     margin-right: 8px;
 }
-.signupButton {
+.lp-signupButton {
 	white-space: nowrap;
 	background: rgb(242, 79, 40);
     padding: 8px 20px;
-    margin-left: 100px;
 }
-.inputRoot {
+.lp-inputRoot {
     color: inherit,
 }
 /* ------------------------------- Nav Bar End ------------------------------ */
@@ -136,23 +129,23 @@ body {
 
 /* ------------------------------- Main Start ------------------------------- */
 
-.heroContainer {
+.lp-heroContainer {
     padding-top: 32px;
     padding-bottom: 60px;
     margin: 0, '4%';
 }
-.heroTitle {
+.lp-heroTitle {
     font-size: 40px;
     color: 'rgb(37, 39, 40)';
     margin-bottom: 32px;
 }
-.heroText {
+.lp-heroText {
     color: '#6E7477';
     font-size: 20px;
 }
-.heroTextContainer {
-    margin-top: 125;
-    margin-bottom: 13px5;
+.lp-heroTextContainer {
+    margin-top: 125px;
+    margin-bottom: 135px;
 }
 
 /* -------------------------------- Main End -------------------------------- */
@@ -161,14 +154,6 @@ body {
 
 /* ----------------------------- Features start ----------------------------- */
 
-.features {
-    padding: 0 !important;
-    justify-content: space-between;
-}
-
-.feature {
-    padding: 0;
-}
 
 /* ------------------------------ Features End ------------------------------ */
 
@@ -179,17 +164,17 @@ body {
 .cKOUfV{
     position: relative;
 }
-.cards-container {
+.lp-pricing-cards-container {
     position: relative;
     margin-left: auto;
     margin-right: auto;
     display: grid;
     grid-gap: 30px;
 }
-.pricing-title {
+.lp-pricing-title {
     margin-bottom: 64px;
 }
-.signup-button-pricing {
+.lp-signup-button-pricing {
     text-decoration: none;
     white-space: nowrap;
     color: rgb(255, 255, 255);
@@ -204,7 +189,7 @@ body {
     transition: all 0.2s ease-in-out 0s;
     background: rgb(63, 81, 181);
 }
-.card {
+.lp-pricing-card {
 	text-align: left;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(34, 39, 43, 0.06) 50px 36px 64px 50px;
@@ -216,21 +201,21 @@ body {
     border-radius: 64px;
     outline: none !important;
 }
-.card2Title {
+.lp-card2Title {
     display: flex;
     justify-content: center;
     color: rgb(63, 81, 181);
 }
-.card2Body { text-align: left;}
-.card2List {
+.lp-card2Body { text-align: left;}
+.lp-card2List {
     list-style: outside none none;
     padding: 0;
 }
-.card2ListItems {
+.lp-card2ListItems {
     padding: 16px 0;
     border-bottom: 1px solid rgb(228, 230, 231);
 }
-.listStyleIconContainer {
+.lp-listStyleIconContainer {
     display: inline-block;
     font-size: 24px;
     margin-bottom: -6px;
@@ -238,16 +223,16 @@ body {
     color: rgb(63, 81, 181);
     box-sizing: border-box;
 }
-.listStyleIcon {
+.lp-listStyleIcon {
     display: block;
     width: 1em;
 }
-.cars2Footer {
+.lp-cars2Footer {
     font-size: small;
     color: #BDC0C2;
     font-weight: 400;
 }
-.centered {
+.lp-centered {
 	margin: 0 auto;
 	text-align: center;
     display: block;
@@ -257,26 +242,25 @@ body {
 /*                                  FAQ Start                                 */
 /* -------------------------------------------------------------------------- */
 
-.faq-wrapper {
+.lp-faq-wrapper {
     display: flex;
     align-items: flex-start;
     justify-content: center;
 }
-.faq-list-wrapper {
+.lp-faq-list-wrapper {
     padding: 0px;
     margin: 30px 0px 0px;
     list-style: none;
     width: 100%;
 }
-.faq-list-wrapper li {
+.lp-faq-list-wrapper li {
     display: list-item;
     text-align: -webkit-match-parent;
 }
-.faq-li-body-wrapper {
+.lp-faq-li-body-wrapper {
     flex: 0 1 50%;
 }
-.faq-animation {}
-.faq-button {
+.lp-faq-button {
     text-align: left;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(34, 39, 43, 0.06) 0px 36px 64px;
@@ -290,32 +274,31 @@ body {
     align-items: flex-start;
     width: 100%;
 }
-.faq-button-body {
+.lp-faq-button-body {
     display: flex;
 }
-.faq-plus-minus-container {
+.lp-faq-plus-minus-container {
     color: #febb75;
-    display: none;
     font-size: 24px;
     line-height: 1;
     margin-right: 16px;
     margin-top: 2px;
 }
-.faq-plus-minus-container svg {
+.lp-faq-plus-minus-container svg {
     display: block;
     width: 1em;
 }
-.faq-plus-minus-container svg path{
-    fill: currentcolor;
+.lp-faq-plus-minus-container svg path{
+    fill: #febb75;
 }
-.faq-list-title {
+.lp-faq-list-title {
     font-size: 20px;
     line-height: 1.6;
     font-weight: bold;
     font-family: Sen;
     color: rgb(61, 64, 66);
 }
-.faq-text {
+.lp-faq-text {
     color: rgb(110, 116, 119);
     padding: 16px 16px 16px 0px;
     margin: 0px;
@@ -324,96 +307,35 @@ body {
     line-height: 1.6;
     font-family: Sen;
 }
-.faq-text a {
+.lp-faq-text a {
     text-decoration: underline;
     color: -webkit-link;
 }
-
-
-/* --------------------- Plus Minus Animation Start- FAQ -------------------- */
-
-.closed .vertical {
-    transition: all 0.5s ease-in-out;
-    transform: rotate(-90deg);
-}
-.closed .horizontal {
-    transition: all 0.5s ease-in-out;
-    transform: rotate(-90deg);
-    opacity: 1;
-}
-.opened {
-    opacity: 1;
-}
-.opened .vertical {
-    transition: all 0.5s ease-in-out;
-    transform: rotate(90deg);
-}
-.opened .horizontal {
-    transition: all 0.5s ease-in-out;
-    transform: rotate(90deg);
-    opacity: 0;
-}
-.circle-plus {
-    height: 4em;
-    width: 4em;
-    font-size: 1em;
-    opacity: 0.7;
-}
-.circle-plus .circle {
-    position: relative;
-    width: 2.55em;
-    height: 2.5em;
-    border-radius: 100%;
-    border: solid 0.5em #dfdad7;
-}
-.circle-plus .circle .horizontal {
-    position: absolute;
-    background-color: #f00;
-    width: 30px;
-    height: 5px;
-    left: 50%;
-    margin-left: -15px;
-    top: 50%;
-    margin-top: -2.5px;
-}
-.circle-plus .circle .vertical {
-    position: absolute;
-    background-color: #f00;
-    width: 5px;
-    height: 30px;
-    left: 50%;
-    margin-left: -2.5px;
-    top: 50%;
-    margin-top: -15px;
-}
-
-/* ---------------------- Plus Minus Animation End- FAQ --------------------- */
-
 
 /* -------------------------------------------------------------------------- */
 /*                                   FAQ End                                  */
 /* -------------------------------------------------------------------------- */
 
 /* ---------------   About/ Contact Form */
-.aboutTextContainer {
+.lp-aboutTextContainer {
     margin-bottom: 32px;
 }
-.contactsWrapper {
+.lp-contactsWrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.contactContainer{
+.lp-contactContainer{
     display: flex;
     margin-bottom: 16px;
 }
-.aboutIconText{
+.lp-aboutIconText{
     margin: 0;
 }
-.contactFormTitle {
+.lp-contactFormTitle {
     margin: 0 0 32px;
 }
-.contactFormWrapper{
+.lp-contactFormWrapper{
     text-align: left;
     border: medium none;
     outline: currentcolor none medium !important;
@@ -431,7 +353,7 @@ body {
 .eUMQjj{
     margin-bottom: 16px;
 }
-.contactFormInputContainer{
+.lp-contactFormInputContainer{
     position: relative;
     display: flex;
     align-items: stretch;
@@ -442,7 +364,7 @@ body {
     box-sizing: border-box;
     width: 100%;
 }
-.contactFormInputLabel{
+.lp-contactFormInputLabel{
     font-size: 14px;
     line-height: 1.7;
     font-weight: bold;
@@ -450,7 +372,7 @@ body {
     margin-bottom: 8px;
     box-sizing: border-box;
 }
-.contactFormInput {
+.lp-contactFormInput {
     position: relative;
     display: block;
     width: 100%;
@@ -466,7 +388,7 @@ body {
     appearance: none;
     box-sizing: border-box;
 }
-.send-request {
+.lp-send-request {
     color: rgb(255, 255, 255);
     display: inline-block;
     margin: 32px 0px 0px;
@@ -489,17 +411,17 @@ body {
     transition: height 200ms ease-in-out 0s;
 }
 
-textarea {
+.lp-contact-textarea {
     min-height: 180px !important;
 }
 
 /* ------------------------------ Footer Start ------------------------------ */
 
-.footer-wrapper {
+.lp-footer-wrapper {
     padding: 18px 0;
     border-top: 1px solid rgb(228, 230, 231);
 }
-.footer-container {
+.lp-footer-container {
     display: flex;
     justify-content: space-between;
     color: rgb(189, 192, 194);
@@ -508,11 +430,11 @@ textarea {
     line-height: 1.7;
     font-family: Sen,
 }
-.footer-container a {
+.lp-footer-container a {
     text-decoration: none;
     color: rgb(189, 192, 194);
 }
-.terms-privacy {
+.lp-terms-privacy {
     display: flex;
     justify-content: space-between;
 }
