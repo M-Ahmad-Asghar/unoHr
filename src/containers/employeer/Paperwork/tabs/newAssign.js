@@ -45,6 +45,7 @@ function NestedList(props) {
   const [selectedDate, setSelectedDate] = useState(
     new Date("2014-08-18T21:11:54")
   );
+  const [loader, setLoading] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -60,6 +61,7 @@ function NestedList(props) {
 
   const assignDoc = (item) => {
     if (selectEmployee !== "") {
+      setLoading(true);
       let data;
       data = {
         doc_title: item.title,
@@ -83,11 +85,11 @@ function NestedList(props) {
       }
       addPaperWork(data)
         .then((res) => {
-          // setLoading(false);
+          setLoading(false);
           toast.success("Successfully assign task");
         })
         .catch((err) => {
-          // setLoading(false);
+          setLoading(false);
         });
     } else {
       toast.error("Select Employee");
@@ -166,8 +168,14 @@ function NestedList(props) {
                         {/* </Grid> */}
                       </MuiPickersUtilsProvider>
                     </Col>
-                    <Col>
-                      <Button onClick={() => assignDoc(item)}>Assign</Button>
+                    <Col style={{ textAlign: "center" }}>
+                      <Button
+                        color="success"
+                        onClick={() => assignDoc(item)}
+                        style={{ marginTop: 15 }}
+                      >
+                        {loader ? "loading..." : "Assign"}
+                      </Button>
                     </Col>
                   </Row>
                 </Card>
