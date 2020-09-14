@@ -9,7 +9,11 @@ import BasicTable from "./components/BasicTable";
 // import { getTask } from "../../../redux/actions/TasksActions";
 
 // import { getCompletedTask } from "../../../../redux/actions/TasksActions";
-import { getEmployeStatus, getWeekStatus } from "../../../../redux/actions/attendanceAction";
+import {
+  getEmployeStatus,
+  getWeekStatus,
+} from "../../../../redux/actions/attendanceAction";
+import moment from "moment";
 import { getTask } from "../../../../redux/actions/EmployeeTaskActions";
 import SearchBar from "../../../employeer/MainTask/SearchBar";
 
@@ -22,7 +26,8 @@ class CompletedTask extends Component {
       loader: true,
       dataLength: true,
       data: [],
-      searchQuery: ''
+      searchQuery: "",
+      filterDate: new Date(),
     };
   }
 
@@ -30,35 +35,44 @@ class CompletedTask extends Component {
     // this.props.getEmployeStatus(this.props.user.employeeid, this.props.user.timeMode);
     // this.props.getWeekStatus(this.props.user.employeeid);
     this.props.getTask(this.props.user.employeruid, this.props.user.employeeid);
-    
   }
-  
-  componentWillReceiveProps = nextProps => {
-    console.log('ids: ', nextProps.user)
-    console.log('kk ', nextProps);
+
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
-        data: nextProps.items
+        data: nextProps.items,
       });
     }
   };
 
-  filterMessages=(query)=>{
+  filterMessages = (query) => {
     this.setState({
-      searchQuery : query,
-    })
-  }
-
+      searchQuery: query,
+    });
+  };
+  handleDate = (date) => {
+    this.setState({
+      filterDate: date,
+      searchQuery: moment(date).format("MMM/DD/YYYY"),
+    });
+  };
   render() {
-    const { data } = this.state;
-    const {t } = this.props;
-    
-    console.log(data);
+    const { data ,filterDate} = this.state;
+    const { t } = this.props;
+
+    // console.log(data);
     return (
       <Container>
         <Row>
-          <SearchBar title='List of Active Tasks' filter={this.filterMessages} placeholder='Search by Title, Date'/>
+          <SearchBar
+            title="List of Active Tasks"
+            filter={this.filterMessages}
+            placeholder="Search by Title, Date"
+            date={filterDate}
+            filterDate={this.handleDate}
+            calendar={true}
+          />
         </Row>
         <Row>
           <BasicTable searchQuery={this.state.searchQuery} />
@@ -68,25 +82,18 @@ class CompletedTask extends Component {
   }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   employee: state.employeeUserReducer.currentEmp,
   currentEmp: state.employeeUserReducer.currentEmp,
   items: state.employeeTaskReducer.AllTask,
   user: state.employeeUserReducer.currentEmp,
-  loader: state.employeeTaskReducer.loader
+  loader: state.employeeTaskReducer.loader,
 });
 
 export default translate("common")(
-  connect(
-    mapStateToProps,
-  {
+  connect(mapStateToProps, {
     getTask,
     getEmployeStatus,
     getWeekStatus,
-
-  }
-  )(CompletedTask)
+  })(CompletedTask)
 );
-
-

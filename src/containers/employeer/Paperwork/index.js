@@ -14,6 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import PaperWorkTab from "./tabs";
 
 const styles = theme => ({
   root: {
@@ -60,8 +61,11 @@ class Paperworks extends Component {
 
     return (
       <div style={{ marginTop: -15 }}>
-
-        <Paper align="center" elevation={5} style={{ padding: 8, marginBottom: 15 }}>
+        <Paper
+          align="center"
+          elevation={5}
+          style={{ padding: 8, marginBottom: 15 }}
+        >
           <Typography variant="h6">Paper Works</Typography>
         </Paper>
 
@@ -72,7 +76,8 @@ class Paperworks extends Component {
           style={{ backgroundColor: "white", paddingTop: 20, borderRadius: 5 }}
         >
           <Card>
-            <CardHeader>
+            <PaperWorkTab />
+            {/* <CardHeader>
               <Row>
                 <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                   <h5>
@@ -149,13 +154,11 @@ class Paperworks extends Component {
                 :
                   <Typography component="p">No Paperworks found!</Typography>
                 )
-          }
-        </Card>
-          
-      </Col>
-        
-    </div>
-  )}
+          } */}
+          </Card>
+        </Col>
+      </div>
+    );}
 }
 
 const mapStateToProps = state => {

@@ -93,7 +93,6 @@ class EmployeeTasks extends Component {
   };
 
   CompleteTask = () => {
-    console.log("you call completion fun");
     this.setState({ completionModal: false });
 
     if (this.state.completionNote !== "") {
@@ -257,12 +256,42 @@ class EmployeeTasks extends Component {
                             toggler={`#toggler${index}`}
                           >
                             <div>
-                              <h5>
-                                <strong>Description :</strong>{" "}
-                              </h5>
-                              <p style={{ marginLeft: "10px" }}>
-                                {item.Description}
-                              </p>
+                              {item.image !== undefined && (
+                                <div style={{ padding: 10 }}>
+                                  <img
+                                    src={item.image}
+                                    style={{ height: "auto", width: 100 }}
+                                  />
+                                </div>
+                              )}
+                              <div>
+                                <h5>Description :</h5>
+                                <p style={{ marginLeft: "10px" }}>
+                                  {item.Description}
+                                </p>
+                              </div>
+                              <Row style={{ marginTop: 5 }}>
+                                <Col sm={6} md={4} xl={4}>
+                                  <h5>Task For</h5>
+                                </Col>
+                                <Col sm={6} md={4} xl={4}>
+                                  <h5>Recurring Task</h5>
+                                </Col>
+                                <Col sm={6} md={4} xl={4}>
+                                  <h5>Task Note</h5>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col sm={6} md={4} xl={4}>
+                                  {item.TaskPurpose}
+                                </Col>
+                                <Col sm={6} md={4} xl={4}>
+                                  {item.recurringTask ? "True" : "False"}
+                                </Col>
+                                <Col sm={6} md={4} xl={4}>
+                                  {item.isTaskNote ? "True" : "False"}
+                                </Col>
+                              </Row>
                             </div>
 
                             <Row>
