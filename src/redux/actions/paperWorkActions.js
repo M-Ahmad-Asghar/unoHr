@@ -294,3 +294,10 @@ export function getSystemDocuments() {
       );
   };
 }
+
+
+export const addPaperWork = (data) => {
+  return new Promise((resolve, reject) => {
+    db.collection('paperworktask').add(data).then(resolve).catch(reject);
+  });
+};
