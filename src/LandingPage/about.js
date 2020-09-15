@@ -17,7 +17,6 @@ const styles = theme => ({
         marginBottom: 16,
         fontWeight: 'bold',
     },
-    aboutTextContainer: {},
     aboutText: {
         fontSize: 16,
         fontWeight: 400,
