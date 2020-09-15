@@ -46,6 +46,7 @@ function NestedList(props) {
     new Date("2014-08-18T21:11:54")
   );
   const [loader, setLoading] = useState(false);
+  const [pageloader, setpageloader] = useState(true);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -58,6 +59,12 @@ function NestedList(props) {
   useEffect(() => {
     props.getSystemDocuments();
   }, []);
+
+  useEffect(() => {
+    if (props.status === "done") {
+      setpageloader(false);
+    }
+  }, [props.status]);
 
   const assignDoc = (item) => {
     if (selectEmployee !== "") {
@@ -98,13 +105,21 @@ function NestedList(props) {
 
   // console.log("=======>documents are here====>", props.employees);
 
-  return (
+  return pageloader ? (
+    <div className="load" style={{ width: "100%" }}>
+      <div className="load__icon-wrap">
+        <svg className="load__icon">
+          <path fill="#3f51b5" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+        </svg>
+      </div>
+    </div>
+  ) : (
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      {props.documents.length &&
+      {props.documents.length ? (
         props.documents.map((item, i) => {
           return (
             <>
@@ -182,7 +197,10 @@ function NestedList(props) {
               </UncontrolledCollapse>
             </>
           );
-        })}
+        })
+      ) : (
+        <div>Not Document Found!</div>
+      )}
     </List>
   );
 }
@@ -190,6 +208,7 @@ function NestedList(props) {
 const mapStateToProps = (state) => ({
   documents: state.paperWorkReducer.verifieddocuments,
   employees: state.employerReducer.employees,
+  status: state.paperWorkReducer.verifiedStatus,
 });
 
 export default connect(

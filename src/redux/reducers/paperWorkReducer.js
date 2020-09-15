@@ -9,7 +9,9 @@ import {
   GET_PDF_RECORDS,
   GET_PDF_RECORDS_ERR,
   GET_ALL_PAPER_DOCS,
-  GET_ALL_VARIFIED_DOCUMENTS
+  GET_ALL_VARIFIED_DOCUMENTS,
+  GET_ALL_PAPER_ERROR,
+  GET_ALL_VARIFIED_DOCUMENTS_ERROR,
 } from "../actions/paperWorkActions";
 
 var initialState = {
@@ -27,6 +29,8 @@ var initialState = {
   employeeCountStatus: "not done",
   paperDocs: [],
   verifieddocuments: [],
+  docStatus: "not done",
+  verifiedStatus: "not done",
 };
 
 export default function(state = initialState, action) {
@@ -35,13 +39,28 @@ export default function(state = initialState, action) {
       return {
         ...state,
         verifieddocuments: action.payload,
+        verifiedStatus: "done",
         // documentLoader: new Date(),
+      };
+    }
+    case GET_ALL_VARIFIED_DOCUMENTS_ERROR: {
+      return {
+        ...state,
+        verifiedStatus: "done",
       };
     }
     case GET_ALL_PAPER_DOCS: {
       return {
         ...state,
         paperDocs: action.payload,
+        docStatus: "done",
+        // paperLoader: new Date(),
+      };
+    }
+    case GET_ALL_PAPER_ERROR: {
+      return {
+        ...state,
+        docStatus: "done",
         // paperLoader: new Date(),
       };
     }

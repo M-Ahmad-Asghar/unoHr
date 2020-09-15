@@ -1,3 +1,5 @@
+import { db } from "../../boot/firebase";
+
 export const sendGiftReward = (data) => {
   return (dispatch) => {
     db.collection("rewards")

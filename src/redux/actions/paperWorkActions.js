@@ -13,6 +13,10 @@ export const GET_PDF_RECORDS = "GET_PDF_RECORDS";
 export const GET_PDF_RECORDS_ERR = "GET_PDF_RECORDS_ERR";
 export const GET_ALL_PAPER_DOCS = "GET_ALL_PAPER_DOCS";
 export const GET_ALL_VARIFIED_DOCUMENTS = "GET_ALL_VARIFIED_DOCUMENTS";
+export const GET_ALL_VARIFIED_DOCUMENTS_ERROR =
+  "GET_ALL_VARIFIED_DOCUMENTS_ERROR";
+export const GET_ALL_PAPER_ERROR="GET_ALL_PAPER_ERROR"
+
 
 // Get all task
 export function getEmployeDocuments(employerUid, empid) {
@@ -248,6 +252,7 @@ export function getPdfRecords(id) {
 
 export function getEmpDocs(id) {
   return (dispatch) => {
+    try{
     db.collection("paperworktask")
       .where("emp_id", "==", id)
       .onSnapshot(function(querySnapshot) {
@@ -262,6 +267,11 @@ export function getEmpDocs(id) {
           payload: datatoStore,
         });
       });
+    } catch(err){
+      dispatch({
+        type: GET_ALL_PAPER_ERROR,
+      });
+    }
   };
 }
 
@@ -289,6 +299,9 @@ export function getSystemDocuments() {
           });
         },
         function(err) {
+          dispatch({
+            type: GET_ALL_VARIFIED_DOCUMENTS_ERROR,
+          });
           console.log("error", err);
         }
       );
