@@ -105,48 +105,54 @@ const NavBar = (props) => {
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            <MenuItem>
-                <p>Home</p>
-            </MenuItem>
-            <MenuItem>
-                <p>Features</p>
-            </MenuItem>
-            <MenuItem>
-                <p>Pricing</p>
-            </MenuItem>
-            <MenuItem>
-                <p>FAQ</p>
-            </MenuItem>
-            <MenuItem>
-                <p>Contact</p>
-            </MenuItem>
-            <MenuItem>
-                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployerApp}>
-                    Employer
-                </button>
-            </MenuItem>
-            <MenuItem>
-                <button className={clsx('lp-empBtton', 'lp-unoBtton')} onClick={EmployeeApp}>
-                    Employee
-                </button>
-            </MenuItem>
-            <MenuItem>
-                <div>
-                    <button className={clsx('lp-signupButton', 'lp-unoBtton')}>
-                        Signup
-                    </button>
-                </div>
-            </MenuItem>
-        </Menu>
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem>
+          <p>Home</p>
+        </MenuItem>
+        <MenuItem>
+          <p>Features</p>
+        </MenuItem>
+        <MenuItem>
+          <p>Pricing</p>
+        </MenuItem>
+        <MenuItem>
+          <p>FAQ</p>
+        </MenuItem>
+        <MenuItem>
+          <p>Contact</p>
+        </MenuItem>
+        <MenuItem>
+          <button
+            className={clsx("lp-empBtton", "lp-unoBtton")}
+            onClick={EmployerApp}
+          >
+            Employer
+          </button>
+        </MenuItem>
+        <MenuItem>
+          <button
+            className={clsx("lp-empBtton", "lp-unoBtton")}
+            onClick={EmployeeApp}
+          >
+            Employee
+          </button>
+        </MenuItem>
+        <MenuItem>
+          <div>
+            <button className={clsx("lp-signupButton", "lp-unoBtton")}>
+              Signup
+            </button>
+          </div>
+        </MenuItem>
+      </Menu>
     );
 
     return (
