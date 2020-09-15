@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -22,18 +22,35 @@ const useStyles = makeStyles((theme) => ({
 
 function NestedList(props) {
   const classes = useStyles();
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     props.getEmpDocs(props.user.uid);
   }, [props.user]);
 
-  return (
+  useEffect(() => {
+    if (props.status === "done") {
+      setLoader(false);
+    }
+  }, [props.status]);
+
+  // console.log("===================================================>", props.documents);
+
+  return loader ? (
+    <div className="load" style={{ width: "100%" }}>
+      <div className="load__icon-wrap">
+        <svg className="load__icon">
+          <path fill="#3f51b5" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+        </svg>
+      </div>
+    </div>
+  ) : (
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      {props.documents.length &&
+      {props.documents.length ? (
         props.documents.map((i, index) => {
           return (
             <>
@@ -45,7 +62,7 @@ function NestedList(props) {
                 <Card>
                   <CardBody>
                     <iframe
-                      src={i.doc_url}
+                      src={i.doc_url + "/?empid=" + i.emp_id}
                       style={{ width: "100%", height: 500 }}
                       frameborder="0"
                       webkitAllowFullScreen
@@ -57,7 +74,10 @@ function NestedList(props) {
               </UncontrolledCollapse>
             </>
           );
-        })}
+        })
+      ) : (
+        <div>No Document Found</div>
+      )}
     </List>
   );
 }
@@ -65,6 +85,7 @@ function NestedList(props) {
 const mapStateToProps = (state) => ({
   user: state.userReducer.user,
   documents: state.paperWorkReducer.paperDocs,
+  status: state.paperWorkReducer.docStatus,
   // loader: state.paperWorkReducer.paperLoader,
 });
 
