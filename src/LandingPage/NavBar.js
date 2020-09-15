@@ -88,20 +88,6 @@ const NavBar = (props) => {
     };
 
     const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
-    );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -150,11 +136,10 @@ const NavBar = (props) => {
     );
 
     return (
+        <ReactShadowScroll>
         <div className={classes.root}>
-
             <AppBar position="fixed" className={classes.appBar} >
                 <Toolbar className='lp-nav-wrapper lp-toolbar'>
-
                     <div className={classes.sectionDesktop}>
                         <div className={classes.navItemsContainer}>
                             <div className="">
@@ -194,9 +179,10 @@ const NavBar = (props) => {
                     </div>
                 </Toolbar>
             </AppBar>
-            {renderMenu}
+
             {renderMobileMenu}
         </div>
+        </ReactShadowScroll>
     );
 }
 
@@ -206,5 +192,3 @@ NavBar.propTypes = {
 };
 
 export default withStyles(styles)(NavBar);
-
-// export default NavBar;
