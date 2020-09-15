@@ -14,6 +14,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import { getEmpDocs } from "../../../../redux/actions/paperWorkActions";
+import { UncontrolledCollapse } from "reactstrap";
 
 const styles = theme => ({
   root: {
@@ -33,6 +35,7 @@ class Paperworks extends Component {
   };
 
   componentDidMount = () => {
+    this.props.getEmpDocs(this.props.user.employeeid);
     this.setState({
       documents: this.props.documents,
       loader: false
@@ -40,6 +43,9 @@ class Paperworks extends Component {
   };
   
   componentWillReceiveProps(nextProps) {
+    
+    console.log("==================>", nextProps.documents);
+
     if(nextProps.documents){
       this.setState({
         documents: nextProps.documents,
@@ -58,6 +64,7 @@ class Paperworks extends Component {
   render() {
     const { documents, loader } = this.state;
 
+
     return (
       <div style={{ marginTop: -25 }}>
 
@@ -72,7 +79,7 @@ class Paperworks extends Component {
           style={{ backgroundColor: "white", paddingTop: 20, borderRadius: 5 }}
         >
           <Card>
-            <CardHeader>
+            {/* <CardHeader>
               <Row>
                 <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                   <h5>
@@ -85,7 +92,7 @@ class Paperworks extends Component {
                   </h5>
                 </Col>
               </Row>
-            </CardHeader>
+            </CardHeader> */}
 
           {
             loader ? (
@@ -104,7 +111,7 @@ class Paperworks extends Component {
                                 className="taskRow"
                                 key={index}
                                 id={`toggler${index}`}
-                                onClick={() => this.docClickHandler(item)}
+                                // onClick={() => this.docClickHandler(item)}
                               >
                                 <Col
                                   className="taskCol"
@@ -114,7 +121,7 @@ class Paperworks extends Component {
                                   lg={6}
                                   xl={6}
                                 >
-                                  <p>{item.doc_name}</p>
+                                  <p>{item.doc_title}</p>
                                 </Col>
                                 <Col
                                   className="taskCol"
@@ -132,8 +139,26 @@ class Paperworks extends Component {
                                   </p>
                                 </Col>
                               </Row>
-                              
+
                               <Divider />
+                              <UncontrolledCollapse
+                                toggler={`#toggler${index}`}
+                              >
+                                <Card>
+                                  <CardBody>
+                                    <iframe
+                                      src={
+                                        item.doc_url + "/?empid=" + item.emp_id
+                                      }
+                                      style={{ width: "100%", height: 500 }}
+                                      frameborder="0"
+                                      webkitAllowFullScreen
+                                      mozallowfullscreen
+                                      allowFullScreen
+                                    />
+                                  </CardBody>
+                                </Card>
+                              </UncontrolledCollapse>
                             </Fragment>
                           );
                         }
@@ -159,7 +184,7 @@ class Paperworks extends Component {
 const mapStateToProps = state => {
   return ({
     user: state.employeeUserReducer.currentEmp,
-    documents: state.paperWorkReducer.documents,
+    documents: state.paperWorkReducer.paperDocs,
     loading: state.paperWorkReducer.loading,
     getDocStatus: state.paperWorkReducer.getDocStatus
   })
@@ -168,5 +193,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  null
+  { getEmpDocs }
 )(withStyles(styles)(Paperworks));

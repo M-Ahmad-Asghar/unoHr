@@ -15,8 +15,7 @@ export const GET_ALL_PAPER_DOCS = "GET_ALL_PAPER_DOCS";
 export const GET_ALL_VARIFIED_DOCUMENTS = "GET_ALL_VARIFIED_DOCUMENTS";
 export const GET_ALL_VARIFIED_DOCUMENTS_ERROR =
   "GET_ALL_VARIFIED_DOCUMENTS_ERROR";
-export const GET_ALL_PAPER_ERROR="GET_ALL_PAPER_ERROR"
-
+export const GET_ALL_PAPER_ERROR = "GET_ALL_PAPER_ERROR";
 
 // Get all task
 export function getEmployeDocuments(employerUid, empid) {
@@ -252,22 +251,27 @@ export function getPdfRecords(id) {
 
 export function getEmpDocs(id) {
   return (dispatch) => {
-    try{
-    db.collection("paperworktask")
-      .where("emp_id", "==", id)
-      .onSnapshot(function(querySnapshot) {
-        let datatoStore = [];
-        querySnapshot.forEach(function(doc) {
-          const data = doc.data();
-          const id = doc.id;
-          datatoStore.push({ id, ...data });
+    try {
+      console.log("called===========================>");
+      db.collection("paperworktask")
+        .where("emp_id", "==", id)
+        .onSnapshot(function(querySnapshot) {
+          let datatoStore = [];
+          querySnapshot.forEach(function(doc) {
+            const data = doc.data();
+            const id = doc.id;
+            datatoStore.push({ id, ...data });
+          });
+          console.log(
+            "here is your query snap shot================>",
+            datatoStore
+          );
+          dispatch({
+            type: GET_ALL_PAPER_DOCS,
+            payload: datatoStore,
+          });
         });
-        dispatch({
-          type: GET_ALL_PAPER_DOCS,
-          payload: datatoStore,
-        });
-      });
-    } catch(err){
+    } catch (err) {
       dispatch({
         type: GET_ALL_PAPER_ERROR,
       });
@@ -308,9 +312,11 @@ export function getSystemDocuments() {
   };
 }
 
-
 export const addPaperWork = (data) => {
   return new Promise((resolve, reject) => {
-    db.collection('paperworktask').add(data).then(resolve).catch(reject);
+    db.collection("paperworktask")
+      .add(data)
+      .then(resolve)
+      .catch(reject);
   });
 };
