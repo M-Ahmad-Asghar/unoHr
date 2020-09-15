@@ -48,6 +48,10 @@
         margin-top: 64px;
         margin-bottom: 0px;
     }
+    .lp-contactFormWrapper {
+        padding: 64px;
+        border-radius: 64px;
+    }
 }
 
 @media screen and (max-width: 768px){

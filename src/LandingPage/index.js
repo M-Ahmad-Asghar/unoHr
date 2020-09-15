@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "./NavBar";
+import NavBar from "./Navbar";
 import Main from "./Main";
-import Features from "./features";
+import Features from "./Features";
 import Pricing from "./Pricing";
 import FAQ from "./FAQ";
-import About from "./about";
+import About from "./About";
 import Footer from "./Footer";
 import "./Landinpage.css";
 import { getStartAppFromStorage } from "../redux/actions/storageAction";

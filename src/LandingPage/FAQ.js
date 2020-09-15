@@ -513,5 +513,3 @@ FAQ.propTypes = {
 };
 
 export default withStyles(styles)(FAQ);
-
-// export default FAQ;
