@@ -5,7 +5,7 @@ import { translate } from "react-i18next";
 import PropTypes from "prop-types";
 // import Datepicker from './DatePicker';
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
-import uuidv1 from "uuid/v1";
+import { v4 as uuidv4 } from 'uuid';
 import { connect } from "react-redux";
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
 import { addNewEmployee } from "../../../../redux/actions/employerActions";
@@ -152,7 +152,7 @@ class HorizontalForm extends Component {
       toast.error("Set the major duties for the employee");
     } else {
       this.setState({ loader: true });
-      let uuidemp = uuidv1().slice(0, 8);
+      let uuidemp = uuidv4().slice(0, 8);
       let employeeData = {
         status: "invite",
         employeruid: this.props.employeruid,

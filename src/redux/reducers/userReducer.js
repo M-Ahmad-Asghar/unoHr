@@ -9,9 +9,15 @@ import {
   UPDATE_FACILITY,
   UPDATE_FACILITY_ERR,
   SET_DEFAULT,
+  SUPPORT_TICKET_STATRT,
+  SUPPORT_TICKET_REPONSE_DONE,
+  SUPPORT_TICKET_REPONSE_FAILED,
+  GET_ALL_MY_TICKETS,
+  GET_ALL_MY_TICKETS_FAILED,
 } from "../actions/userActions";
 
 import { UPDATE_EMPLOYER } from "../actions/profileAction";
+import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 var initialState = {
   isLoading: "nill",
@@ -23,10 +29,44 @@ var initialState = {
   adressStatus: "not done",
   loader: new Date(),
   updateFacilityStatus: "not done",
+  submitTicketStatus: false,
+  myAllTickets: [],
+  myTicketsStatus: "",
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_ALL_MY_TICKETS: {
+      return {
+        ...state,
+        myAllTickets: action.payload,
+        myTicketsStatus: "done",
+      };
+    }
+    case GET_ALL_MY_TICKETS_FAILED: {
+      return {
+        ...state,
+        myTicketsStatus: "done",
+      };
+    }
+    case SUPPORT_TICKET_STATRT: {
+      return {
+        ...state,
+        submitTicketStatus: true,
+      };
+    }
+    case SUPPORT_TICKET_REPONSE_DONE: {
+      return {
+        ...state,
+        submitTicketStatus: false,
+      };
+    }
+    case SUPPORT_TICKET_REPONSE_FAILED: {
+      return {
+        ...state,
+        submitTicketStatus: false,
+      };
+    }
     case LOGIN: {
       return {
         ...state,
@@ -41,9 +81,9 @@ export default function(state = initialState, action) {
       let lastUser = { ...state.user };
       let getPayload = action.payload;
       lastUser[getPayload.name] = getPayload.value;
-      
+
       console.log("your update user is", lastUser);
-      
+
       return {
         ...state,
         user: lastUser,
