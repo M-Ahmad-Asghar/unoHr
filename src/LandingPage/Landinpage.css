@@ -49,8 +49,8 @@
         margin-bottom: 0px;
     }
     .lp-contactFormWrapper {
-        padding: 64px;
-        border-radius: 64px;
+        padding: 64px !important;
+        border-radius: 64px !important;
     }
 }
 
@@ -261,7 +261,6 @@
 }
 .lp-faq-list-wrapper li {
     display: list-item;
-    text-align: -webkit-match-parent;
 }
 .lp-faq-li-body-wrapper {
     flex: 0 1 50%;
