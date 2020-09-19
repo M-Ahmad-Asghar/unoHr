@@ -12,6 +12,8 @@ import {
   GET_ALL_VARIFIED_DOCUMENTS,
   GET_ALL_PAPER_ERROR,
   GET_ALL_VARIFIED_DOCUMENTS_ERROR,
+  GET_ALL_MY_SUBMISSION,
+  GET_ALL_MY_SUBMISSION_FAILED,
 } from "../actions/paperWorkActions";
 
 var initialState = {
@@ -31,10 +33,25 @@ var initialState = {
   verifieddocuments: [],
   docStatus: "not done",
   verifiedStatus: "not done",
+  myAllSubmissions: [],
+  submissionStatus: '',
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_ALL_MY_SUBMISSION: {
+      return {
+        ...state,
+        myAllSubmissions: action.payload,
+        submissionStatus: 'done',
+      };
+    }
+    case GET_ALL_MY_SUBMISSION_FAILED: {
+      return {
+        ...state,
+        submissionStatus: 'done',
+      };
+    }
     case GET_ALL_VARIFIED_DOCUMENTS: {
       return {
         ...state,

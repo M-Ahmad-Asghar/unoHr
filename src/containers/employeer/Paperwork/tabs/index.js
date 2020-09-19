@@ -76,7 +76,7 @@ export default function FullWidthTabs() {
           aria-label="full width tabs example"
         >
           <Tab label="In Progress" {...a11yProps(0)} />
-          <Tab label="View" {...a11yProps(1)} />
+          <Tab label="Submissions" {...a11yProps(1)} />
           <Tab label="New Assign" {...a11yProps(2)} />
         </Tabs>
       </AppBar>

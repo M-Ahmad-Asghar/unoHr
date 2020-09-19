@@ -320,3 +320,31 @@ export const addPaperWork = (data) => {
       .catch(reject);
   });
 };
+
+
+export const GET_ALL_MY_SUBMISSION = 'GET_ALL_MY_SUBMISSION';
+export const GET_ALL_MY_SUBMISSION_FAILED = 'GET_ALL_MY_SUBMISSION_FAILED';
+
+export const getAllSubmissions = (data) => async (dispatch) => {
+  try {
+    db.collection('submission')
+      .where('employerId', '==', data)
+      .get()
+      .then(function (querySnapshot) {
+        var allSubmissions = [];
+        querySnapshot.forEach(function (doc) {
+          allSubmissions.push({docId: doc.id, ...doc.data()});
+        });
+        console.log("all submissions=============>",allSubmissions);
+        dispatch({type: GET_ALL_MY_SUBMISSION, payload: allSubmissions});
+      });
+  } catch (error) {
+    Toast.show({
+      text: 'An Error Occurred!',
+      buttonText: 'ok',
+      position: 'top',
+      type: 'error',
+    });
+    dispatch({type: GET_ALL_MY_SUBMISSION_FAILED});
+  }
+};
