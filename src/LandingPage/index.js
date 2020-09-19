@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "./Navbar";
+import NavBar from "./NavBar";
 import Main from "./Main";
 import Features from "./Features";
 import Pricing from "./Pricing";
 import FAQ from "./FAQ";
 import About from "./About";
 import Footer from "./Footer";
-import FAQC from "./collapse";
 import "./Landinpage.css";
 import { getStartAppFromStorage } from "../redux/actions/storageAction";
 import { connect } from "react-redux";
@@ -74,7 +73,6 @@ const Landing = (props) => {
             <div className="lp-wrapper">
                 <Features />
                 <Pricing />
-                <FAQC />
                 <FAQ />
                 <About />
             </div>

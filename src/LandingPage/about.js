@@ -37,7 +37,14 @@ const styles = theme => ({
     aboutStyleIcon: {
         display: 'block',
         width: '1em',
-    }
+    },
+    '@media screen and (min-width: 600px)': {
+        contactForm: {
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%'
+        },
+    },
 });
 
 const About = (props) => {
@@ -165,7 +172,7 @@ const About = (props) => {
 
                 </div>
             </Grid>
-            <Grid item width="100%" lg={6} md={12} sm={12}>
+            <Grid item width="100%" lg={6} md={12} sm={12} className={classes.contactForm}>
                 <div color="gray.7" className="lp-contactFormWrapper">
                     <h3 className='lp-contactFormTitle'>Contact us </h3>
                     <form action="">
