@@ -132,29 +132,28 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
               icon="address-card"
             />
-          </SidebarCategory>
-        </ul>
-
-        <ul className="sidebar__block">
-          <SidebarCategory title="Paper Work" icon="file">
-            <SidebarLink
-              title="Paperworks"
-              route="/home/employeer/paperWork"
-              onClick={this.hideSidebar}
-              icon="file"
-            />
-            <SidebarLink
-              title="Documents"
-              route="/home/employeer/pdfRecords"
-              onClick={this.hideSidebar}
-              icon="book-open"
-            />
             <SidebarLink
               title="Background Check"
               route="/home/employeer/employeeBackgroundCheck"
               onClick={this.hideSidebar}
               icon="user-clock"
             />
+          </SidebarCategory>
+        </ul>
+
+        {/* <ul className="sidebar__block">
+          <SidebarCategory title="Paper Work" icon="file"> */}
+            <SidebarLink
+              title="Paper Works"
+              route="/home/employeer/paperWork"
+              onClick={this.hideSidebar}
+              icon="file"
+            />
+
+          {/* </SidebarCategory>
+        </ul> */}
+        <ul className="sidebar__block">
+          <SidebarCategory title="Account Detail" icon="clock">
             <SidebarLink
               title="Direct Deposit"
               route="/home/employeer/directdeposit"
@@ -175,7 +174,14 @@ class SidebarContent extends Component {
             />
           </SidebarCategory>
         </ul>
-
+        <ul className="sidebar__block">
+          <SidebarLink
+            title="Documents"
+            route="/home/employeer/pdfRecords"
+            onClick={this.hideSidebar}
+            icon="book-open"
+          />
+        </ul>
         <ul className="sidebar__block">
           <SidebarCategory title="Settings" icon="cog">
             <SidebarLink
@@ -229,7 +235,22 @@ class SidebarContent extends Component {
             {/* add link here */}
           </SidebarCategory>
         </ul>
-
+        <ul className="sidebar__block">
+          <SidebarCategory title="Contact Support" icon="address-book">
+            <SidebarLink
+              title="Add Tickets"
+              route="/home/employeer/contactsupport"
+              onClick={this.hideSidebar}
+              icon="address-book"
+            />
+            <SidebarLink
+              title="View Tickets"
+              route="/home/employeer/mytickets"
+              onClick={this.hideSidebar}
+              icon="address-book"
+            />
+          </SidebarCategory>
+        </ul>
         {/* <ul className="sidebar__block">
           <SidebarLink
             title="State Contact"

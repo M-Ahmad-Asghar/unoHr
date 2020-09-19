@@ -14,7 +14,7 @@ export const SET_DEFAULT = "SET_DEFAULT";
 
 //Login
 export function startLogin(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employers")
       .where("email", "==", data.email)
       .get()
@@ -25,7 +25,7 @@ export function startLogin(data) {
           let docid = doc.id;
           let final = {
             ...data,
-            docid
+            docid,
           };
           datatoStore = final;
         });
@@ -34,12 +34,12 @@ export function startLogin(data) {
           if (datatoStore.status === "active") {
             auth
               .signInWithEmailAndPassword(data.email, data.password)
-              .then(users => {
-                auth.onAuthStateChanged(user => {
+              .then((users) => {
+                auth.onAuthStateChanged((user) => {
                   if (user) {
                     let data = {
                       ...datatoStore,
-                      uid: user.uid
+                      uid: user.uid,
                     };
 
                     //  toast.success('Succesfull Login!');
@@ -53,13 +53,13 @@ export function startLogin(data) {
 
                     dispatch({
                       type: LOGIN,
-                      payload: data
+                      payload: data,
                     });
                   } else {
                     // toast.error('Error Occoured try again!');
                     dispatch({
                       type: LOGINERR,
-                      payload: new Date()
+                      payload: new Date(),
                     });
                   }
                 });
@@ -78,7 +78,7 @@ export function startLogin(data) {
 
                 dispatch({
                   type: LOGINERR,
-                  payload: new Date()
+                  payload: new Date(),
                 });
                 // ...
               });
@@ -89,7 +89,7 @@ export function startLogin(data) {
 
             dispatch({
               type: LOGINERR,
-              payload: new Date()
+              payload: new Date(),
             });
           }
         } else {
@@ -99,7 +99,7 @@ export function startLogin(data) {
 
           dispatch({
             type: LOGINERR,
-            payload: new Date()
+            payload: new Date(),
           });
         }
       })
@@ -110,7 +110,7 @@ export function startLogin(data) {
 
         dispatch({
           type: LOGINERR,
-          payload: new Date()
+          payload: new Date(),
         });
       });
   };
@@ -118,7 +118,7 @@ export function startLogin(data) {
 
 //Logout
 export function startLogout(data) {
-  return dispatch => {
+  return (dispatch) => {
     auth.signOut().then(
       function() {
         try {
@@ -130,7 +130,7 @@ export function startLogout(data) {
         toast.success("Successfully Logout");
 
         dispatch({
-          type: LOGOUT
+          type: LOGOUT,
         });
       },
       function(error) {
@@ -142,10 +142,10 @@ export function startLogout(data) {
 
 //current user get;
 export function startGetCurrentUser() {
-  return dispatch => {
+  return (dispatch) => {
     //   var user = auth.currentUser;
 
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged((user) => {
       console.log("current user", user);
       if (user) {
         db.collection("employers")
@@ -158,7 +158,7 @@ export function startGetCurrentUser() {
               let docid = doc.id;
               let final = {
                 ...data,
-                docid
+                docid,
               };
               datatoStore = final;
             });
@@ -167,17 +167,17 @@ export function startGetCurrentUser() {
               if (datatoStore.status == "active") {
                 let datas = {
                   ...datatoStore,
-                  uid: user.uid
+                  uid: user.uid,
                 };
                 console.log("data from net", datas);
                 dispatch({
                   type: GETUSER,
-                  payload: datas
+                  payload: datas,
                 });
               } else {
                 dispatch({
                   type: GETUSERERR,
-                  payload: "nill"
+                  payload: "nill",
                 });
                 toast.error(
                   "Your account is blocked by Admin, Contact to admin for more information"
@@ -186,14 +186,14 @@ export function startGetCurrentUser() {
             } else {
               dispatch({
                 type: GETUSERERR,
-                payload: "nill"
+                payload: "nill",
               });
             }
           });
       } else {
         dispatch({
           type: GETUSERERR,
-          payload: "nill"
+          payload: "nill",
         });
       }
     });
@@ -202,7 +202,7 @@ export function startGetCurrentUser() {
 
 //ForgetPassword
 export function startRessetPassword(data) {
-  return dispatch => {
+  return (dispatch) => {
     auth
       .sendPasswordResetEmail(data)
       .then(function() {
@@ -219,7 +219,7 @@ export function changeAddress(newAddress) {
   console.log(newAddress);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employers")
       .doc(newAddress.docid)
       .update(newAddress)
@@ -230,7 +230,7 @@ export function changeAddress(newAddress) {
 
         dispatch({
           type: CHANGE_ADDRESS,
-          payload: newAddress
+          payload: newAddress,
         });
       })
       .catch(function(error) {
@@ -238,7 +238,7 @@ export function changeAddress(newAddress) {
         console.log(error);
         console.log("====================================");
         dispatch({
-          type: CHANGE_ADDRESS_ERR
+          type: CHANGE_ADDRESS_ERR,
         });
       });
   };
@@ -248,32 +248,86 @@ export function changeAddress(newAddress) {
 export function updateFacilities(empArray, data) {
   let batch = db.batch();
 
-  empArray.forEach(element => {
+  empArray.forEach((element) => {
     var sfRef = db.collection("employees").doc(element.id);
     batch.update(sfRef, data);
   });
 
-  return dispatch => {
+  return (dispatch) => {
     batch
       .commit()
       .then(function(res) {
         dispatch({
-          type: UPDATE_FACILITY
+          type: UPDATE_FACILITY,
         });
         toast.success("Successfully updated!");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("err in fa", err);
         toast.error("Error occoured Try again!");
 
         dispatch({
-          type: UPDATE_FACILITY_ERR
+          type: UPDATE_FACILITY_ERR,
         });
       });
   };
 }
 export function setDefault() {
   return {
-    type: SET_DEFAULT
+    type: SET_DEFAULT,
   };
 }
+
+export const SUPPORT_TICKET_STATRT = "SUPPORT_TICKET_STATRT";
+export const SUPPORT_TICKET_REPONSE_DONE = "SUPPORT_TICKET_REPONSE_DONE";
+export const SUPPORT_TICKET_REPONSE_FAILED = "SUPPORT_TICKET_REPONSE_FAILED";
+export const GET_ALL_MY_TICKETS = "GET_ALL_MY_TICKETS";
+export const GET_ALL_MY_TICKETS_FAILED = "GET_ALL_MY_TICKETS_FAILED";
+
+export const SubmitTicketAction = (data) => async (dispatch) => {
+  try {
+    dispatch({ type: SUPPORT_TICKET_STATRT });
+    db.collection("supportTickets")
+      .add({
+        topic: data.topic,
+        subject: data.subject,
+        detail: data.detail,
+        attachment: data.attachment,
+        name: data.name,
+        email: data.email,
+        date: data.date,
+        status: true,
+        uid: data.uid,
+        ticketId: "#" + data.ticketId,
+      })
+      .then(() => {
+        dispatch({ type: SUPPORT_TICKET_REPONSE_DONE });
+        toast.success("submitted successfully!");
+      });
+  } catch (error) {
+    dispatch({ type: SUPPORT_TICKET_REPONSE_FAILED });
+    toast.error("An error occurred!");
+    console.log("error===>", error);
+  }
+};
+
+export const getMyTicketsAction = (data) => async (dispatch) => {
+  // console.log("========>called<==========",data);
+  try {
+    db.collection("supportTickets")
+      .where("uid", "==", data)
+      .get()
+      .then(function(querySnapshot) {
+        var allTickets = [];
+        querySnapshot.forEach(function(doc) {
+          allTickets.push({ docId: doc.id, ...doc.data() });
+        });
+        dispatch({ type: GET_ALL_MY_TICKETS, payload: allTickets });
+      });
+  } catch (err) {
+    dispatch({
+      type: GET_ALL_MY_TICKETS_FAILED,
+    });
+    console.log("error", err);
+  }
+};

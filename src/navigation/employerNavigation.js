@@ -44,6 +44,8 @@ import PdfRecords from '../containers/employeer/PdfRecords';
 import DailyTask from '../containers/employeer/MainTask/dailyTask'
 import RewardEmployee from "../containers/employeer/rewardEmployee";
 import ReportingScreen from "../containers/employeer/reporting";
+import ContactSupport from "../containers/employeer/contactSupport";
+import MyTickets from "../containers/employeer/contactSupport/myTickets";
 
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
   <Route
@@ -81,6 +83,8 @@ const wrappedRoutesEmployeer = () => (
         path="/home/employeer/reward-employee"
         component={RewardEmployee}
       />
+      <Route path="/home/employeer/mytickets" component={MyTickets} />
+      <Route path="/home/employeer/contactsupport" component={ContactSupport} />
       <Route path="/home/employeer/reporting" component={ReportingScreen} />
       <Route
         path="/home/employeer/employeeCreation"
