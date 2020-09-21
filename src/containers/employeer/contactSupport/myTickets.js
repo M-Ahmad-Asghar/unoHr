@@ -70,7 +70,7 @@ const MyTickets = () => {
               <div className={classes.root}>
                 <Accordion
                   style={{ marginBottom: 5 }}
-                  disabled={items.status ? false : true}
+                  // disabled={items.status ? false : true}
                   expanded={expanded === index}
                   onChange={handleChange(index)}
                 >
@@ -79,8 +79,34 @@ const MyTickets = () => {
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                   >
-                    <Typography className={classes.heading}>
-                      {items.ticketId}
+                    <Typography
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                      className={classes.heading}
+                    >
+                      {items.status ? (
+                        <div
+                          style={{
+                            width: 7,
+                            height: 7,
+                            backgroundColor: "green",
+                            borderRadius: "50%",
+                          }}
+                        ></div>
+                      ) : (
+                        <div
+                          style={{
+                            width: 7,
+                            height: 7,
+                            backgroundColor: "red",
+                            borderRadius: "50%",
+                          }}
+                        ></div>
+                      )}
+                      <span style={{ marginLeft: 5 }}> {items.ticketId}</span>
                     </Typography>
                     <Typography className={classes.secondaryHeading}>
                       {moment(
