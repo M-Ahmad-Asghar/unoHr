@@ -356,11 +356,11 @@ export function getSystemDocs() {
         querySnapshot.forEach(function(doc) {
           const data = doc.data();
           const id = doc.id;
-          if (data.status === "verified") {
+          // if (data.status === "verified") {
             datatoStore.push({ id, ...data });
-          }
+          // }
         });
-        console.log("data to store", datatoStore);
+        // console.log("data to store", datatoStore);
 
         dispatch({
           type: GET_SYS_DOC,

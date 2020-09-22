@@ -111,7 +111,12 @@ class AddEmpSteps extends React.Component {
           <EmpForm handleNext={this.handleNext} getEmpData={this.getEmpData} />
         );
       case 1:
-        return <SelectDoc getDocs={this.getDocs} />;
+        return (
+          <SelectDoc
+            getDocs={this.getDocs}
+            stateName={this.state.empBasicData.stateName}
+          />
+        );
 
       default:
         return "Unknown stepIndex";

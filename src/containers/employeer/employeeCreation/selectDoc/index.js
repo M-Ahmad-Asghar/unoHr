@@ -15,51 +15,60 @@ class SelectDocs extends Component {
 
   componentDidMount() {
     if (this.props.getSysDocStatus === "done") {
-      let data = this.props.sysDocs.map(doc => {
-        return {
-          ...doc,
-          selected: false
-        };
+      let data = this.props.sysDocs.map((doc) => {
+        if (doc.tag === "employee" || this.props.stateName === doc.state) {
+          this.state.selectedDocs.push({ ...doc, selected: true });
+          return {
+            ...doc,
+            already: true,
+            selected: true,
+          };
+        } else {
+          return {
+            ...doc,
+            selected: false,
+          };
+        }
       });
 
       this.setState({
         documentList: data,
-        loader: false
+        loader: false,
       });
     } else if (this.props.getSysDocStatus === "error") {
       this.setState({
-        loader: false
+        loader: false,
       });
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.getSysDocStatus === "done") {
-      let data = nextProps.sysDocs.map(doc => {
+      let data = nextProps.sysDocs.map((doc) => {
         return {
           ...doc,
-          selected: false
+          selected: false,
         };
       });
 
       this.setState({
         documentList: data,
-        loader: false
+        loader: false,
       });
     } else if (nextProps.getSysDocStatus === "error") {
       this.setState({
-        loader: false
+        loader: false,
       });
     }
   }
 
-  onContactSelect = data => {
+  onContactSelect = (data) => {
     console.log("====================================");
     console.log(data);
     console.log("====================================");
     data.selected = !data.selected;
     let selectedContacts = 0;
-    const contactList = this.state.documentList.map(contact => {
+    const contactList = this.state.documentList.map((contact) => {
       if (contact.selected) {
         selectedContacts++;
       }
@@ -74,12 +83,13 @@ class SelectDocs extends Component {
     });
     this.setState({
       selectedContacts: selectedContacts,
-      documentList: contactList
+      documentList: contactList,
     });
-    this.props.getDocs(contactList)
+    this.props.getDocs(contactList);
   };
   render() {
     const { documentList } = this.state;
+
     return (
       <Col md={12} lg={12}>
         <Card>
@@ -102,11 +112,11 @@ class SelectDocs extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     sysDocs: state.employerReducer.sysDocs,
     loader: state.employerReducer.loader,
-    getSysDocStatus: state.employerReducer.getSysDocStatus
+    getSysDocStatus: state.employerReducer.getSysDocStatus,
   };
 };
 

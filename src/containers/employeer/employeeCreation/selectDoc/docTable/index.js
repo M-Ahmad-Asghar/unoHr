@@ -34,7 +34,7 @@ class ContactCell extends React.Component {
 
   render() {
     const { contact, onContactSelect } = this.props;
-    const { doc_name } = contact;
+    const { title } = contact;
 
     return (
       <Row className="contact-item">
@@ -50,7 +50,7 @@ class ContactCell extends React.Component {
         </Col>
         <Col xs={10}>
           <p className="mb-0" style={{ marginTop: "11px" }}>
-            {doc_name}
+            {title}
           </p>
         </Col>
       </Row>
