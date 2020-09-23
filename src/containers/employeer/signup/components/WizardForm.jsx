@@ -14,6 +14,7 @@ import {
 import { getWcStates } from '../../../../redux/actions/wcStateAction';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
+import { getSystemDocuments } from "../../../../redux/actions/paperWorkActions";
 // import { EMPLOYER_SIGN_UP } from '../../../../redux/actions/employerSignUpActions';
 class WizardForm extends Component {
   static propTypes = {
@@ -106,9 +107,12 @@ class WizardForm extends Component {
     } else if (this.state.lastName == "") {
       toast.error("Please provide Your Last Name");
     }
-     else if (!this.state.emailVerified) {
-      toast.error("Please Verify Your Email");
-    } 
+    
+    //  else if (!this.state.emailVerified) {
+    //   toast.error("Please Verify Your Email");
+    // } 
+
+
     // else if (!this.state.numberVerified) {
     //   toast.error("Please verify your Number");
     // } 
@@ -178,15 +182,17 @@ class WizardForm extends Component {
         subscription: this.state.plan,
         isDirectDeposit: false,
         createdAt: new Date(),
+        documents: this.props.documents,
         numVerifyTask: {
           AllotedTo: "My Own",
           title: "Verify Mobile Number",
-          Description: "Please verify your mobile number in order to receive useful messages in future!",
+          Description:
+            "Please verify your mobile number in order to receive useful messages in future!",
           mobileVerification: true,
           DueTime: new Date(),
           PostedTime: new Date(),
-          TaskPurpose: "My Own"
-        }
+          TaskPurpose: "My Own",
+        },
       };
       this.props.registerEmployer(data);
     }
@@ -194,6 +200,7 @@ class WizardForm extends Component {
 
   componentDidMount() {
     this.props.getWcStates();
+    this.props.getSystemDocuments();
   }
 
   componentWillReceiveProps = nextProps => {
@@ -344,11 +351,18 @@ const mapStateToProps = state => {
     isLoading: state.employer.isLoading,
     done: state.employer.done,
     wcStates: state.wcStateReducer.wcStates,
-    getWCStatesStatus: state.wcStateReducer.getWCStatesStatus
+    getWCStatesStatus: state.wcStateReducer.getWCStatesStatus,
+    documents: state.paperWorkReducer.verifieddocuments,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { registerEmployer, verifyNumber, verifyEmail, getWcStates }
+  {
+    registerEmployer,
+    verifyNumber,
+    verifyEmail,
+    getWcStates,
+    getSystemDocuments,
+  }
 )(withRouter(WizardForm));
