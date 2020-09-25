@@ -11,11 +11,37 @@ import { getStartAppFromStorage } from "../redux/actions/storageAction";
 import { connect } from "react-redux";
 import EmployerNavigation from "../navigation/employerWrapper";
 import EmployeeNavigation from "../navigation/employeeWrapper";
+// import axios from 'axios';
+// import url from "../EndPoint";
+// testing code
 
 const Landing = (props) => {
     const [currentScreen, setCurrentScreen] = useState(true);
     const [selectApp, setSelectApp] = useState(null);
     const [loader, setLoader] = useState(true);
+
+    //testing code
+
+        // const [file, setFile] = useState(null);
+
+        // const submitFile = async () => {
+        //   try {
+        //     if (!file) {
+        //       throw new Error("Select a file first!");
+        //     }
+        //     const formData = new FormData();
+        //     formData.append("file", file[0]);
+        //     await axios.post(`${url}/testAws/testing`, formData, {
+        //       headers: {
+        //         "Content-Type": "multipart/form-data",
+        //       },
+        //     });
+        //     // handle success
+        //   } catch (error) {
+        //     // handle error
+        //   }
+        // };
+
 
     const EmployerApp = () => {
         setSelectApp("employerApp");
@@ -68,8 +94,18 @@ const Landing = (props) => {
     ) : currentScreen ? (
         <>
         <div className="lp-body-styles">
+            
+            {/* test code */}
+
+
+
             <NavBar EmployerApp={EmployerApp} EmployeeApp={EmployeeApp} />
             <Main />
+            {/* <form onSubmit={submitFile}> */}
+      {/* <label>Upload file</label> */}
+      {/* <input type="file" onChange={event => setFile(event.target.files)} /> */}
+      {/* <button onClick={submitFile}>Send</button> */}
+    {/* </form> */}
             <div className="lp-wrapper">
                 <Features />
                 <Pricing />
