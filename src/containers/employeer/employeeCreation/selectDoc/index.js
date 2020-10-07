@@ -16,7 +16,12 @@ class SelectDocs extends Component {
   componentDidMount() {
     if (this.props.getSysDocStatus === "done") {
       let data = this.props.sysDocs.map((doc) => {
-        if (doc.tag === "employee" || this.props.stateName === doc.state) {
+        if (
+          doc.tag === "employee" ||
+          this.props.data.stateName === doc.state ||
+          this.props.data.district.zipCode === doc.district.zipCode ||
+          this.props.data.industry === doc.industry.name
+        ) {
           this.state.selectedDocs.push({ ...doc, selected: true });
           return {
             ...doc,
@@ -41,31 +46,26 @@ class SelectDocs extends Component {
       });
     }
   }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.getSysDocStatus === "done") {
-      let data = nextProps.sysDocs.map((doc) => {
-        return {
-          ...doc,
-          selected: false,
-        };
-      });
-
-      this.setState({
-        documentList: data,
-        loader: false,
-      });
-    } else if (nextProps.getSysDocStatus === "error") {
-      this.setState({
-        loader: false,
-      });
-    }
+    // if (nextProps.getSysDocStatus === "done") {
+    //   let data = nextProps.sysDocs.map((doc) => {
+    //     return {
+    //       ...doc,
+    //       selected: false,
+    //     };
+    //   });
+    //   this.setState({
+    //     documentList: data,
+    //     loader: false,
+    //   });
+    // } else if (nextProps.getSysDocStatus === "error") {
+    //   this.setState({
+    //     loader: false,
+    //   });
+    // }
   }
 
   onContactSelect = (data) => {
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
     data.selected = !data.selected;
     let selectedContacts = 0;
     const contactList = this.state.documentList.map((contact) => {

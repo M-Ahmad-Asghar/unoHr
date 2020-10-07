@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Col, Container, Row } from "reactstrap";
 
 class ContactCell extends React.Component {
-  onContactOptionSelect = event => {
+  onContactOptionSelect = (event) => {
     this.setState({ menuState: true, anchorEl: event.currentTarget });
   };
   handleRequestClose = () => {
@@ -15,7 +15,7 @@ class ContactCell extends React.Component {
   onContactClose = () => {
     this.setState({ addContactState: false });
   };
-  onDeleteContact = contact => {
+  onDeleteContact = (contact) => {
     this.setState({ addContactState: false });
     this.props.onDeleteContact(contact);
   };
@@ -28,7 +28,7 @@ class ContactCell extends React.Component {
     this.state = {
       anchorEl: undefined,
       menuState: false,
-      addContactState: false
+      addContactState: false,
     };
   }
 
@@ -44,7 +44,7 @@ class ContactCell extends React.Component {
             checked={contact.selected}
             value="checkedF"
             onClick={() => {
-              onContactSelect(contact);
+              contact.already !== true && onContactSelect(contact);
             }}
           />
         </Col>

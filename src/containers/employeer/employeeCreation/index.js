@@ -11,34 +11,34 @@ import EmpForm from "./components/HorizontalForm";
 import SelectDoc from "./selectDoc";
 import {
   getSystemDocs,
-  addNewEmployee
+  addNewEmployee,
 } from "../../../redux/actions/employerActions";
 import { connect } from "react-redux";
 import { PulseLoader } from "react-spinners";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    width: "90%"
+    width: "90%",
   },
   backButton: {
     marginRight: theme.spacing.unit,
     marginLeft: "30px",
-    width: "10%"
+    width: "10%",
   },
   button: {
     width: "14%",
-    marginLeft: "30px"
+    marginLeft: "30px",
   },
   instructions: {
     marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit
+    marginBottom: theme.spacing.unit,
   },
   stepDetail: {
     marginTop: "25px",
     paddingLeft: "0px",
     paddingRight: "0px",
-    marginBottom: "25px"
-  }
+    marginBottom: "25px",
+  },
 });
 
 function getSteps() {
@@ -52,21 +52,19 @@ class AddEmpSteps extends React.Component {
     activeStep: 0,
     empBasicData: {},
     selectDoc: [],
-    sendLoader: false
+    sendLoader: false,
   };
 
-  getEmpData = data => {
+  getEmpData = (data) => {
     this.setState({
-      empBasicData: data
+      empBasicData: data,
     });
   };
 
-  getDocs = docs => {
-    let documents = docs.filter(doc => doc.selected);
-    console.log("selected Documents", documents);
-
+  getDocs = (docs) => {
+    let documents = docs.filter((doc) => doc.selected);
     this.setState({
-      selectDoc: documents
+      selectDoc: documents,
     });
   };
 
@@ -76,35 +74,28 @@ class AddEmpSteps extends React.Component {
 
     let data = {
       ...empBasicData,
-      documents: docs
+      documents: docs,
     };
-
-    console.log("===========data final=========================");
-    console.log(data);
-    console.log("====================================");
-    this.props.addNewEmployee(data);
+    // this.props.addNewEmployee(data);
     this.setState({
-      sendLoader: true
+      sendLoader: true,
     });
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("==============nextProps======================");
-    console.log(nextProps);
-    console.log("====================================");
     this.setState({
-      sendLoader: false
+      sendLoader: false,
     });
     if (nextProps.addEmpStatus === "done") {
       this.props.history.push("/home/employeer/employeeView");
     } else if (nextProps.addEmpStatus === "error") {
       this.setState({
-        activeStep: 0
+        activeStep: 0,
       });
     }
   }
 
-  getStepContent = stepIndex => {
+  getStepContent = (stepIndex) => {
     switch (stepIndex) {
       case 0:
         return (
@@ -114,7 +105,8 @@ class AddEmpSteps extends React.Component {
         return (
           <SelectDoc
             getDocs={this.getDocs}
-            stateName={this.state.empBasicData.stateName}
+            data={this.state.empBasicData}
+            // stateName={this.state.empBasicData.stateName}
           />
         );
 
@@ -124,20 +116,20 @@ class AddEmpSteps extends React.Component {
   };
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1
+    this.setState((state) => ({
+      activeStep: state.activeStep + 1,
     }));
   };
 
   handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1
+    this.setState((state) => ({
+      activeStep: state.activeStep - 1,
     }));
   };
 
   handleReset = () => {
     this.setState({
-      activeStep: 0
+      activeStep: 0,
     });
   };
   componentDidMount() {
@@ -158,7 +150,7 @@ class AddEmpSteps extends React.Component {
         <Row>
           <Col md={12}>
             <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map(label => (
+              {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
                 </Step>
@@ -199,14 +191,14 @@ class AddEmpSteps extends React.Component {
 }
 
 AddEmpSteps.propTypes = {
-  classes: PropTypes.object
+  classes: PropTypes.object,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     employeruid: state.userReducer.user.uid,
     loader: state.employerReducer.loader,
     successDone: state.employer.successDone,
-    addEmpStatus: state.employerReducer.addEmpStatus
+    addEmpStatus: state.employerReducer.addEmpStatus,
   };
 };
 

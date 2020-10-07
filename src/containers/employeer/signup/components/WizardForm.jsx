@@ -9,9 +9,12 @@ import { toast } from "react-toastify";
 import {
   registerEmployer,
   verifyNumber,
-  verifyEmail
+  verifyEmail,
 } from "../../../../redux/actions/employerActions";
-import { getWcStates } from '../../../../redux/actions/wcStateAction';
+
+import { searchDistrict } from "../../../../utils/search";
+import { getWcStates } from "../../../../redux/actions/wcStateAction";
+import { getIndustry } from "../../../../redux/actions/dbActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
 import { getSystemDocuments } from "../../../../redux/actions/paperWorkActions";
@@ -49,23 +52,30 @@ class WizardForm extends Component {
       numberVerified: false,
       emailVerified: false,
       defualtVal: { value: "Basic", label: "Basic-$39" },
-      wcStates: []
+      wcStates: [],
+      industries: [],
+      industry: "select industry",
+
+      districts: [],
+      searchText: "",
+      district: {},
     };
+    this.timer = null;
   }
 
-  onNumberStatus = status => {
+  onNumberStatus = (status) => {
     this.setState({
-      numberVerified: status
+      numberVerified: status,
     });
   };
 
-  onEmailStatus = status => {
+  onEmailStatus = (status) => {
     this.setState({
-      emailVerified: status
+      emailVerified: status,
     });
   };
 
-  onCheckoutToken = token => {
+  onCheckoutToken = (token) => {
     this.setState({ token });
   };
   onChangeRadioTax = (e, checked) => {
@@ -76,30 +86,60 @@ class WizardForm extends Component {
     this.setState({ report: checked });
   };
 
-  onChangeDate = date => {
+  onChangeDate = (date) => {
     const { _d } = date;
     this.setState({ date: _d });
   };
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-  numberChangeHandler = number => {
+  numberChangeHandler = (number) => {
     console.log("number checker", number);
 
     this.setState({
-      mobileNumber: number
+      mobileNumber: number,
     });
   };
 
-  validateEmail = email => {
+  validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
-  nextPage = e => {
+  ///////// SEARCH DISTRICTS ////////////
+
+  onChangeAutoComplete = (event, newValue) => {
+    this.setState({ district: newValue });
+  };
+
+  onChangeText = (event) => {
+    let value = event.target.value;
+    clearTimeout(this.timer);
+    this.setState({
+      searchText: value,
+    });
+    this.timer = setTimeout(this.triggerSearch, 1000);
+  };
+  // Triger search
+  triggerSearch = () => {
+    if (this.state.searchText.length > 3) {
+      searchDistrict(this.state.searchText.toUpperCase())
+        .then((doc) => {
+          let firebaseData = [];
+          doc.forEach((docRecord) => {
+            let data = docRecord.data();
+            firebaseData.push(data);
+          });
+          this.setState({ districts: firebaseData });
+        })
+        .catch((err) => {});
+    }
+  };
+
+  nextPage = (e) => {
     e.preventDefault();
     this.setState({ page: 2 });
     if (this.state.firstName == "") {
@@ -107,15 +147,14 @@ class WizardForm extends Component {
     } else if (this.state.lastName == "") {
       toast.error("Please provide Your Last Name");
     }
-    
+
     //  else if (!this.state.emailVerified) {
     //   toast.error("Please Verify Your Email");
-    // } 
-
+    // }
 
     // else if (!this.state.numberVerified) {
     //   toast.error("Please verify your Number");
-    // } 
+    // }
     else if (this.state.password.length <= 7) {
       toast.error("Password Must be greater than 8 letters");
     } else if (this.state.cPassword != this.state.password) {
@@ -133,7 +172,7 @@ class WizardForm extends Component {
           //   toast.error("Please enter your city name");
           if (this.state.state == "") {
             toast.error("Please enter your state");
-          } 
+          }
           // else if (this.state.zip == "" || isNaN(this.state.zip)) {
           //   toast.error("Invalid your zip code");
           // }
@@ -201,54 +240,60 @@ class WizardForm extends Component {
   componentDidMount() {
     this.props.getWcStates();
     this.props.getSystemDocuments();
+    this.props.getIndustry();
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     this.setState({ loader: false });
 
     if (nextProps.done == "move") {
       this.props.history.push("/employeer/login");
     }
 
-    if(nextProps.getWCStatesStatus === 'done') {
+    if (nextProps.getWCStatesStatus === "done") {
       this.setState({
-        wcStates: nextProps.wcStates
-      })
+        wcStates: nextProps.wcStates,
+      });
+    }
+    if (nextProps.getIndustryStatus == "done") {
+      this.setState({
+        industries: nextProps.industry,
+      });
     }
   };
   performEmailVerification = () => {
     if (this.state.email !== "" || this.state.email.length > 0) {
       this.setState({
-        verifyEmail: true
+        verifyEmail: true,
       });
     } else {
       this.setState({
-        verifyEmail: false
+        verifyEmail: false,
       });
     }
   };
   performNumberVerification = () => {
     if (this.state.mobileNumber !== "" || this.state.mobileNumber.length > 0) {
       this.setState({
-        verifyNumber: true
+        verifyNumber: true,
       });
     } else {
       this.setState({
-        verifyNumber: false
+        verifyNumber: false,
       });
     }
   };
 
-  getPlan = e => {
+  getPlan = (e) => {
     console.log(e.target.value);
     this.setState({
-      plan: e.target.value
+      plan: e.target.value,
     });
   };
-  getAddress = address => {
-    console.log("getAddress",address);
+  getAddress = (address) => {
+    console.log("getAddress", address);
     this.setState({
-      address
+      address,
     });
   };
 
@@ -315,6 +360,11 @@ class WizardForm extends Component {
                     country={this.state.country}
                     state={this.state.state}
                     wcStates={this.state.wcStates}
+                    industries={this.state.industries}
+                    districts={this.state.districts}
+                    onChangeText={this.onChangeText}
+                    district={this.state.district}
+                    onChangeAutoComplete={this.onChangeAutoComplete}
                     zip={this.state.zip}
                     ein={this.state.ein}
                     // date={this.state.date}
@@ -346,13 +396,15 @@ class WizardForm extends Component {
 
 // export default withRouter(WizardForm);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.employer.isLoading,
     done: state.employer.done,
     wcStates: state.wcStateReducer.wcStates,
     getWCStatesStatus: state.wcStateReducer.getWCStatesStatus,
     documents: state.paperWorkReducer.verifieddocuments,
+    industry: state.dbReducers.industry,
+    getIndustryStatus: state.dbReducers.getIndustryStatus,
   };
 };
 
@@ -363,6 +415,7 @@ export default connect(
     verifyNumber,
     verifyEmail,
     getWcStates,
+    getIndustry,
     getSystemDocuments,
   }
 )(withRouter(WizardForm));

@@ -5,11 +5,16 @@ import { translate } from "react-i18next";
 import PropTypes from "prop-types";
 // import Datepicker from './DatePicker';
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
 import { addNewEmployee } from "../../../../redux/actions/employerActions";
-import { getStateWages } from "../../../../redux/actions/dbActions";
+import {
+  getStateWages,
+  getIndustry,
+} from "../../../../redux/actions/dbActions";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { toast } from "react-toastify";
 import { PulseLoader } from "react-spinners";
 import Button from "@material-ui/core/Button";
@@ -20,13 +25,14 @@ import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 import "../styles/style.css";
 import renderRadioButtonField from "../../../../shared/components/form/RadioButton";
+import { searchDistrict } from "../../../../utils/search";
 
 const afterSubmit = (result, dispatch) => dispatch(reset("horizontal_form"));
 class HorizontalForm extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -53,41 +59,51 @@ class HorizontalForm extends Component {
       stateName: "",
       minRate: 0,
       timeMode: "Punch",
-      paymentMethod: ""
+      paymentMethod: "",
+
+      industries: [],
+      industryLoader: true,
+      industry: "",
+
+      districts: [],
+      searchText: "",
+      district: {},
     };
+    this.timer = null;
   }
 
   componentDidMount() {
     this.props.getStateWages();
+    this.props.getIndustry();
   }
 
-  validateEmail = email => {
+  validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
-  setDate = newDate => {
+  setDate = (newDate) => {
     const { _d } = newDate;
     this.setState({ chosenDate: _d });
   };
 
-  showPassword = e => {
+  showPassword = (e) => {
     e.preventDefault();
     this.setState({
-      showPassword: !this.state.showPassword
+      showPassword: !this.state.showPassword,
     });
   };
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-  onStateSelectHandler = e => {
+  onStateSelectHandler = (e) => {
     const { value } = e.target;
     if (value != "select state") {
       var minRate;
-      this.state.statesWages.map(state => {
+      this.state.statesWages.map((state) => {
         if (state.stateName == value) {
           minRate = state.minRate;
         }
@@ -96,29 +112,42 @@ class HorizontalForm extends Component {
       minRate = minRate.slice(0, minRate.indexOf(" / hour"));
       this.setState({
         stateName: value,
-        minRate: minRate
+        minRate: minRate,
       });
     } else {
       this.setState({
-        stateName: ""
+        stateName: "",
+      });
+    }
+  };
+  // select industry
+  onIndustrySelectHandler = (e) => {
+    const { value } = e.target;
+    if (value != "select industry") {
+      this.setState({
+        industry: value,
+      });
+    } else {
+      this.setState({
+        industry: "",
       });
     }
   };
 
-  onPaymentSelectHandler = e => {
+  onPaymentSelectHandler = (e) => {
     const { value } = e.target;
     if (value != "select payment method") {
       this.setState({
-        paymentMethod: value
+        paymentMethod: value,
       });
     } else {
       this.setState({
-        paymentMethod: ""
+        paymentMethod: "",
       });
     }
   };
 
-  addEmployee = e => {
+  addEmployee = (e) => {
     e.preventDefault();
 
     if (this.state.firstName == "") {
@@ -134,6 +163,8 @@ class HorizontalForm extends Component {
       toast.error("Please Provide a valid Email address");
     } else if (this.state.stateName == "") {
       toast.error("Please select the Employee State");
+    } else if (this.state.industry == "") {
+      toast.error("Please select the Employee Industry");
     } else if (this.state.paymentMethod == "") {
       toast.error("Please select a payment method");
     } else if (this.state.HourlyRate == "") {
@@ -142,9 +173,7 @@ class HorizontalForm extends Component {
       parseFloat(this.state.HourlyRate) < parseFloat(this.state.minRate)
     ) {
       toast.error(
-        `Hourly rate cannot be less than ${this.state.minRate}$ for ${
-          this.state.stateName
-        }`
+        `Hourly rate cannot be less than ${this.state.minRate}$ for ${this.state.stateName}`
       );
     } else if (this.state.WeekHr == "") {
       toast.error("Provide Employee's minimum weekly hours");
@@ -170,16 +199,17 @@ class HorizontalForm extends Component {
         timeMode: this.state.timeMode,
         createdAt: new Date().toString(),
         lunchFacility: false,
-        breakFacility: false
+        breakFacility: false,
+        industry: this.state.industry,
+        district: this.state.district,
       };
-      console.log("invite form data is: ", employeeData);
       this.props.getEmpData(employeeData);
       // this.props.addNewEmployee(employeeData);
       this.props.handleNext();
     }
   };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     // this.setState({ loader: false });
     if (nextProps.successDone == "move") {
       this.props.reset();
@@ -187,14 +217,50 @@ class HorizontalForm extends Component {
     if (nextProps.getStatesWagesStatus == "done") {
       this.setState({
         statesWages: nextProps.statesWages,
-        statesLoader: false
+        statesLoader: false,
       });
+    }
+    if (nextProps.getIndustryStatus == "done") {
+      this.setState({
+        industries: nextProps.industry,
+        industryLoader: false,
+      });
+    }
+  };
+  ///////// SEARCH DISTRICTS ////////////
+  onChangeText = (event) => {
+    let value = event.target.value;
+    clearTimeout(this.timer);
+    this.setState({
+      searchText: value,
+    });
+    this.timer = setTimeout(this.triggerSearch, 1000);
+  };
+  // Triger search
+  triggerSearch = () => {
+    if (this.state.searchText.length > 3) {
+      searchDistrict(this.state.searchText.toUpperCase())
+        .then((doc) => {
+          let firebaseData = [];
+          doc.forEach((docRecord) => {
+            let data = docRecord.data();
+            firebaseData.push(data);
+          });
+          this.setState({ districts: firebaseData });
+        })
+        .catch((err) => {});
     }
   };
 
   render() {
     const { handleSubmit, reset, t } = this.props;
-    const { statesWages, statesLoader } = this.state;
+    const {
+      statesWages,
+      statesLoader,
+      industries,
+      industry,
+      industryLoader,
+    } = this.state;
 
     return (
       <Col md={12} lg={12}>
@@ -283,7 +349,7 @@ class HorizontalForm extends Component {
                       number
                     ) => {
                       this.setState({
-                        cell: number
+                        cell: number,
                       });
                     }}
                   />
@@ -321,7 +387,7 @@ class HorizontalForm extends Component {
                       Select State
                     </option>
                     {!statesLoader &&
-                      statesWages.map(state => (
+                      statesWages.map((state) => (
                         <option value={state.stateName}>
                           {state.stateName}
                         </option>
@@ -337,6 +403,87 @@ class HorizontalForm extends Component {
                   </Tooltip>
                 </div>
               </div>
+              {/* INDUSTRY */}
+              <div className="form__form-group">
+                <span className="form__form-group-label">Industry</span>
+                <div className="form__form-group-field">
+                  <Field
+                    name="industryName"
+                    component="select"
+                    type="select-multi"
+                    value={industry}
+                    className="selectDropdown"
+                    onChange={this.onIndustrySelectHandler}
+                  >
+                    <option
+                      style={{ color: "red !important" }}
+                      value="select industry"
+                    >
+                      Select Industry
+                    </option>
+                    {!industryLoader &&
+                      industries.map((state) => (
+                        <option value={state.name}>{state.name}</option>
+                      ))}
+                  </Field>
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Select employee's industry"
+                  >
+                    <IconButton className="helpButton">
+                      <img className="helpImage" src={HelpIcon} alt="help" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
+              {/* Searching districts */}
+              <div className="form__form-group">
+                <span className="form__form-group-label">District</span>
+                <div className="form__form-group-field">
+                  <Autocomplete
+                    id="combo-box"
+                    options={this.state.districts}
+                    getOptionLabel={(option) =>
+                      option.zipCode !== undefined &&
+                      `${option.zipCode} - ${option.county}`
+                    }
+                    style={{ width: "100%" }}
+                    value={this.state.district}
+                    onChange={(event, newValue) => {
+                      this.setState({ district: newValue });
+                    }}
+                    renderOption={(option) => (
+                      <>
+                        <p className="districtopt">
+                          Zip: {option.zipCode}, County: {option.county} City: (
+                          {option.city})
+                        </p>
+                      </>
+                    )}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          label={"Search District"}
+                          size="small"
+                          value={this.state.searchDistrict}
+                          onChange={this.onChangeText}
+                        />
+                      );
+                    }}
+                  />
+
+                  <Tooltip
+                    TransitionComponent={Zoom}
+                    title="Search employee district"
+                  >
+                    <IconButton className="helpButton">
+                      <img className="helpImage" src={HelpIcon} alt="help" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
+
               <div className="form__form-group">
                 <span className="form__form-group-label">Payment Method</span>
                 <div className="form__form-group-field">
@@ -453,10 +600,10 @@ class HorizontalForm extends Component {
                       radioValue="Punch"
                       defaultChecked
                       className="colored-click"
-                      onChange={value => {
+                      onChange={(value) => {
                         this.setState({
-                          timeMode: value
-                        })
+                          timeMode: value,
+                        });
                       }}
                     />
                     <Field
@@ -465,10 +612,10 @@ class HorizontalForm extends Component {
                       label="Manual"
                       radioValue="Manual"
                       className="colored-click"
-                      onChange={value => {
+                      onChange={(value) => {
                         this.setState({
-                          timeMode: value
-                        })
+                          timeMode: value,
+                        });
                       }}
                     />
                   </span>
@@ -527,9 +674,7 @@ class HorizontalForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log("user uid", state.userReducer.user.uid);
-
+const mapStateToProps = (state) => {
   return {
     user: state.userReducer.user,
     employeruid: state.userReducer.user.uid,
@@ -537,20 +682,23 @@ const mapStateToProps = state => {
     successDone: state.employer.successDone,
     isLoading: state.employer.isLoading,
     statesWages: state.dbReducers.statesWages,
-    getStatesWagesStatus: state.dbReducers.getStatesWagesStatus
+    getStatesWagesStatus: state.dbReducers.getStatesWagesStatus,
+    industry: state.dbReducers.industry,
+    getIndustryStatus: state.dbReducers.getIndustryStatus,
   };
 };
 
 export default reduxForm({
   form: "horizontal_form", // a unique identifier for this form
-  onSubmitSuccess: afterSubmit
+  onSubmitSuccess: afterSubmit,
 })(
   translate("common")(
     connect(
       mapStateToProps,
       {
         addNewEmployee,
-        getStateWages
+        getStateWages,
+        getIndustry,
       }
     )(HorizontalForm)
   )
