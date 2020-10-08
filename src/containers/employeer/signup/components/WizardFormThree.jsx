@@ -57,20 +57,18 @@ class WizardFormThree extends React.Component {
 
         {/* <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx"> */}
         {/* {plan !== null && ( */}
-        {/*
-          <StripeProvider apiKey="pk_test_jLt1a9qu4o5wcP7tWA4fdT9x">
-          </StripeProvider>
-          <Elements>
-          </Elements>
-         */}
 
-        <div className="example">
-          <CheckoutForm
-            onCheckoutToken={onCheckoutToken}
-            handleSubmit={onSubmit}
-            previousPage={previousPage}
-          />
-        </div>
+        <StripeProvider apiKey="pk_test_jLt1a9qu4o5wcP7tWA4fdT9x">
+          <Elements>
+            <div className="example">
+              <CheckoutForm
+                onCheckoutToken={onCheckoutToken}
+                handleSubmit={onSubmit}
+                previousPage={previousPage}
+              />
+            </div>
+          </Elements>
+        </StripeProvider>
 
         {/* )} */}
       </div>
@@ -82,4 +80,5 @@ export default reduxForm({
   form: "wizard", //                 <------ same form name
   destroyOnUnmount: false, //        <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+  pure: false,
 })(WizardFormThree);
