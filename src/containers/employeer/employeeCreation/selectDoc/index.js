@@ -40,6 +40,7 @@ class SelectDocs extends Component {
         documentList: data,
         loader: false,
       });
+      this.props.getDocs(data);
     } else if (this.props.getSysDocStatus === "error") {
       this.setState({
         loader: false,

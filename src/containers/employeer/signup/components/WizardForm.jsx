@@ -172,6 +172,10 @@ class WizardForm extends Component {
           //   toast.error("Please enter your city name");
           if (this.state.state == "") {
             toast.error("Please enter your state");
+          } else if (this.state.industry == "") {
+            toast.error("Please enter your industry");
+          } else if (this.state.district.zipCode === undefined) {
+            toast.error("Please enter your district");
           }
           // else if (this.state.zip == "" || isNaN(this.state.zip)) {
           //   toast.error("Invalid your zip code");
@@ -231,6 +235,8 @@ class WizardForm extends Component {
           DueTime: new Date(),
           PostedTime: new Date(),
           TaskPurpose: "My Own",
+          district: this.state.district,
+          industry: this.state.industry,
         },
       };
       this.props.registerEmployer(data);
@@ -330,7 +336,7 @@ class WizardForm extends Component {
                 </div>
               </div>
               <div className="wizard__form-wrapper">
-                {page === 1 && (
+                {page === 3 && (
                   <WizardFormOne
                     onNumberStatus={this.onNumberStatus}
                     onEmailStatus={this.onEmailStatus}
@@ -376,7 +382,7 @@ class WizardForm extends Component {
                     getAddress={this.getAddress}
                   />
                 )}
-                {page === 3 && (
+                {page === 1 && (
                   <WizardFormThree
                     previousPage={this.previousPage}
                     onCheckoutToken={this.onCheckoutToken}

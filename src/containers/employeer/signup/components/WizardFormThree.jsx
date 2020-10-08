@@ -11,9 +11,9 @@ import Paper from "@material-ui/core/Paper";
 import { toast } from "react-toastify";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 
 class WizardFormThree extends React.Component {
@@ -28,7 +28,7 @@ class WizardFormThree extends React.Component {
       previousPage,
       onCheckoutToken,
       plan,
-      getPlan
+      getPlan,
     } = this.props;
     return (
       <div>
@@ -48,7 +48,7 @@ class WizardFormThree extends React.Component {
             </Paper>
             <Tooltip TransitionComponent={Zoom} title="Select a payment plan">
               <IconButton className="helpButton">
-                <img className="helpImage" src={HelpIcon} alt="help"/>
+                <img className="helpImage" src={HelpIcon} alt="help" />
               </IconButton>
             </Tooltip>
           </div>
@@ -57,17 +57,21 @@ class WizardFormThree extends React.Component {
 
         {/* <StripeProvider apiKey="pk_test_TYooMQauvdEDq54NiTphI7jx"> */}
         {/* {plan !== null && ( */}
-        <StripeProvider apiKey="pk_test_jLt1a9qu4o5wcP7tWA4fdT9x">
-          <div className="example">
-            <Elements>
-              <CheckoutForm
-                onCheckoutToken={onCheckoutToken}
-                handleSubmit={onSubmit}
-                previousPage={previousPage}
-              />
-            </Elements>
-          </div>
-        </StripeProvider>
+        {/*
+          <StripeProvider apiKey="pk_test_jLt1a9qu4o5wcP7tWA4fdT9x">
+          </StripeProvider>
+          <Elements>
+          </Elements>
+         */}
+
+        <div className="example">
+          <CheckoutForm
+            onCheckoutToken={onCheckoutToken}
+            handleSubmit={onSubmit}
+            previousPage={previousPage}
+          />
+        </div>
+
         {/* )} */}
       </div>
     );
@@ -77,5 +81,5 @@ class WizardFormThree extends React.Component {
 export default reduxForm({
   form: "wizard", //                 <------ same form name
   destroyOnUnmount: false, //        <------ preserve form data
-  forceUnregisterOnUnmount: true // <------ unregister fields on unmount
+  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
 })(WizardFormThree);

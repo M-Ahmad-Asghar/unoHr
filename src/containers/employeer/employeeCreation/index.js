@@ -69,20 +69,20 @@ class AddEmpSteps extends React.Component {
   };
 
   addEmployee = () => {
-    let docs = this.state.selectDoc;
     let empBasicData = this.state.empBasicData;
 
     let data = {
       ...empBasicData,
-      documents: docs,
+      documents: this.state.selectDoc,
     };
-    // this.props.addNewEmployee(data);
+    this.props.addNewEmployee(data);
     this.setState({
       sendLoader: true,
     });
   };
 
   componentWillReceiveProps(nextProps) {
+    console.log("NEXT", nextProps);
     this.setState({
       sendLoader: false,
     });

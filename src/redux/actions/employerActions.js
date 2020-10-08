@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { db } from "../../boot/firebase";
+import { client_url, authApi } from "../../EndPoint";
 export const ADDNEWEMPLOYEE = "ADDNEWEMPLOYEE";
 export const ADDNEWEMPLOYEEERR = "ADDNEWEMPLOYEEERR";
 
@@ -27,13 +28,10 @@ export const CHANGE_TIMEMODE_ERR = "CHANGE_TIMEMODE_ERR";
 //ForgetPassword
 export function registerEmployer(data) {
   console.log("At action employer sign up", data);
-  return dispatch => {
+  return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/employerRegisteration",
-        data
-      )
-      .then(res => {
+      .post(`${client_url}${authApi.employer_singup}`, data)
+      .then((res) => {
         console.log("response", res.data);
         if (res.data == "successfully registered user") {
           console.log("Successfully created employeer!");
@@ -45,7 +43,7 @@ export function registerEmployer(data) {
           dispatch({ type: ADDNEWEMPLOYERERR });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error("An Error has Occurred! Please Try again");
         console.error("err from net", err);
         dispatch({ type: ADDNEWEMPLOYERERR });
@@ -55,14 +53,12 @@ export function registerEmployer(data) {
 
 //Add New Employee
 export function addNewEmployee(data) {
+  // "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/employeeRegisteration",
   console.log("at action file to invite employee", data);
-  return dispatch => {
+  return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/employeeRegisteration",
-        data
-      )
-      .then(res => {
+      .post(`${client_url}${authApi.employee_invite}`, data)
+      .then((res) => {
         console.log("In Actions res", res);
 
         if (res.data == "successfully created employe") {
@@ -76,7 +72,7 @@ export function addNewEmployee(data) {
         }
       })
 
-      .catch(err => {
+      .catch((err) => {
         toast.error("Error Has been Occoured! Try again");
         console.error("err", err);
 
@@ -88,14 +84,14 @@ export function addNewEmployee(data) {
 //Request Employee Background Check
 export function requestBackgroundCheck(emp) {
   console.log("at action file to request employee background check", emp);
-  return dispatch => {
+  return (dispatch) => {
     axios({
       method: "post",
       url: "https://api.turning.io/v1/person/search_async",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         Authorization:
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJzdWIiOiJiRG5NUUJtUl9HR3BlaFVVNEZLU19LRmluSDF1OTUwb29IcWppcXl6c0FnUjNLMHZXUmxiLXVPUllxZ0lFWTg9IiwiYXVkIjoiX0lfaC1vV2Y0dlFEZWE2aU9BejYyemxoaThET1V2dz0iLCJleHAiOjE1OTE3MTQxMTgsImlhdCI6MTU2MDE3ODExOH0.xZ2ZcFiZyj2rxU0279j-69-4v0cWYhtHf96emmeqwtE"
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJzdWIiOiJiRG5NUUJtUl9HR3BlaFVVNEZLU19LRmluSDF1OTUwb29IcWppcXl6c0FnUjNLMHZXUmxiLXVPUllxZ0lFWTg9IiwiYXVkIjoiX0lfaC1vV2Y0dlFEZWE2aU9BejYyemxoaThET1V2dz0iLCJleHAiOjE1OTE3MTQxMTgsImlhdCI6MTU2MDE3ODExOH0.xZ2ZcFiZyj2rxU0279j-69-4v0cWYhtHf96emmeqwtE",
       },
       data: {
         email_candidate: "true",
@@ -106,10 +102,10 @@ export function requestBackgroundCheck(emp) {
         callback_url:
           "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/test",
         phone_number: emp.cell,
-        first_name: emp.firstName
-      }
+        first_name: emp.firstName,
+      },
     })
-      .then(res => {
+      .then((res) => {
         console.log("Background Check Response: ", res.data);
 
         if (
@@ -118,7 +114,7 @@ export function requestBackgroundCheck(emp) {
           console.log("Employee Background check is requested successfully!");
           toast.success("Employee Background check is requested successfully!");
           dispatch({
-            type: REQUEST_BACKGROUND_CHECK
+            type: REQUEST_BACKGROUND_CHECK,
           });
           emp["request_uuid"] = res.data.message.request_uuid;
           emp["bgCheckStatus"] = "emailed";
@@ -126,26 +122,26 @@ export function requestBackgroundCheck(emp) {
           db.collection("employees")
             .doc(emp.id)
             .update(emp)
-            .catch(error => {
+            .catch((error) => {
               console.log("An error occurred while updating data!");
               toast.error("An error occurred while updating data!");
               dispatch({
-                type: REQUEST_BACKGROUND_CHECK_ERR
+                type: REQUEST_BACKGROUND_CHECK_ERR,
               });
             });
         } else {
           console.log("An error has occurred! Please try again");
           toast.error("An error has occurred! Please try again");
           dispatch({
-            type: REQUEST_BACKGROUND_CHECK_ERR
+            type: REQUEST_BACKGROUND_CHECK_ERR,
           });
         }
       })
 
-      .catch(err => {
+      .catch((err) => {
         toast.error("An error has occurred! Please try again");
         dispatch({
-          type: REQUEST_BACKGROUND_CHECK_ERR
+          type: REQUEST_BACKGROUND_CHECK_ERR,
         });
         console.error("err", err);
       });
@@ -154,7 +150,7 @@ export function requestBackgroundCheck(emp) {
 
 // Get all employees
 export function getEmployees(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .where("employeruid", "==", data)
       // .where("status", "==", "active")
@@ -171,7 +167,7 @@ export function getEmployees(data) {
 
         dispatch({
           type: GT_ALL_EMPLOY,
-          payload: datatoStore
+          payload: datatoStore,
         });
       });
   };
@@ -184,14 +180,14 @@ export function getEmployeStatus(empUid) {
   console.log(empUid);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .where("employeeUid", "==", empUid)
       // .orderBy("day")
       .onSnapshot(
         function(querySnapshot) {
           let datatoStore = [];
-          querySnapshot.forEach(doc => {
+          querySnapshot.forEach((doc) => {
             let data = doc.data();
 
             const id = doc.id;
@@ -207,12 +203,12 @@ export function getEmployeStatus(empUid) {
 
           dispatch({
             type: GET_EMP_WK_STATUS,
-            payload: datatoStore
+            payload: datatoStore,
           });
         },
         function(error) {
           dispatch({
-            type: GET_EMP_STATUS_ERR
+            type: GET_EMP_STATUS_ERR,
           });
         }
       );
@@ -222,7 +218,7 @@ export function getEmployeStatus(empUid) {
 // get pay period
 
 export function getPayPariod(id) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("payperiod")
       .where("employeeUid", "==", id)
       .onSnapshot(
@@ -241,12 +237,12 @@ export function getPayPariod(id) {
 
           dispatch({
             type: GET_EMP_PAYPERIOD,
-            payload: datatoStore
+            payload: datatoStore,
           });
         },
         function(error) {
           dispatch({
-            type: GET_EMP_PAYPERIOD_ERR
+            type: GET_EMP_PAYPERIOD_ERR,
           });
         }
       );
@@ -259,18 +255,18 @@ export function createPayStub(payStubData) {
   console.log(payStubData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(
         "https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/generatePayStubs",
         payStubData
       )
-      .then(res => {
+      .then((res) => {
         console.log("res", res);
         if (res.data === "successfully work done") {
           dispatch({
             type: CREATE_PAYSTUB,
-            payload: payStubData.id
+            payload: payStubData.id,
           });
         } else {
           console.log("else");
@@ -279,7 +275,7 @@ export function createPayStub(payStubData) {
         }
         //err
       })
-      .catch(err => {
+      .catch((err) => {
         //err
         console.error("err", err);
         dispatch({ type: CREATE_PAYSTUB_ERR });
@@ -289,13 +285,13 @@ export function createPayStub(payStubData) {
 
 // verify number
 export function verifyNumber(data) {
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(
         " https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/sendmessage",
         data
       )
-      .then(res => {
+      .then((res) => {
         console.log("res", res.data);
         if (res.data == "successfully sent") {
           console.log("res", res.data);
@@ -310,7 +306,7 @@ export function verifyNumber(data) {
         }
         //err
       })
-      .catch(err => {
+      .catch((err) => {
         //err
         console.error("err", err);
         // dispatch({ type: CREATE_PAYSTUB_ERR });
@@ -320,13 +316,13 @@ export function verifyNumber(data) {
 
 // verify number
 export function verifyEmail(data) {
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(
         " https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/sendemail",
         data
       )
-      .then(res => {
+      .then((res) => {
         console.log("res", res.data);
         if (res.data == "successfully sent") {
           console.log("res", res.data);
@@ -340,7 +336,7 @@ export function verifyEmail(data) {
         }
         //err
       })
-      .catch(err => {
+      .catch((err) => {
         //err
         console.error("err", err);
       });
@@ -349,7 +345,7 @@ export function verifyEmail(data) {
 
 // get all system docs
 export function getSystemDocs() {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("systemdocuments").onSnapshot(
       function(querySnapshot) {
         let datatoStore = [];
@@ -357,14 +353,14 @@ export function getSystemDocs() {
           const data = doc.data();
           const id = doc.id;
           // if (data.status === "verified") {
-            datatoStore.push({ id, ...data });
+          datatoStore.push({ id, ...data });
           // }
         });
         // console.log("data to store", datatoStore);
 
         dispatch({
           type: GET_SYS_DOC,
-          payload: datatoStore
+          payload: datatoStore,
         });
       },
       function(error) {
@@ -372,7 +368,7 @@ export function getSystemDocs() {
         console.log(error);
         console.log("====================================");
         dispatch({
-          type: GET_SYS_DOC_ERR
+          type: GET_SYS_DOC_ERR,
         });
       }
     );
@@ -380,13 +376,13 @@ export function getSystemDocs() {
 }
 
 export function updateEmployerMobNumber(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employers")
       .doc(data.id)
       .update({ cell: data.cell })
       .then(function(docRef) {
         dispatch({
-          type: "UPDATE_MOB_NUMBER"
+          type: "UPDATE_MOB_NUMBER",
         });
       })
       .catch(function(error) {
@@ -399,20 +395,20 @@ export function updateEmployerMobNumber(data) {
 // this action will be called when employerr change the time mode of a employee
 
 export function changeTime(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .doc(data.empDocId)
       .update({ timeMode: data.timeMode })
       .then(function(docRef) {
         dispatch({
-          type: CHANGE_TIMEMODE
+          type: CHANGE_TIMEMODE,
         });
         toast.success("Successfully changed!");
       })
       .catch(function(error) {
         toast.error(error.message);
         dispatch({
-          type: CHANGE_TIMEMODE_ERR
+          type: CHANGE_TIMEMODE_ERR,
         });
       });
   };
@@ -421,34 +417,34 @@ export function changeTime(data) {
 // change time mode in case the employee's status is checkIn
 export function changeTimeMode(data) {
   console.log("at action file to invite employee", data);
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(
         "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/changeTimeMode",
         data
       )
-      .then(res => {
+      .then((res) => {
         console.log("In Actions res", res);
 
         if (res.data == "successfully change Time Mode") {
           console.log("successfully change Time Mode!");
           dispatch({
-            type: CHANGE_TIMEMODE
+            type: CHANGE_TIMEMODE,
           });
           toast.success("Successfully changed!");
         } else {
           console.log("Error Has been Occoured! Try again");
           toast.error(res.data.message);
           dispatch({
-            type: CHANGE_TIMEMODE_ERR
+            type: CHANGE_TIMEMODE_ERR,
           });
         }
       })
 
-      .catch(err => {
+      .catch((err) => {
         toast.error(err.message);
         dispatch({
-          type: CHANGE_TIMEMODE_ERR
+          type: CHANGE_TIMEMODE_ERR,
         });
       });
   };
