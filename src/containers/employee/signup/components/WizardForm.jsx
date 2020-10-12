@@ -7,12 +7,12 @@ import WizardFormThree from "./WizardFormThree";
 import { connect } from "react-redux";
 import {
   getEmployeData,
-  employeeSignup
+  employeeSignup,
 } from "../../../../redux/actions/employeeActions";
 
 import {
   verifyNumber,
-  verifyEmail
+  verifyEmail,
 } from "../../../../redux/actions/employerActions";
 
 import "../style.css";
@@ -48,34 +48,34 @@ class WizardForm extends Component {
       plan: null,
       emailVerified: false,
       numberVerified: false,
-      signupLoader: false
+      signupLoader: false,
     };
   }
 
-  onNumberStatus = status => {
+  onNumberStatus = (status) => {
     this.setState({
-      numberVerified: status
+      numberVerified: status,
     });
   };
 
-  changeLoaderState = state => {
+  changeLoaderState = (state) => {
     this.setState({
-      signupLoader: state
-    });
-  }
-
-  onEmailStatus = status => {
-    this.setState({
-      emailVerified: status
+      signupLoader: state,
     });
   };
 
-  validateEmail = email => {
+  onEmailStatus = (status) => {
+    this.setState({
+      emailVerified: status,
+    });
+  };
+
+  validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
-  onCheckoutToken = token => {
+  onCheckoutToken = (token) => {
     this.setState({ token });
   };
 
@@ -89,12 +89,12 @@ class WizardForm extends Component {
     this.setState({ report: checked });
   };
 
-  onChangeDate = date => {
+  onChangeDate = (date) => {
     const { _d } = date;
     this.setState({ date: _d });
   };
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
     // console.log(e.target);
@@ -103,11 +103,9 @@ class WizardForm extends Component {
   nextPage = () => {
     // if (!this.state.emailVerified) {
     //   toast.error("Please Verify Your Email");
-    // } 
-    // // else if (!this.state.numberVerified) {
-    // //   toast.error("Please verify your Number");
-    // // }
-    // else if (this.state.EmpId.length != 8) {
+    // } else if (!this.state.numberVerified) {
+    //   toast.error("Please verify your Number");
+    // } else if (this.state.EmpId.length != 8) {
     //   toast.error("Please provide your valid 8 letter Id");
     // } else if (this.state.password.length <= 7) {
     //   toast.error("Password Must be greater than 8 letters");
@@ -118,9 +116,9 @@ class WizardForm extends Component {
     // } else if (this.state.empData.status == "active") {
     //   toast.error("Id already in use!");
     // } else {
-      if (this.state.page == 1) {
-        this.setState({ page: 2 });
-      }
+    if (this.state.page == 1) {
+      this.setState({ page: 2 });
+    }
     // }
   };
 
@@ -146,7 +144,7 @@ class WizardForm extends Component {
       // }
       else {
         this.setState({
-          signupLoader: true
+          signupLoader: true,
         });
         // toast.success("Contect Information validated!");
         const data = {
@@ -166,13 +164,13 @@ class WizardForm extends Component {
           numVerifyTask: {
             AllotedTo: "",
             title: "Verify Mobile Number",
-            Description: "Please verify your mobile number in order to receive useful messages in future!",
+            Description:
+              "Please verify your mobile number in order to receive useful messages in future!",
             mobileVerification: true,
             DueTime: new Date(),
             PostedTime: new Date(),
-            employeeid: this.state.EmpId
-          }
-          
+            employeeid: this.state.EmpId,
+          },
         };
         console.log("data is: ", data);
         // toast.success("okay done!");
@@ -190,18 +188,18 @@ class WizardForm extends Component {
     }
   };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     console.log("malik props: ", nextProps.data);
     this.setState({ loader: false, empData: nextProps.data });
   };
   performEmailVerification = () => {
     if (this.state.email !== "" || this.state.email.length > 0) {
       this.setState({
-        verifyEmail: true
+        verifyEmail: true,
       });
     } else {
       this.setState({
-        verifyEmail: false
+        verifyEmail: false,
       });
     }
   };
@@ -216,28 +214,28 @@ class WizardForm extends Component {
   //     });
   //   }
   // };
-  numberChangeHandler = number => {
+  numberChangeHandler = (number) => {
     if (number.length > 0) {
       this.setState({
-        mobileNumber: number
+        mobileNumber: number,
       });
     } else {
       this.setState({
-        mobileNumber: ""
+        mobileNumber: "",
       });
     }
   };
 
-  getPlan = plan => {
+  getPlan = (plan) => {
     console.log(plan);
     this.setState({
-      plan
+      plan,
     });
   };
-  getAddress = address => {
+  getAddress = (address) => {
     console.log(address);
     this.setState({
-      address
+      address,
     });
   };
 
@@ -325,10 +323,10 @@ class WizardForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.employeeReducer.isLoading,
-    data: state.employeeReducer.data
+    data: state.employeeReducer.data,
   };
 };
 
@@ -338,6 +336,6 @@ export default connect(
     getEmployeData,
     employeeSignup,
     verifyNumber,
-    verifyEmail
+    verifyEmail,
   }
 )(WizardForm);

@@ -4,8 +4,9 @@ let url = "http://localhost:5000";
 export let restful_url =
   "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi";
 
+// "https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
 export const client_url =
-  "https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
+  "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
 
 export const dwollaApi = {
   customer_add_funding: "/dwolla/customer_Add_FundingSource",
@@ -18,12 +19,13 @@ export const dwollaApi = {
 
 export const authApi = {
   employer_singup: "/employer/signup",
-  emoloyee_singup: "/employee/singup",
+  emoloyee_singup: "/employee/signup",
   employee_invite: "/employee/invite",
 };
 export const payrollApi = {
   create_payPeriod: "/payroll/createPayPeriod",
   change_timeMode: "/payroll/changeTimeMode",
+  generate_payStubs: "/payroll/generatePayStubs",
 };
 
 export const taskApi = {

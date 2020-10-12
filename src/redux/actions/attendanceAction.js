@@ -1,7 +1,7 @@
 import { db } from "../../boot/firebase";
 import axios from "axios";
 import firebase from "firebase";
-
+import { client_url, payrollApi } from "../../EndPoint";
 import moment from "moment";
 import { toast } from "react-toastify";
 export const EMPLOYE_CHECKIN = "EMPLOYE_CHECKIN";
@@ -21,17 +21,17 @@ export const START_BREAK = "START_BREAK";
 export const START_BREAK_ERR = "START_BREAK_ERR";
 export const BREAK_DATA = "BREAK_DATA";
 export const DEFAULT_VALUE = "DEFAULT_VALUE";
-export const GETEMPLOYERATTENDANCE = 'GETEMPLOYERATTENDANCE';
-export const GETEMPLOYERATTENDANCEERR = 'GETEMPLOYERATTENDANCEERR';
-export const GETEMPLOYEEATTENDANCE = 'GETEMPLOYEEATTENDANCE';
-export const GETEMPLOYEEATTENDANCEERR = 'GETEMPLOYEEATTENDANCEERR';
+export const GETEMPLOYERATTENDANCE = "GETEMPLOYERATTENDANCE";
+export const GETEMPLOYERATTENDANCEERR = "GETEMPLOYERATTENDANCEERR";
+export const GETEMPLOYEEATTENDANCE = "GETEMPLOYEEATTENDANCE";
+export const GETEMPLOYEEATTENDANCEERR = "GETEMPLOYEEATTENDANCEERR";
 
 export function employeCheckIn(checkInData) {
   console.log("==========action==========================");
   console.log(checkInData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .add(checkInData)
       .then(function(docRef) {
@@ -40,7 +40,7 @@ export function employeCheckIn(checkInData) {
 
         dispatch({
           type: EMPLOYE_CHECKIN,
-          payload: dataToStore
+          payload: dataToStore,
         });
         toast.success("Successfully Checked-in");
       })
@@ -58,7 +58,7 @@ export function employeCheckOut(checkOutData) {
   console.log(checkOutData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .doc(checkOutData.id)
       .update(checkOutData)
@@ -69,7 +69,7 @@ export function employeCheckOut(checkOutData) {
 
         dispatch({
           type: EMPLOYE_CHECKOUT,
-          payload: checkOutData
+          payload: checkOutData,
         });
         toast.success("Successfully Checked-out");
       })
@@ -83,7 +83,7 @@ export function employeCheckOut(checkOutData) {
 }
 
 export function getEmployeStatus(empid, timeMode) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .where("employeeUid", "==", empid)
 
@@ -101,7 +101,7 @@ export function getEmployeStatus(empid, timeMode) {
 
           console.log("prevMonday", prevMonday);
 
-          querySnapshot.forEach(doc => {
+          querySnapshot.forEach((doc) => {
             let data = doc.data();
 
             const id = doc.id;
@@ -125,7 +125,7 @@ export function getEmployeStatus(empid, timeMode) {
 
             dispatch({
               type: GET_EMP_OLD_STATUS,
-              payload: lastWeekAtd
+              payload: lastWeekAtd,
             });
           } else {
             console.log("==========currentWeekAtd==========================");
@@ -133,7 +133,7 @@ export function getEmployeStatus(empid, timeMode) {
             console.log("====================================");
             dispatch({
               type: GET_EMP_STATUS,
-              payload: currentWeekAtd
+              payload: currentWeekAtd,
             });
           }
         },
@@ -151,35 +151,32 @@ export function submitRecord(submitData) {
   console.log(submitData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/generatePayPeriod",
-        submitData
-      )
+      .post(`${client_url}${payrollApi.create_payPeriod}`, submitData)
 
-      .then(res => {
+      .then((res) => {
         console.log("res subm", res);
 
         if (res.data == "successfully work done") {
           //everything working fine
           dispatch({
-            type: SUBMIT_RECORD
+            type: SUBMIT_RECORD,
             // payload: dataToStore
           });
         } else {
           //err
 
           dispatch({
-            type: SUBMIT_RECORD_ERR
+            type: SUBMIT_RECORD_ERR,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //err
-        console.error("err submit", err);
+        console.error("err submit", err.response);
         dispatch({
-          type: SUBMIT_RECORD_ERR
+          type: SUBMIT_RECORD_ERR,
         });
       });
 
@@ -241,7 +238,7 @@ export function recordAttendence(attdData) {
   console.log(attdData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .add(attdData)
       .then(function(docRef) {
@@ -250,7 +247,7 @@ export function recordAttendence(attdData) {
 
         dispatch({
           type: RECORD_ATTEND,
-          payload: dataToStore
+          payload: dataToStore,
         });
         toast.success("Successfully Submitted");
       })
@@ -260,7 +257,7 @@ export function recordAttendence(attdData) {
         console.log("====================================");
         toast.error("Error occur, try again later");
         dispatch({
-          type: RECORD_ATTEND_ERR
+          type: RECORD_ATTEND_ERR,
         });
       });
   };
@@ -268,7 +265,7 @@ export function recordAttendence(attdData) {
 
 export const setDefault = () => {
   return {
-    type: SET_DEFAULT
+    type: SET_DEFAULT,
   };
 };
 
@@ -278,7 +275,7 @@ export function updateAttnd(attdData) {
   console.log(attdData);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .doc(attdData.id)
       .update(attdData)
@@ -288,7 +285,7 @@ export function updateAttnd(attdData) {
         console.log("====================================");
 
         dispatch({
-          type: RECORD_ATTEND
+          type: RECORD_ATTEND,
         });
         toast.success("Successfully Submitted");
       })
@@ -298,7 +295,7 @@ export function updateAttnd(attdData) {
         console.log("====================================");
         toast.error("Error occur, try again later");
         dispatch({
-          type: RECORD_ATTEND_ERR
+          type: RECORD_ATTEND_ERR,
         });
       });
   };
@@ -307,7 +304,7 @@ export function updateAttnd(attdData) {
 export function getWeekStatus(data) {
   console.log("data", data);
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendenceWeeks")
       .where("employeeUid", "==", data)
       .onSnapshot(
@@ -326,10 +323,10 @@ export function getWeekStatus(data) {
 
           dispatch({
             type: GET_WEEK_STATUS,
-            payload: datatoStore[0]
+            payload: datatoStore[0],
           });
         },
-        err => {
+        (err) => {
           console.log(err);
         }
       );
@@ -339,11 +336,11 @@ export function getWeekStatus(data) {
 // start Break
 
 export function breakStart(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .doc(data.id)
       .update({
-        dayBreaks: firebase.firestore.FieldValue.arrayUnion(data)
+        dayBreaks: firebase.firestore.FieldValue.arrayUnion(data),
       })
       .then(function(doc) {
         console.log("=========doc data===========================");
@@ -351,7 +348,7 @@ export function breakStart(data) {
         console.log("====================================");
 
         dispatch({
-          type: START_BREAK
+          type: START_BREAK,
         });
         toast.success("Successfully Started");
       })
@@ -361,13 +358,13 @@ export function breakStart(data) {
         console.log("====================================");
         toast.error("Error occur, try again later");
         dispatch({
-          type: START_BREAK_ERR
+          type: START_BREAK_ERR,
         });
       });
   };
 }
 export function breakEnd(data, id) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("attendance")
       .doc(id)
       .update(data)
@@ -377,7 +374,7 @@ export function breakEnd(data, id) {
         console.log("====================================");
 
         dispatch({
-          type: START_BREAK
+          type: START_BREAK,
         });
         toast.success("Successfully Ended");
       })
@@ -387,21 +384,20 @@ export function breakEnd(data, id) {
         console.log("====================================");
         toast.error("Error occur, try again later");
         dispatch({
-          type: START_BREAK_ERR
+          type: START_BREAK_ERR,
         });
       });
   };
 }
 
-
-export const defaultValue = ()=>{
-  return{
-    type: DEFAULT_VALUE
-  }
-}
+export const defaultValue = () => {
+  return {
+    type: DEFAULT_VALUE,
+  };
+};
 
 export function getAttendance(id) {
-  return async dispatch => {
+  return async (dispatch) => {
     db.collection("attendance")
       .where("employerUid", "==", id)
       .onSnapshot(
@@ -415,13 +411,13 @@ export function getAttendance(id) {
 
           dispatch({
             type: GETEMPLOYERATTENDANCE,
-            payload: datatoStore
+            payload: datatoStore,
           });
         },
         function(error) {
           dispatch({
             type: GETEMPLOYERATTENDANCEERR,
-            payload: new Date()
+            payload: new Date(),
           });
         }
       );
@@ -429,7 +425,7 @@ export function getAttendance(id) {
 }
 
 export function getEmployeeAttendance(id) {
-  return async dispatch => {
+  return async (dispatch) => {
     db.collection("attendance")
       .where("employeeUid", "==", id)
       .onSnapshot(
@@ -443,13 +439,13 @@ export function getEmployeeAttendance(id) {
 
           dispatch({
             type: GETEMPLOYEEATTENDANCE,
-            payload: datatoStore
+            payload: datatoStore,
           });
         },
         function(error) {
           dispatch({
             type: GETEMPLOYEEATTENDANCEERR,
-            payload: new Date()
+            payload: new Date(),
           });
         }
       );

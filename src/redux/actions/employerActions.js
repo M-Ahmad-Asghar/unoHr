@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { db } from "../../boot/firebase";
-import { client_url, authApi } from "../../EndPoint";
+import { client_url, authApi, payrollApi } from "../../EndPoint";
 export const ADDNEWEMPLOYEE = "ADDNEWEMPLOYEE";
 export const ADDNEWEMPLOYEEERR = "ADDNEWEMPLOYEEERR";
 
@@ -32,7 +32,7 @@ export function registerEmployer(data) {
     axios
       .post(`${client_url}${authApi.employer_singup}`, data)
       .then((res) => {
-        console.log("response", res.data);
+        console.log("response", res);
         if (res.data == "successfully registered user") {
           console.log("Successfully created employeer!");
           toast.success("Successfully registered employer!");
@@ -255,12 +255,10 @@ export function createPayStub(payStubData) {
   console.log(payStubData);
   console.log("====================================");
 
+  // "https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/generatePayStubs",
   return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/generatePayStubs",
-        payStubData
-      )
+      .post(`${client_url}${payrollApi.generate_payStubs}`, payStubData)
       .then((res) => {
         console.log("res", res);
         if (res.data === "successfully work done") {
@@ -417,12 +415,10 @@ export function changeTime(data) {
 // change time mode in case the employee's status is checkIn
 export function changeTimeMode(data) {
   console.log("at action file to invite employee", data);
+  // "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/changeTimeMode",
   return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/changeTimeMode",
-        data
-      )
+      .post(`${client_url}${payrollApi.change_timeMode}`, data)
       .then((res) => {
         console.log("In Actions res", res);
 

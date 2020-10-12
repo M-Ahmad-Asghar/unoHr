@@ -1,5 +1,6 @@
 import { db } from "../../boot/firebase";
 import { toast } from "react-toastify";
+import { client_url, taskApi } from "../../EndPoint";
 import axios from "axios";
 // add task type const
 export const ADD_TASK = "ADD_TASK";
@@ -54,12 +55,10 @@ export function addTask(data) {
 }
 
 export function addEmpTask(data) {
+  // "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/addEmpTask",
   return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/addEmpTask",
-        data
-      )
+      .post(`${client_url}${taskApi.add_task}`, data)
       .then((res) => {
         console.log("res while add task", res.data);
 
@@ -325,15 +324,15 @@ export function deletOwnTask(id) {
 
 export function getLogs(data) {
   return (dispatch) => {
-    db.collection('taskLogs')
-      .where('uid', '==', data)
+    db.collection("taskLogs")
+      .where("uid", "==", data)
       .onSnapshot(
-        function (querySnapshot) {
+        function(querySnapshot) {
           let datatoStore = [];
-          querySnapshot.forEach(function (doc) {
+          querySnapshot.forEach(function(doc) {
             const data = doc.data();
             const key = doc.id;
-            datatoStore.push({...data, key});
+            datatoStore.push({ ...data, key });
 
             return datatoStore;
           });
@@ -343,9 +342,9 @@ export function getLogs(data) {
             payload: datatoStore,
           });
         },
-        function (error) {
-          console.log('error', error);
-        },
+        function(error) {
+          console.log("error", error);
+        }
       );
   };
 }

@@ -7,9 +7,9 @@ import { connect } from "react-redux";
 import { PulseLoader } from "react-spinners";
 import { withRouter } from "react-router-dom";
 import MapApi from "../../../../mapApi";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 
 import { resetSignUpLoader } from "../../../../redux/actions/employeeActions";
@@ -18,14 +18,16 @@ class WizardFormTwo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loader: false
+      loader: false,
     };
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     this.setState({ loader: false });
-    if(nextProps.reducerSignupLoader == false) {
-      console.log("======================reducer signupLoader=====================");
+    if (nextProps.reducerSignupLoader == false) {
+      console.log(
+        "======================reducer signupLoader====================="
+      );
       console.log(nextProps.reducerSignupLoader);
       this.props.changeLoaderState(false);
       this.props.resetSignUpLoader();
@@ -37,7 +39,6 @@ class WizardFormTwo extends Component {
   };
 
   submitHandler = () => {
-
     this.props.handleSubmit();
   };
 
@@ -51,11 +52,11 @@ class WizardFormTwo extends Component {
       firstName,
       lastName,
       onChangeHandler,
-      signupLoader
+      signupLoader,
     } = this.props;
-    console.log('============signupLoader========================')
-    console.log(this.props.handleSubmit())
-    console.log('====================================')
+    console.log("============signupLoader========================");
+    // console.log(this.props.handleSubmit)
+    console.log("====================================");
     return (
       <div>
         <form className="form form--horizontal wizard__form">
@@ -65,9 +66,12 @@ class WizardFormTwo extends Component {
             <span className="form__form-group-label">Locations</span>
             <div className="form__form-group-field">
               <MapApi getAddress={this.props.getAddress} />
-              <Tooltip TransitionComponent={Zoom} title="Enter your business location">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your business location"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -84,9 +88,12 @@ class WizardFormTwo extends Component {
                 onChange={onChangeHandler}
                 placeholder="Legal First Name"
               />
-              <Tooltip TransitionComponent={Zoom} title="Enter your legal first name">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your legal first name"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -102,9 +109,12 @@ class WizardFormTwo extends Component {
                 placeholder="Legal Last Name"
                 onChange={onChangeHandler}
               />
-              <Tooltip TransitionComponent={Zoom} title="Enter your legal last name">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your legal last name"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -160,9 +170,12 @@ class WizardFormTwo extends Component {
                 onChange={onChangeHandler}
                 placeholder="Zip Code"
               />
-              <Tooltip TransitionComponent={Zoom} title="Enter zip code of your location e.g 38000">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter zip code of your location e.g 38000"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -201,15 +214,14 @@ WizardFormTwo.propTypes = {
   city: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   zip: PropTypes.string.isRequired,
-  onChangeHandler: PropTypes.func.isRequired
+  onChangeHandler: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loader: state.employeeReducer.loader,
     done: state.employeeReducer.done,
-    reducerSignupLoader: state.employeeReducer.signupLoader
-
+    reducerSignupLoader: state.employeeReducer.signupLoader,
   };
 };
 
@@ -217,12 +229,12 @@ export default compose(
   reduxForm({
     form: "wizard", //                 <------ same form name
     destroyOnUnmount: false, //        <------ preserve form data
-    forceUnregisterOnUnmount: true // <------ unregister fields on unmount
+    forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   }),
   connect(
     mapStateToProps,
     {
-      resetSignUpLoader
+      resetSignUpLoader,
     }
   ),
   withRouter

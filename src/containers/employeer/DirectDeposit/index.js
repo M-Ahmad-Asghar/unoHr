@@ -208,8 +208,8 @@ class DirectDeposit extends Component {
 
     render() {
         let { loader, url, btnClick, dwollaDetails } = this.state;
-        console.log("URL:", url);
-        console.log("dwollaDetails:", dwollaDetails);
+        // console.log("URL:", url);
+        // console.log("dwollaDetails:", dwollaDetails);
 
         return (
             <div style={{padding: 30}}>

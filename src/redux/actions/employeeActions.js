@@ -2,7 +2,7 @@ import axios from "axios";
 // import { Toast } from "native-base";
 import { db } from "../../boot/firebase";
 import { toast } from "react-toastify";
-
+import { client_url, authApi } from "../../EndPoint";
 export const GETEMPLOYE = "GETEMPLOYE";
 export const GETEMPLOYEERR = "GETEMPLOYEERR";
 
@@ -16,7 +16,7 @@ export const UPDATE_EMPLOYEE_ERR = "UPDATE_EMPLOYEE_ERR";
 
 //ForgetPassword
 export function getEmployeData(id) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .where("employeeid", "==", id)
       .get()
@@ -27,7 +27,7 @@ export function getEmployeData(id) {
           let docid = doc.id;
           let final = {
             ...data,
-            docid
+            docid,
           };
           datatoStore = final;
         });
@@ -35,19 +35,19 @@ export function getEmployeData(id) {
         if (datatoStore.employeeid) {
           dispatch({
             type: GETEMPLOYE,
-            payload: datatoStore
+            payload: datatoStore,
           });
         } else {
           dispatch({
             type: GETEMPLOYEERR,
-            payload: "err"
+            payload: "err",
           });
         }
       })
       .catch(function(error) {
         dispatch({
           type: GETEMPLOYEERR,
-          payload: "err"
+          payload: "err",
         });
       });
   };
@@ -55,33 +55,29 @@ export function getEmployeData(id) {
 //ForgetPassword
 export function employeeSignup(data) {
   console.log("aciton file employee signUp: ", data);
-  return dispatch => {
+  return (dispatch) => {
     axios
-      .post(
-        "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/employeeSignUp",
-        data
-      )
-      .then(res => {
-        console.log("res", res.data);
+      .post(`${client_url}${authApi.emoloyee_singup}`, data)
+      .then((res) => {
+        // console.log("res", res);
 
-        if (res.data == "successfully signup") {
-          console.log("Successfully registered employee!");
+        if (res.status === 200) {
+          // console.log("Successfully registered employee!");
 
           toast.success("Successfully registered employee!");
           dispatch({ type: EMPLOYEESIGNUP });
         } else {
-          console.log("Error Has Occurred! Try again", res);
-          if(res.data.body._embedded.errors[0].message) {
-            toast.error(res.data.body._embedded.errors[0].message);
-            dispatch({ type: EMPLOYEESIGNUPERR });
-          } else {
-            toast.error(res.data.message);
-            dispatch({ type: EMPLOYEESIGNUPERR });
-          }
+          toast.error("Error Has Occurred! Try again");
+          // if (res.data.body._embedded.errors[0].message) {
+          // toast.error(res.data.body._embedded.errors[0].message);
+          dispatch({ type: EMPLOYEESIGNUPERR });
+          // } else {
+          //   toast.error(res.data.message);
+          //   dispatch({ type: EMPLOYEESIGNUPERR });
+          // }
         }
       })
-
-      .catch(err => {
+      .catch((err) => {
         toast.error("Error Has Occurred! Try again!");
         console.error("err", err);
         dispatch({ type: EMPLOYEESIGNUPERR });
@@ -90,13 +86,13 @@ export function employeeSignup(data) {
 }
 
 export function updateEmployeeMobNumber(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .doc(data.id)
-      .update({cell: data.cell})
+      .update({ cell: data.cell })
       .then(function(docRef) {
         dispatch({
-          type: "UPDATE_MOB_NUMBER"
+          type: "UPDATE_MOB_NUMBER",
         });
       })
       .catch(function(error) {
@@ -111,20 +107,20 @@ export function resetSignUpLoader() {
 
 export function updateEmployee(data) {
   console.log("your data is here============>", data);
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .doc(data.docid)
-      .update({ [data.name] : data.value})
+      .update({ [data.name]: data.value })
       .then(function(docRef) {
         dispatch({
-          type: UPDATE_EMPLOYEE
+          type: UPDATE_EMPLOYEE,
         });
         toast.success("Employee updated successfully!");
       })
       .catch(function(error) {
-        console.log("error is here===========>",error);
+        console.log("error is here===========>", error);
         dispatch({
-          type: UPDATE_EMPLOYEE_ERR
+          type: UPDATE_EMPLOYEE_ERR,
         });
         toast.error("An error occurred while updating employee!");
       });

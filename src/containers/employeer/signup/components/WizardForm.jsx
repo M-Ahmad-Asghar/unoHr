@@ -141,7 +141,6 @@ class WizardForm extends Component {
 
   nextPage = (e) => {
     e.preventDefault();
-    this.setState({ page: 2 });
     if (this.state.firstName == "") {
       toast.error("Please provide Your First Name");
     } else if (this.state.lastName == "") {
@@ -226,6 +225,8 @@ class WizardForm extends Component {
         isDirectDeposit: false,
         createdAt: new Date(),
         documents: this.props.documents,
+        district: this.state.district,
+        industry: this.state.industry,
         numVerifyTask: {
           AllotedTo: "My Own",
           title: "Verify Mobile Number",
@@ -235,10 +236,9 @@ class WizardForm extends Component {
           DueTime: new Date(),
           PostedTime: new Date(),
           TaskPurpose: "My Own",
-          district: this.state.district,
-          industry: this.state.industry,
         },
       };
+
       this.props.registerEmployer(data);
     }
   };
@@ -336,7 +336,7 @@ class WizardForm extends Component {
                 </div>
               </div>
               <div className="wizard__form-wrapper">
-                {page === 3 && (
+                {page === 1 && (
                   <WizardFormOne
                     onNumberStatus={this.onNumberStatus}
                     onEmailStatus={this.onEmailStatus}
@@ -382,7 +382,7 @@ class WizardForm extends Component {
                     getAddress={this.getAddress}
                   />
                 )}
-                {page === 1 && (
+                {page === 3 && (
                   <WizardFormThree
                     previousPage={this.previousPage}
                     onCheckoutToken={this.onCheckoutToken}
