@@ -101,25 +101,27 @@ class WizardForm extends Component {
   };
 
   nextPage = () => {
-    // if (!this.state.emailVerified) {
-    //   toast.error("Please Verify Your Email");
-    // } else if (!this.state.numberVerified) {
-    //   toast.error("Please verify your Number");
-    // } else if (this.state.EmpId.length != 8) {
-    //   toast.error("Please provide your valid 8 letter Id");
-    // } else if (this.state.password.length <= 7) {
-    //   toast.error("Password Must be greater than 8 letters");
-    // } else if (this.state.cPassword != this.state.password) {
-    //   toast.error("Password does not match");
-    // } else if (!this.state.empData.employeeid) {
-    //   toast.error("Id is incorrect provide correct id");
-    // } else if (this.state.empData.status == "active") {
-    //   toast.error("Id already in use!");
-    // } else {
-    if (this.state.page == 1) {
-      this.setState({ page: 2 });
+    if (!this.state.emailVerified) {
+      toast.error("Please Verify Your Email");
     }
+    //  else if (!this.state.numberVerified) {
+    //   toast.error("Please verify your Number");
     // }
+    else if (this.state.EmpId.length != 8) {
+      toast.error("Please provide your valid 8 letter Id");
+    } else if (this.state.password.length <= 7) {
+      toast.error("Password Must be greater than 8 letters");
+    } else if (this.state.cPassword != this.state.password) {
+      toast.error("Password does not match");
+    } else if (!this.state.empData.employeeid) {
+      toast.error("Id is incorrect provide correct id");
+    } else if (this.state.empData.status == "active") {
+      toast.error("Id already in use!");
+    } else {
+      if (this.state.page == 1) {
+        this.setState({ page: 2 });
+      }
+    }
   };
 
   previousPage = () => {
@@ -172,7 +174,7 @@ class WizardForm extends Component {
             employeeid: this.state.EmpId,
           },
         };
-  
+
         // toast.success("okay done!");
         this.props.employeeSignup(data);
       }
