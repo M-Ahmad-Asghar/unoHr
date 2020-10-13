@@ -4,9 +4,9 @@ let url = "http://localhost:5000";
 export let restful_url =
   "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi";
 
-// "https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
+// "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
 export const client_url =
-  "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
+  "https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
 
 export const dwollaApi = {
   customer_add_funding: "/dwolla/customer_Add_FundingSource",

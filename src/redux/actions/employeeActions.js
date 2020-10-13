@@ -61,7 +61,10 @@ export function employeeSignup(data) {
       .then((res) => {
         // console.log("res", res);
 
-        if (res.status === 200) {
+        if (res.data.message !== undefined) {
+          toast.error(res.data.message);
+          dispatch({ type: EMPLOYEESIGNUPERR });
+        } else if (res.status === 200) {
           // console.log("Successfully registered employee!");
 
           toast.success("Successfully registered employee!");
