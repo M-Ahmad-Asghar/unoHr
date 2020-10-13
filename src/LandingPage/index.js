@@ -59,7 +59,7 @@ const Landing = (props) => {
     props.startGetCurrentUser();
     props.startGetCurrentUserEmployee();
   }, []);
-  console.log("EMPLOADING", props.empLoading);
+
   useEffect(() => {
     if (props.app == "nill") {
       setLoader(false);
@@ -78,8 +78,6 @@ const Landing = (props) => {
   }, [props.app]);
 
   if (window.location.hash) {
-    console.log("if");
-    console.log(window.location.hash);
     try {
       localStorage.setItem("token", window.location.hash);
     } catch (error) {
