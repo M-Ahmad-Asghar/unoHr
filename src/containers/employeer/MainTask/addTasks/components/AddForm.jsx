@@ -192,7 +192,8 @@ class AddForm extends Component {
     }
     if (recurringTask) {
       toast.error("Recurring Task");
-    } else {
+    }
+     else {
       if (image === "") {
         let data = {
           title: this.state.title,
@@ -423,17 +424,19 @@ class AddForm extends Component {
                 </>
               )}
               <div className="form__form-group">
+                {/*
                 <FormControlLabel
-                  label="Task Never End"
-                  control={
-                    <Switch
-                      checked={recurringTask}
-                      onChange={this.handleSwitch}
-                      name="recurringTask"
-                      color="primary"
-                    />
-                  }
+                label="Task Never End"
+                control={
+                  <Switch
+                  checked={recurringTask}
+                  onChange={this.handleSwitch}
+                  name="recurringTask"
+                  color="primary"
+                  />
+                }
                 />
+              */}
                 <FormControlLabel
                   label="Task Completion Note"
                   control={
@@ -476,6 +479,7 @@ const mapStateToProps = (state) => ({
   loading: state.TaskReducer.loading,
 });
 
-export default connect(mapStateToProps, { addTask, addOwnTask, addEmpTask })(
-  withRouter(withStyles(styles)(AddForm))
-);
+export default connect(
+  mapStateToProps,
+  { addTask, addOwnTask, addEmpTask }
+)(withRouter(withStyles(styles)(AddForm)));

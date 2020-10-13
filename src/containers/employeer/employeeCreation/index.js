@@ -82,7 +82,6 @@ class AddEmpSteps extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("NEXT", nextProps);
     this.setState({
       sendLoader: false,
     });

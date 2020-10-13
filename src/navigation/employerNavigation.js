@@ -48,7 +48,6 @@ import ContactSupport from "../containers/employeer/contactSupport";
 import MyTickets from "../containers/employeer/contactSupport/myTickets";
 
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => {
-  console.log("US", authUser.uid);
   return (
     <Route
       {...rest}
@@ -145,7 +144,6 @@ class Router extends React.Component {
   render() {
     // console.log("match", this.props.match.url);
     const { user } = this.props;
-    console.log("USER", user);
     return (
       <MainWrapper>
         <main>
@@ -171,8 +169,6 @@ class Router extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("state", state.userReducer.userStatus);
-
   return {
     user: state.userReducer.user,
   };

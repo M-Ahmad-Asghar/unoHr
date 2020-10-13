@@ -96,6 +96,7 @@ class HorizontalForm extends Component {
 
   onChangeHandler = (e) => {
     const { name, value } = e.target;
+    console.log("NAME**", name, "VALUE", value);
     this.setState({ [name]: value });
   };
 
@@ -165,6 +166,8 @@ class HorizontalForm extends Component {
       toast.error("Please select the Employee State");
     } else if (this.state.industry == "") {
       toast.error("Please select the Employee Industry");
+    } else if (this.state.district.zipCode == undefined) {
+      toast.error("Please select a district");
     } else if (this.state.paymentMethod == "") {
       toast.error("Please select a payment method");
     } else if (this.state.HourlyRate == "") {
@@ -444,8 +447,9 @@ class HorizontalForm extends Component {
                     id="combo-box"
                     options={this.state.districts}
                     getOptionLabel={(option) =>
-                      option.zipCode !== undefined &&
-                      `${option.zipCode} - ${option.county}`
+                      option.zipCode !== undefined
+                        ? `${option.zipCode} - ${option.county}`
+                        : ""
                     }
                     style={{ width: "100%" }}
                     value={this.state.district}
