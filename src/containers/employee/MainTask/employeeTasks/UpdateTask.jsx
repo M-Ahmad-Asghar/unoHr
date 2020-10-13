@@ -16,7 +16,7 @@ class UpdateForm extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -31,30 +31,27 @@ class UpdateForm extends Component {
       DueTime: "",
       uid: "",
       TaskPurpose: "",
-      PostedTime: ""
+      PostedTime: "",
     };
   }
 
   onValueChange(obj) {
-    // console.log('alloted task obj is: ', obj)
     this.setState({
-      AllotedTo: obj.value
+      AllotedTo: obj.value,
     });
   }
   TaskPurposeHandler(obj) {
     this.setState({
-      TaskPurpose: obj.value
+      TaskPurpose: obj.value,
     });
   }
-  setDate = newDate => {
+  setDate = (newDate) => {
     this.setState({ DueTime: newDate });
   };
 
   componentDidMount() {
     let data = this.props.item;
-    console.log("=============from update did mount========");
-    console.log(data);
-    console.log("====================================");
+
     this.setState({
       id: data.id,
       title: data.title,
@@ -63,7 +60,7 @@ class UpdateForm extends Component {
       DueTime: data.DueTime,
       uid: data.uid,
       TaskPurpose: data.TaskPurpose,
-      PostedTime: data.PostedTime
+      PostedTime: data.PostedTime,
     });
   }
 
@@ -72,19 +69,19 @@ class UpdateForm extends Component {
   //     this.setState({ employees: this.props.nextProps });
   //   };
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-  AddTask = e => {
+  AddTask = (e) => {
     e.preventDefault();
 
     if (this.state.title == "" && this.state.Description == "") {
       console.log("Type the title of the task and description");
     } else if (this.state.AllotedTo == "") {
       this.setState({
-        AllotedTo: "not yet alloted"
+        AllotedTo: "not yet alloted",
       });
     } else {
       let data = {
@@ -95,15 +92,11 @@ class UpdateForm extends Component {
         DueTime: this.state.DueTime.toString(),
         PostedTime: this.state.PostedTime,
         TaskPurpose: this.state.TaskPurpose,
-        uid: this.state.uid
+        uid: this.state.uid,
       };
-
-      // console.log("====================================");
-      // console.log(data);
-      // console.log("====================================");
       this.props.updateTask(data);
 
-      console.log("Task updated successfully");
+      // console.log("Task updated successfully");
     }
     this.props.history.push("/employeer/employeeTask");
   };
@@ -173,7 +166,7 @@ class UpdateForm extends Component {
                     options={[
                       { value: "Arslan", label: "Arslan" },
                       { value: "Asif", label: "Asif" },
-                      { value: "Ali", label: "Ali" }
+                      { value: "Ali", label: "Ali" },
                     ]}
                   />
                 </div>
@@ -215,7 +208,7 @@ class UpdateForm extends Component {
 }
 
 export default reduxForm({
-  form: "horizontal_form" // a unique identifier for this form
+  form: "horizontal_form", // a unique identifier for this form
 })(
   translate("common")(
     connect(

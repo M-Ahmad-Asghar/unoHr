@@ -24,7 +24,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDollarSign,
-  faGripLinesVertical
+  faGripLinesVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { getStartPayStubs } from "../../../../redux/actions/paystubsActions";
 import { compose } from "recompose";
@@ -32,79 +32,79 @@ import { BeatLoader } from "react-spinners";
 
 import Axios from "axios";
 import EndPoint from "../../../../EndPoint";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 import "../styles/style.css";
 library.add(faDollarSign);
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: "100%",
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    textAlign: "center"
+    textAlign: "center",
   },
   textField: {
     margin: "0px 8px",
     // marginLeft: theme.spacing.unit,
     // marginRight: theme.spacing.unit,
-    width: "100%"
+    width: "100%",
   },
   menu: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 const currencies = [
   {
     value: "USD",
-    label: "$(USD)"
+    label: "$(USD)",
   },
   {
     value: "EUR",
-    label: "€(EUR)"
+    label: "€(EUR)",
   },
   {
     value: "BTC",
-    label: "฿(BTC)"
+    label: "฿(BTC)",
   },
   {
     value: "JPY",
-    label: "¥(JPY)"
-  }
+    label: "¥(JPY)",
+  },
 ];
 
 const weeks = [
   {
     value: "Mon",
-    label: "Mon"
+    label: "Mon",
   },
   {
     value: "Tue",
-    label: "Tue"
+    label: "Tue",
   },
   {
     value: "Wed",
-    label: "Wed"
+    label: "Wed",
   },
   {
     value: "Thur",
-    label: "Thur"
+    label: "Thur",
   },
   {
     value: "Fri",
-    label: "Fri"
+    label: "Fri",
   },
   {
     value: "Sat",
-    label: "Sat"
+    label: "Sat",
   },
   {
     value: "Sun",
-    label: "Sun"
-  }
+    label: "Sun",
+  },
 ];
 
 class SettingMain extends React.Component {
@@ -115,14 +115,13 @@ class SettingMain extends React.Component {
       token: "",
       checked: ["notif"],
       currency: "USD",
-      loader: false
+      loader: false,
     };
   }
 
   componentWillMount() {
     try {
       let val = localStorage.getItem("token");
-      console.log("val", val);
 
       if (val) {
         this.props.getStartPayStubs(this.props.user.employeeid);
@@ -135,7 +134,7 @@ class SettingMain extends React.Component {
     }
   }
 
-  handleToggle = value => () => {
+  handleToggle = (value) => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -147,39 +146,35 @@ class SettingMain extends React.Component {
     }
 
     this.setState({
-      checked: newChecked
+      checked: newChecked,
     });
   };
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
   backupHandler = () => {
-    console.log("paystubs", this.props.paystubs);
     this.setState({ loader: true });
     let token = this.state.token;
     let newtoken = token.slice(14, token.length);
     var n = newtoken.indexOf("&");
     newtoken = newtoken.slice(0, n);
-    console.log("t", newtoken);
 
-    if(this.props.paystubs.length > 0) {
-
-    Axios.post(EndPoint + "/backup/savetodropbox", {
-      data: this.props.paystubs,
-      token: newtoken
-    })
-      .then(res => {
-        this.setState({ loader: false });
-        toast.success("Successfully Backup your data");
+    if (this.props.paystubs.length > 0) {
+      Axios.post(EndPoint + "/backup/savetodropbox", {
+        data: this.props.paystubs,
+        token: newtoken,
       })
-      .catch(err => {
-        console.log("err", err);
-        this.setState({ loader: false });
-        toast.error("Error occur, try again later");
-      });
+        .then((res) => {
+          this.setState({ loader: false });
+          toast.success("Successfully Backup your data");
+        })
+        .catch((err) => {
+          this.setState({ loader: false });
+          toast.error("Error occur, try again later");
+        });
     } else {
-      toast.err("No data found for backup!")
+      toast.err("No data found for backup!");
     }
     // Axios.post('',)
   };
@@ -205,7 +200,7 @@ class SettingMain extends React.Component {
                       style={{
                         fontWeight: "bold",
                         cursor: "pointer",
-                        color: "blue"
+                        color: "blue",
                       }}
                       onClick={this.backupHandler}
                     >
@@ -215,15 +210,14 @@ class SettingMain extends React.Component {
                 </ListItem>
               ) : (
                 <ListItem style={{ textAlign: "center" }}>
-
-                {/* //development */}
+                  {/* //development */}
                   {/* <a
                     style={{ fontWeight: "bold", marginLeft: 50 }}
                     href="https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=335e2580zjoxj1u&redirect_uri=http://localhost:3000/"
                   >
                     For Backup - Login With Dropbox
                   </a> */}
-                   {/* For production */}
+                  {/* For production */}
                   <a
                     style={{ fontWeight: "bold", marginLeft: 50 }}
                     href="https://www.dropbox.com/oauth2/authorize?response_type=token&client_id=335e2580zjoxj1u&redirect_uri=https://promising-saga-232017.firebaseapp.com/"
@@ -239,18 +233,21 @@ class SettingMain extends React.Component {
                   <Notification />
                 </ListItemIcon>
                 <ListItemText primary="Notifications" />
-                <ListItemSecondaryAction style={{marginRight: 28}}>
+                <ListItemSecondaryAction style={{ marginRight: 28 }}>
                   <Switch
                     onChange={this.handleToggle("notif")}
                     checked={this.state.checked.indexOf("notif") !== -1}
                   />
                 </ListItemSecondaryAction>
-                <Tooltip TransitionComponent={Zoom} title="Turn on/off notifications">
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title="Turn on/off notifications"
+                >
                   <IconButton className="helpButton">
-                    <img className="helpImage" src={HelpIcon} alt="help"/>
+                    <img className="helpImage" src={HelpIcon} alt="help" />
                   </IconButton>
                 </Tooltip>
-              </ListItem>            
+              </ListItem>
             </List>
           </CardBody>
         </Card>
@@ -259,16 +256,16 @@ class SettingMain extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.employeeUserReducer.currentEmp,
-  paystubs: state.payStubsReducer.paystubs
+  paystubs: state.payStubsReducer.paystubs,
 });
 
 export default compose(
   connect(
     mapStateToProps,
     {
-      getStartPayStubs
+      getStartPayStubs,
     }
   ),
   withStyles(styles)

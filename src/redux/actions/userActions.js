@@ -11,6 +11,7 @@ export const CHANGE_ADDRESS_ERR = "CHANGE_ADDRESS_ERR";
 export const UPDATE_FACILITY = "UPDATE_FACILITY";
 export const UPDATE_FACILITY_ERR = "UPDATE_FACILITY_ERR";
 export const SET_DEFAULT = "SET_DEFAULT";
+export const USER_LOADING = "USER_LOADING";
 
 //Login
 export function startLogin(data) {
@@ -139,12 +140,20 @@ export function startLogout(data) {
     );
   };
 }
+function loading() {
+  return (dispatch) => {
+    dispatch({
+      type: USER_LOADING,
+      payload: true,
+    });
+  };
+}
 
 //current user get;
 export function startGetCurrentUser() {
   return (dispatch) => {
     //   var user = auth.currentUser;
-
+    dispatch(loading);
     auth.onAuthStateChanged((user) => {
       console.log("current user", user);
       if (user) {
@@ -162,7 +171,6 @@ export function startGetCurrentUser() {
               };
               datatoStore = final;
             });
-
             if (datatoStore.stripeCustomer) {
               if (datatoStore.status == "active") {
                 let datas = {

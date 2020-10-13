@@ -2284,7 +2284,7 @@ var dwolla =
 	  if (!predicate(ES, value)) {
 	    throw new $TypeError(argumentName + ' must be a ' + recordType);
 	  }
-	  console.log(predicate(ES, value), value);
+	//   console.log(predicate(ES, value), value);
 	};
 
 /***/ },

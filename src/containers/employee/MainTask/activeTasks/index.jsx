@@ -60,8 +60,6 @@ class CompletedTask extends Component {
   render() {
     const { data ,filterDate} = this.state;
     const { t } = this.props;
-
-    // console.log(data);
     return (
       <Container>
         <Row>

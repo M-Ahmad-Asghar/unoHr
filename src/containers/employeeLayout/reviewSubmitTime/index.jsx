@@ -6,7 +6,7 @@ import {
   Container,
   Button,
   ButtonToolbar,
-  Row
+  Row,
 } from "reactstrap";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -37,73 +37,72 @@ class ReviewTimeLine extends React.Component {
       submitLoader: false,
       Monday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Tuesday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Wednesday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Thursday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Friday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Saturday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
       Sunday: {
         totaltime: "nill",
-        totalPay: "nill"
+        totalPay: "nill",
       },
-      submitDisable: false
+      submitDisable: false,
     };
   }
 
   componentDidMount = () => {
     let dataArry = this.props.employeeDay;
-    console.log("data in re", dataArry);
 
     let Monday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Tuesday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Wednesday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Thursday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Friday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Saturday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
     let Sunday = {
       totaltime: "0:0:0",
-      totalPay: 0
+      totalPay: 0,
     };
 
     // let timeArry = this.props.employeeDay.dutyTime;
 
     if (this.props.employeeDay.length >= 1) {
-      this.props.employeeDay.forEach(element => {
+      this.props.employeeDay.forEach((element) => {
         if (element.type === "Punch") {
           if (element.status == "checkOut") {
             switch (element.day) {
@@ -241,13 +240,12 @@ class ReviewTimeLine extends React.Component {
         Thursday,
         Friday,
         Saturday,
-        Sunday
+        Sunday,
       });
     }
 
     let total = 0;
-    console.log("=====================");
-    console.log(dataArry);
+
     if (this.props.employee.timeMode === "Punch") {
       for (let i = 0; i < dataArry.length; i++) {
         if (dataArry[i].status == "checkOut") {
@@ -266,7 +264,7 @@ class ReviewTimeLine extends React.Component {
     // }
 
     this.setState({
-      weekTotal: total.toFixed(2)
+      weekTotal: total.toFixed(2),
     });
   };
 
@@ -303,10 +301,10 @@ class ReviewTimeLine extends React.Component {
     return totalTime;
   };
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.submitStatus == "done") {
       this.setState({
-        submitLoader: false
+        submitLoader: false,
       });
 
       toast.success("Successfully Submitted.");
@@ -315,7 +313,7 @@ class ReviewTimeLine extends React.Component {
     } else if (nextProps.submitStatus == "error") {
       this.setState({
         submitLoader: false,
-        submitDisable: false
+        submitDisable: false,
       });
       toast.error("Error occured, try again");
     }
@@ -324,7 +322,7 @@ class ReviewTimeLine extends React.Component {
   submitWeek = () => {
     this.setState({
       submitLoader: true,
-      submitDisable: true
+      submitDisable: true,
     });
 
     let dataArry = this.state.employeDay;
@@ -382,9 +380,8 @@ class ReviewTimeLine extends React.Component {
         employerUid: this.props.currentEmp.employeruid,
         weekData: this.state.employeDay,
         submitDate: new Date().toString(),
-        docid: false
+        docid: false,
       };
-      console.log("undefined", data);
     } else {
       data = {
         grossPay: this.state.weekTotal,
@@ -397,9 +394,8 @@ class ReviewTimeLine extends React.Component {
         employerUid: this.props.currentEmp.employeruid,
         weekData: this.state.employeDay,
         docid: this.props.weekStatus.id,
-        submitDate: new Date().toString()
+        submitDate: new Date().toString(),
       };
-      console.log("not undfind", data);
     }
 
     this.props.submitRecord(data);
@@ -412,7 +408,7 @@ class ReviewTimeLine extends React.Component {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
 
   render() {
@@ -511,10 +507,10 @@ class ReviewTimeLine extends React.Component {
 }
 
 ReviewTimeLine.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProp = state => ({
+const mapStateToProp = (state) => ({
   employee: state.employeeUserReducer.currentEmp,
   currentEmp: state.employeeUserReducer.currentEmp,
   done: state.attendanceReducer.done,
@@ -522,7 +518,7 @@ const mapStateToProp = state => ({
   employeeDay: state.attendanceReducer.employeeDay,
   employeeCheckIn: state.attendanceReducer.employeeCheckIn,
   empOldWeekStatus: state.attendanceReducer.empOldWeekStatus,
-  weekStatus: state.attendanceReducer.weekStatus
+  weekStatus: state.attendanceReducer.weekStatus,
 });
 
 export default connect(

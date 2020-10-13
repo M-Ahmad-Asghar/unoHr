@@ -44,7 +44,7 @@ const MyTickets = () => {
   }));
 
   useEffect(() => {
-    console.log("here is the status=====>", myTicketsStatus);
+
     if (myTicketsStatus === "done") {
       setLoader(false);
     }

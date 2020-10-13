@@ -44,8 +44,6 @@ class EmployeeTask extends Component {
   render() {
     const { data } = this.state;
     const {t } = this.props;
-
-    console.log(data);
     return (
       <Container>
         <Row>

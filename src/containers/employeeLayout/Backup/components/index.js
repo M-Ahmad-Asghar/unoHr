@@ -22,7 +22,7 @@ const styles = theme => ({
 
 class SettingMain extends React.Component {
   componentDidMount() {
-    console.log("window ", window.location.hash);
+    // console.log("window ", window.location.hash);
    
   }
 

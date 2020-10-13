@@ -97,8 +97,6 @@ class WizardForm extends Component {
   };
 
   numberChangeHandler = (number) => {
-    console.log("number checker", number);
-
     this.setState({
       mobileNumber: number,
     });
@@ -291,13 +289,11 @@ class WizardForm extends Component {
   };
 
   getPlan = (e) => {
-    console.log(e.target.value);
     this.setState({
       plan: e.target.value,
     });
   };
   getAddress = (address) => {
-    console.log("getAddress", address);
     this.setState({
       address,
     });

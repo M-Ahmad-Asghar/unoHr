@@ -23,10 +23,9 @@ class TimeSheet extends Component {
 
       startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
       startDate = moment(startDate).format("MM/DD/YYYY");
-      console.log("startDate", startDate);
+  
       stopDate.setDate(stopDate.getDate() + ((0 + 7 - stopDate.getDay()) % 7));
       stopDate = moment(stopDate).format("MM/DD/YYYY");
-      console.log(stopDate);
       let checkingDate = moment(nextProps.weekStatus.submitDate).format(
         "MM/DD/YYYY"
       );
@@ -40,7 +39,7 @@ class TimeSheet extends Component {
   }
 
   componentDidMount() {
-    console.log("weekStatus", this.props.weekStatus);
+  
     if (this.props.weekStatus !== undefined) {
       let today = new Date();
       let startDate = today;
@@ -48,17 +47,14 @@ class TimeSheet extends Component {
 
       startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
       startDate = moment(startDate).format("MM/DD/YYYY");
-      console.log("startDate", startDate);
+    
       stopDate.setDate(stopDate.getDate() + ((0 + 7 - stopDate.getDay()) % 7));
       stopDate = moment(stopDate).format("MM/DD/YYYY");
-      console.log(stopDate);
+   
       let checkingDate = moment(this.props.weekStatus.submitDate).format(
         "MM/DD/YYYY"
       );
-      console.log(
-        "new logic",
-        checkingDate >= startDate && checkingDate <= stopDate
-      );
+     
 
       let result = checkingDate >= startDate && checkingDate <= stopDate;
       this.setState({

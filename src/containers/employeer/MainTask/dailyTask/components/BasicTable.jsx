@@ -73,9 +73,6 @@ class EmployeeTasks extends Component {
 
   onChangeHandler = (e) => {
     this.setState({ completionNote: e.target.value });
-    console.log("========completionNote============================");
-    console.log(e.target.value);
-    console.log("====================================");
   };
 
   CompleteTask = () => {
@@ -98,12 +95,9 @@ class EmployeeTasks extends Component {
         uid: this.state.taskDetail.uid,
       };
 
-      console.log("==========data==========================");
-      console.log(data);
-      console.log("====================================");
       this.props.completedTask(data);
       // toast.success("Task completed successfully");
-      // console.log("Task completed successfully");
+
       // this.setState({ completionNote: "" });
     } else {
       toast.error("Failed to complete this task, please write description");
@@ -115,10 +109,6 @@ class EmployeeTasks extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    console.log("===========nextProps=========================");
-    console.log(nextProps);
-    console.log("====================================");
-
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
@@ -149,7 +139,7 @@ class EmployeeTasks extends Component {
 
   deleteTask = () => {
     this.setState({ deleteLoader: true });
-    // console.log("check del id:", this.state.delId);
+
     this.props.deleteTask(this.state.delId);
     // toast.success("Own Task Delete Successfully!");
   };
@@ -163,7 +153,6 @@ class EmployeeTasks extends Component {
   };
 
   handleUpdateDialogOpen = (data) => {
-    console.log("check data ::::: ", data);
     this.setState({ updateDialogOpen: true });
   };
 
@@ -227,7 +216,6 @@ class EmployeeTasks extends Component {
                 items
                   .filter(this.searchingForName(searchQuery))
                   .map((item, index) => {
-                    console.log("F", item, "888", item.recurringTask);
                     return (
                       <Row
                         className="taskRow"
@@ -521,10 +509,13 @@ const mapStateToProps = (state) => ({
 export default reduxForm({
   form: "ee_task_detail", // a unique identifier for this form
 })(
-  connect(mapStateToProps, {
-    getTask,
-    getEmployees,
-    deleteTask,
-    completedTask,
-  })(EmployeeTasks)
+  connect(
+    mapStateToProps,
+    {
+      getTask,
+      getEmployees,
+      deleteTask,
+      completedTask,
+    }
+  )(EmployeeTasks)
 );

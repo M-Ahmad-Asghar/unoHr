@@ -53,7 +53,7 @@ class UpdateForm extends Component {
   };
 
   onValueChange(obj) {
-    // console.log('alloted task obj is: ', obj)
+  
     this.setState({
       AllotedTo: obj.value
     });
@@ -84,9 +84,7 @@ class UpdateForm extends Component {
         uid: this.state.uid,
         employeeid: fields[1]
       };
-      console.log("===========data=========================");
-      console.log(data);
-      console.log("====================================");
+ 
       this.props.updateTask(data);
     }
   };
@@ -95,9 +93,7 @@ class UpdateForm extends Component {
   };
   componentDidMount() {
     let data = this.props.item;
-    console.log("=============from update did mount========");
-    console.log(data);
-    console.log("====================================");
+   
     this.setState({
       id: data.id,
       title: data.title,
@@ -131,9 +127,7 @@ class UpdateForm extends Component {
   render() {
     const { employees } = this.props;
     const { title, Description, AllotedTo, DueTime, updateLoader } = this.state;
-    console.log("====================================", title);
-    console.log(Description);
-    console.log("====================================", AllotedTo);
+   
     return (
       <Col md={12} lg={12}>
         <Card>

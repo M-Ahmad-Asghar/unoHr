@@ -13,10 +13,11 @@ export const CHANGE_ADDRESS_EMP_ERR = "CHANGE_ADDRESS_EMP_ERR";
 
 export const FORGETPASSWORD = "FORGETPASSWORD";
 export const FORGETPASSWORDERR = "FORGETPASSWORDERR";
+export const USER_LOADING = "USER_LOADING";
 
 //Login
 export function startLoginEmployee(data) {
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
       .where("email", "==", data.email)
       .get()
@@ -27,7 +28,7 @@ export function startLoginEmployee(data) {
           let docid = doc.id;
           let final = {
             ...data,
-            docid
+            docid,
           };
           datatoStore = final;
         });
@@ -35,12 +36,12 @@ export function startLoginEmployee(data) {
         if (datatoStore.employeeid) {
           auth
             .signInWithEmailAndPassword(data.email, data.password)
-            .then(user => {
-              auth.onAuthStateChanged(user => {
+            .then((user) => {
+              auth.onAuthStateChanged((user) => {
                 if (user) {
                   let data = {
                     ...datatoStore,
-                    uid: user.uid
+                    uid: user.uid,
                   };
 
                   try {
@@ -52,7 +53,7 @@ export function startLoginEmployee(data) {
 
                   dispatch({
                     type: EMPLOYEELOGIN,
-                    payload: data
+                    payload: data,
                   });
                 } else {
                   console.log("Error occoured Try again!");
@@ -60,7 +61,7 @@ export function startLoginEmployee(data) {
 
                   dispatch({
                     type: EMPLOYEELOGINERR,
-                    payload: new Date()
+                    payload: new Date(),
                   });
                 }
               });
@@ -71,7 +72,7 @@ export function startLoginEmployee(data) {
 
               dispatch({
                 type: EMPLOYEELOGINERR,
-                payload: new Date()
+                payload: new Date(),
               });
               // ...
             });
@@ -80,7 +81,7 @@ export function startLoginEmployee(data) {
           toast.error("User Not Registered Yet! Try Again");
           dispatch({
             type: EMPLOYEELOGINERR,
-            payload: new Date()
+            payload: new Date(),
           });
         }
       })
@@ -90,7 +91,7 @@ export function startLoginEmployee(data) {
 
         dispatch({
           type: EMPLOYEELOGINERR,
-          payload: new Date()
+          payload: new Date(),
         });
       });
   };
@@ -98,7 +99,7 @@ export function startLoginEmployee(data) {
 
 //Logout
 export function startLogoutEmployee(data) {
-  return dispatch => {
+  return (dispatch) => {
     auth.signOut().then(
       function(user) {
         console.log("user from logout", user);
@@ -113,7 +114,7 @@ export function startLogoutEmployee(data) {
         toast.success("Successfully Logout");
 
         dispatch({
-          type: EMPLOYEELOGOUT
+          type: EMPLOYEELOGOUT,
         });
       },
       function(error) {
@@ -122,13 +123,22 @@ export function startLogoutEmployee(data) {
     );
   };
 }
+function loading() {
+  return (dispatch) => {
+    dispatch({
+      type: USER_LOADING,
+      payload: true,
+    });
+  };
+}
 
 //current user get;
 export function startGetCurrentUserEmployee() {
-  return dispatch => {
+  return (dispatch) => {
     //   var user = auth.currentUser;
     //   console.log('current user',user);
-    auth.onAuthStateChanged(user => {
+    dispatch(loading);
+    auth.onAuthStateChanged((user) => {
       if (user) {
         db.collection("employees")
           .where("email", "==", user.email)
@@ -140,7 +150,7 @@ export function startGetCurrentUserEmployee() {
               let docid = doc.id;
               let final = {
                 ...data,
-                docid
+                docid,
               };
               datatoStore = final;
             });
@@ -148,24 +158,24 @@ export function startGetCurrentUserEmployee() {
             if (datatoStore.employeeid) {
               let data = {
                 ...datatoStore,
-                uid: user.uid
+                uid: user.uid,
               };
 
               dispatch({
                 type: EMPLOYEEGETUSER,
-                payload: data
+                payload: data,
               });
             } else {
               dispatch({
                 type: EMPLOYEEGETUSERERR,
-                payload: "nill"
+                payload: "nill",
               });
             }
           });
       } else {
         dispatch({
           type: EMPLOYEEGETUSERERR,
-          payload: "nill"
+          payload: "nill",
         });
       }
     });
@@ -174,35 +184,33 @@ export function startGetCurrentUserEmployee() {
 
 //ForgetPassword
 export function startRessetPassword(data) {
-  return dispatch => {
+  return (dispatch) => {
     auth
       .sendPasswordResetEmail(data)
       .then(function() {
-
-        toast.success('Please Check Your Email Address!')
+        toast.success("Please Check Your Email Address!");
         dispatch({
-          type:FORGETPASSWORD
-        })
+          type: FORGETPASSWORD,
+        });
       })
       .catch(function(error) {
         // An error happened.
         toast.error("Error Occoureds! Try Again");
         dispatch({
-          type:FORGETPASSWORDERR
-        })
+          type: FORGETPASSWORDERR,
+        });
       });
   };
 }
-
 
 export function changeAddress(newAddress) {
   console.log("==========action file==========================");
   console.log(newAddress);
   console.log("====================================");
 
-  return dispatch => {
+  return (dispatch) => {
     db.collection("employees")
-     .doc(newAddress.docid)
+      .doc(newAddress.docid)
       .update(newAddress)
       .then(function(doc) {
         console.log("=========doc data===========================");
@@ -211,11 +219,13 @@ export function changeAddress(newAddress) {
 
         dispatch({
           type: CHANGE_ADDRESS_EMP,
-          payload: newAddress
+          payload: newAddress,
         });
       })
       .catch(function(error) {
-        console.log("=========CHANGE_ADDRESS_EMP_ERR===========================");
+        console.log(
+          "=========CHANGE_ADDRESS_EMP_ERR==========================="
+        );
         console.log(error);
         console.log("====================================");
         dispatch({

@@ -67,8 +67,6 @@ class TopbarProfile extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("state from props", state);
-
   return {
     user: state.employeeUserReducer.currentEmp,
     err: state.employeeUserReducer.getUserErr,

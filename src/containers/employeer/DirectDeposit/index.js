@@ -109,7 +109,7 @@ class DirectDeposit extends Component {
         let { routingNumber, accountNumber, accountType, nickName } = this.state;
         if( routingNumber === '' || accountNumber === '' || accountType === '' || nickName === '' ) {
             toast.error('All fields are required!')
-            console.log(routingNumber, accountNumber, accountType, nickName)
+    
         } else {
             let bankAccountType = accountType;
             let nickname = nickName;
@@ -180,13 +180,13 @@ class DirectDeposit extends Component {
                     }
 
                     if (res) {
-                        console.log("Response:", res);
+                     
                         let fundingSource = '';
                         fundingSource = res._links['funding-source'].href;
 
                         if (fundingSource !== '') {
                             let id = _this.props.user.docid;
-                            console.log("Funding Source", fundingSource);
+                           
 
                             _this.props.saveFundingSource({ id, url: fundingSource })
 
@@ -195,7 +195,7 @@ class DirectDeposit extends Component {
                         }
                     }
 
-                    console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
+                   
                 });
             } else {
                 toast.error('Token not found. Try later!');
@@ -208,8 +208,7 @@ class DirectDeposit extends Component {
 
     render() {
         let { loader, url, btnClick, dwollaDetails } = this.state;
-        // console.log("URL:", url);
-        // console.log("dwollaDetails:", dwollaDetails);
+       
 
         return (
             <div style={{padding: 30}}>

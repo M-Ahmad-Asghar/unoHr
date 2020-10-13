@@ -95,7 +95,7 @@ class ManualTime extends Component {
       this.setState({
         loader: this.dayNames[day]
       });
-      console.log("CheckInTime", CheckInTime);
+     
 
       if (CheckOutTime < CheckInTime) {
         CheckOutTime.setDate(CheckOutTime.getDate() + 1);
@@ -117,12 +117,11 @@ class ManualTime extends Component {
       msec -= ss * 1000;
 
       let dutyTime = hh + ":" + mm + ":" + ss;
-      console.log("==============dutyTime======================", dutyTime);
-      console.log(typeof dutyTime);
+    
 
       let hourlyPayRate = Number(this.props.currentEmp.HourlyRate);
 
-      console.log("hRate", hourlyPayRate);
+   
 
       let hrPay = hh * hourlyPayRate;
       let minPay = mm * (hourlyPayRate / 60);
@@ -149,7 +148,7 @@ class ManualTime extends Component {
           status: "checkOut",
           id: preAttd[0].id
         };
-        console.log("fData", checkOutData);
+       
         this.props.updateAttnd(checkOutData);
       } else {
         let checkOutData = {
@@ -165,7 +164,7 @@ class ManualTime extends Component {
           employerUid: this.props.currentEmp.employeruid,
           type: "Manual"
         };
-        console.log("fData", checkOutData);
+     
         this.props.recordAttendence(checkOutData);
       }
     }
@@ -198,13 +197,13 @@ class ManualTime extends Component {
   }
 
   componentDidMount() {
-    console.log("empDay",this.props.employeeDay);
+   
     let obj = {};
     let earnObj = {};
     let days = [];
     this.props.employeeDay.forEach(element => {
       let getKey = this.dayNames[element.day];
-      console.log("getKey", getKey);
+     
 
       obj = { ...obj, [getKey]: element.dutyTime };
       earnObj = { ...earnObj, [getKey]: element.dayPay };
@@ -327,7 +326,7 @@ class ManualTime extends Component {
                   this.setState({
                     mondayEndTime: e._d
                   });
-                  console.log("time for", e);
+                 
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -440,7 +439,7 @@ class ManualTime extends Component {
                   this.setState({
                     tuesdayEndTime: e._d
                   });
-                  console.log("time for", e);
+                 
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -552,7 +551,7 @@ class ManualTime extends Component {
                   this.setState({
                     wednesdayEndTime: e._d
                   });
-                  console.log("time for", e);
+                  
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -645,7 +644,7 @@ class ManualTime extends Component {
                   this.setState({
                     thursdayStartTime: e._d
                   });
-                  console.log("startTime", e._d);
+                 
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -669,7 +668,7 @@ class ManualTime extends Component {
                   this.setState({
                     thursdayEndTime: e._d
                   });
-                  console.log("end", e);
+               
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -785,7 +784,7 @@ class ManualTime extends Component {
                   this.setState({
                     fridayEndTime: e._d
                   });
-                  console.log("time for", e);
+            
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -897,7 +896,7 @@ class ManualTime extends Component {
                   this.setState({
                     saturdayEndTime: e._d
                   });
-                  console.log("time for", e);
+               
                 }}
                 margin="normal"
                 component={renderTimePickerField}
@@ -1013,7 +1012,7 @@ class ManualTime extends Component {
                   this.setState({
                     sundayEndTime: e._d
                   });
-                  console.log("time for", e);
+               
                 }}
                 margin="normal"
                 component={renderTimePickerField}

@@ -8,7 +8,7 @@ import { countEmployeePaperWork } from "../../../redux/actions/paperWorkActions"
 import {
   getEmployeeAttendance,
   getEmployeStatus,
-  getWeekStatus
+  getWeekStatus,
 } from "../../../redux/actions/attendanceAction";
 
 import Item from "./components/Item";
@@ -27,7 +27,7 @@ class Dashboard extends PureComponent {
     papersCount: 0,
     statement: "No activity yet",
     employee: "Naveed",
-    curTime: new Date()
+    curTime: new Date(),
   };
 
   componentDidMount() {
@@ -41,25 +41,25 @@ class Dashboard extends PureComponent {
     this.props.getWeekStatus(this.props.user.employeeid);
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       let selectedTasks = [];
       selectedTasks = nextProps.tasks.filter(
-        task =>
+        (task) =>
           moment(task.DueTime).format("MMM DD, YYYY") ===
           moment().format("MMM DD, YYYY")
       );
       this.setState({
         loader: false,
         selectedTasks,
-        tasks: nextProps.tasks
+        tasks: nextProps.tasks,
       });
     }
 
     if (nextProps.employeeCountStatus === "done") {
       this.setState({
         loader: false,
-        papersCount: nextProps.employeeDocsCount
+        papersCount: nextProps.employeeDocsCount,
       });
     }
 
@@ -69,7 +69,7 @@ class Dashboard extends PureComponent {
         let statement = "";
         let sameEmpAtt = [];
         sameEmpAtt = nextProps.employeeAttendances.filter(
-          att => att.employeeUid === emp.employeeid
+          (att) => att.employeeUid === emp.employeeid
         );
         sameEmpAtt = sameEmpAtt.sort(function(a, b) {
           return (
@@ -99,7 +99,7 @@ class Dashboard extends PureComponent {
 
         this.setState({
           statement,
-          empAttendances: nextProps.employeeAttendances
+          empAttendances: nextProps.employeeAttendances,
         });
       }
     }
@@ -107,7 +107,6 @@ class Dashboard extends PureComponent {
 
   render() {
     let { tasks, empAttendances, papersCount, statement } = this.state;
-    console.log("empAttendances===>", empAttendances);
 
     return (
       <Container className="dashboard">
@@ -125,7 +124,7 @@ class Dashboard extends PureComponent {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     tasks: state.employeeTaskReducer.AllTask,
     user: state.employeeUserReducer.currentEmp,
@@ -134,7 +133,7 @@ const mapStateToProps = state => {
     employeeCountStatus: state.paperWorkReducer.employeeCountStatus,
     employeeAttendances: state.attendanceReducer.employeeAttendances,
     getEmployeeAttendancesStatus:
-      state.attendanceReducer.getEmployeeAttendancesStatus
+      state.attendanceReducer.getEmployeeAttendancesStatus,
   };
 };
 
@@ -145,6 +144,6 @@ export default connect(
     countEmployeePaperWork,
     getEmployeeAttendance,
     getEmployeStatus,
-    getWeekStatus
+    getWeekStatus,
   }
 )(Dashboard);

@@ -9,8 +9,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import { updateEmployee } from "../../../../redux/actions/profileAction";
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 import { toast } from "react-toastify";
 
@@ -25,19 +25,19 @@ function FormDialog(props) {
 
   React.useEffect(() => {
     // console.log("value is here", props.value);
-     if (
-       props.title &&
-       props.type &&
-       props.value &&
-       props.newProps &&
-       props.docid
-     ) {
-       setTitle(props.title);
-       setType(props.type);
-       setOnChangeValue(props.value.trim());
-       setNewProps(props.newProps);
-       setDocId(props.docid);
-     }
+    if (
+      props.title &&
+      props.type &&
+      props.value &&
+      props.newProps &&
+      props.docid
+    ) {
+      setTitle(props.title);
+      setType(props.type);
+      setOnChangeValue(props.value.trim());
+      setNewProps(props.newProps);
+      setDocId(props.docid);
+    }
   }, [props.title, props.type, props.value, props.newProps, props.docid]);
 
   const handleClickOpen = () => {
@@ -60,8 +60,6 @@ function FormDialog(props) {
       props.updateEmployee(data, handleClose);
     }
   };
-
-  console.log("onChang", onChangeValue);
 
   return (
     <div>

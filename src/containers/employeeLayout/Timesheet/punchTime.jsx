@@ -11,7 +11,7 @@ import {
   CardBody,
   Input,
   CardHeader,
-  Collapse
+  Collapse,
 } from "reactstrap";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
@@ -26,7 +26,7 @@ import {
   employeCheckOut,
   breakStart,
   breakEnd,
-  defaultValue
+  defaultValue,
 } from "../../../redux/actions/attendanceAction";
 import { connect } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -61,24 +61,24 @@ class TimeSheet extends React.Component {
       breakData: {},
       lunchBreak: {},
       breakStatus: false,
-      lunchBreakStatus: false
+      lunchBreakStatus: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      weekStatus: nextProps.weekStatus
+      weekStatus: nextProps.weekStatus,
     });
 
     this.setState({
-      employeDay: nextProps.employeeDay
+      employeDay: nextProps.employeeDay,
     });
 
     if (nextProps.employeeCheckIn !== undefined) {
       if (nextProps.employeeCheckIn.status == "checkIn") {
         this.setState({
           checkIn: true,
-          checkOut: false
+          checkOut: false,
         });
       }
     }
@@ -86,22 +86,19 @@ class TimeSheet extends React.Component {
       nextProps.status == "checkIn"
       //  && this.state.checkIn == false
     ) {
-      console.log("==========checkIn loader================");
       this.setState({
         checkInLoader: false,
         checkIn: true,
-        checkOut: false
+        checkOut: false,
       });
     } else if (
       nextProps.status == "checkOut"
       //  && this.state.checkOut == false
     ) {
-      console.log("==========checkOut loader================");
-
       this.setState({
         checkOutLoader: false,
         checkIn: false,
-        checkOut: true
+        checkOut: true,
       });
     }
 
@@ -121,7 +118,7 @@ class TimeSheet extends React.Component {
     }
 
     this.setState({
-      weekTotal: total.toFixed(2)
+      weekTotal: total.toFixed(2),
     });
 
     // manage breaks
@@ -131,7 +128,7 @@ class TimeSheet extends React.Component {
     ) {
       this.setState({
         breakLoader: false,
-        lunchBreakLoader: false
+        lunchBreakLoader: false,
       });
       this.props.defaultValue();
     }
@@ -140,78 +137,72 @@ class TimeSheet extends React.Component {
       nextProps.employeeCheckIn.dayBreaks !== undefined
     ) {
       let breakData = nextProps.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "break"
+        (item) => item.breakType === "break"
       );
       let lunchBreak = nextProps.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "lunchBreak"
+        (item) => item.breakType === "lunchBreak"
       );
 
       let startBreak = breakData.filter(
-        item => item.breakStatus === "breakStart"
+        (item) => item.breakStatus === "breakStart"
       );
 
       let breakStatus = startBreak.length > 0 ? true : false;
-      console.log("breakStatus", breakStatus);
 
       let lunchBreakStart = lunchBreak.filter(
-        item => item.breakStatus === "lunchBreakStart"
+        (item) => item.breakStatus === "lunchBreakStart"
       );
 
       let lunchBreakStatus = lunchBreakStart.length > 0 ? true : false;
-      console.log("lunchBreakStatus", lunchBreakStatus);
 
       this.setState({
         breakData,
         lunchBreak,
         breakStatus,
-        lunchBreakStatus
+        lunchBreakStatus,
       });
     }
   }
   componentDidMount = () => {
-    console.log("lunchF", this.props.employee.lunchFacility);
-
     this.setState({
       lunchBtn: !this.props.employee.lunchFacility,
-      breakBtn: !this.props.employee.breakFacility
+      breakBtn: !this.props.employee.breakFacility,
     });
     if (
       this.props.employee.lunchFacility ||
       this.props.employee.breakFacility
     ) {
-      console.log("facility", this.props.employee.breakFacility);
       this.setState({
-        showFacilities: true
+        showFacilities: true,
       });
     }
-    console.log("weekSattus", this.props.weekStatus);
 
     this.setState({
-      weekStatus: this.props.weekStatus
+      weekStatus: this.props.weekStatus,
     });
 
     let dataArry = this.props.employeeDay;
 
     setInterval(() => {
       this.setState({
-        curTime: new Date()
+        curTime: new Date(),
       });
     }, 1440000);
 
     if (this.props.employeeDay.length >= 1) {
       this.setState({
-        employeDay: this.props.employeeDay
+        employeDay: this.props.employeeDay,
       });
       if (this.props.empOldWeekStatus) {
         this.setState({
           checkIn: true,
-          checkOut: true
+          checkOut: true,
         });
       } else if (this.props.employeeCheckIn !== undefined) {
         if (this.props.employeeCheckIn.status == "checkIn") {
           this.setState({
             checkIn: true,
-            checkOut: false
+            checkOut: false,
           });
         }
       }
@@ -231,7 +222,7 @@ class TimeSheet extends React.Component {
     }
 
     this.setState({
-      weekTotal: total.toFixed(2)
+      weekTotal: total.toFixed(2),
     });
 
     // manage breaks
@@ -241,39 +232,36 @@ class TimeSheet extends React.Component {
       this.props.employeeCheckIn.dayBreaks !== undefined
     ) {
       let breakData = this.props.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "break"
+        (item) => item.breakType === "break"
       );
       let lunchBreak = this.props.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "lunchBreak"
+        (item) => item.breakType === "lunchBreak"
       );
 
-      console.log("breakData", breakData);
       let startBreak = breakData.filter(
-        item => item.breakStatus === "breakStart"
+        (item) => item.breakStatus === "breakStart"
       );
 
       let breakStatus = startBreak.length > 0 ? true : false;
-      console.log("breakStatus", breakStatus);
 
       let lunchBreakStart = lunchBreak.filter(
-        item => item.breakStatus === "lunchBreakStart"
+        (item) => item.breakStatus === "lunchBreakStart"
       );
 
       let lunchBreakStatus = lunchBreakStart.length > 0 ? true : false;
-      console.log("lunchBreakStatus", lunchBreakStatus);
 
       this.setState({
         breakData,
         lunchBreak,
         breakStatus,
-        lunchBreakStatus
+        lunchBreakStatus,
       });
     }
   };
 
   checkInHandler = () => {
     this.setState({
-      checkInLoader: true
+      checkInLoader: true,
     });
 
     let date = new Date();
@@ -284,16 +272,14 @@ class TimeSheet extends React.Component {
       checkInLoc: "Desktop",
       employeeUid: this.props.currentEmp.employeeid,
       employerUid: this.props.currentEmp.employeruid,
-      type: "Punch"
+      type: "Punch",
     };
     this.props.employeCheckIn(checkInData);
   };
 
   checkoutHandler = () => {
-    console.log("==============checkoutHandler======================");
-
     this.setState({
-      checkOutLoader: true
+      checkOutLoader: true,
     });
     let CheckOutTime = new Date();
     let CheckInTime;
@@ -303,38 +289,28 @@ class TimeSheet extends React.Component {
     } else {
       CheckInTime = new Date(this.props.employeeCheckIn.checkInTime);
     }
-    console.log("CheckInTime", CheckInTime);
 
     if (CheckOutTime < CheckInTime) {
       CheckOutTime.setDate(CheckOutTime.getDate() + 1);
     }
     let diffString = CheckOutTime - CheckInTime;
-    console.log("==============diffString======================");
-    console.log(diffString);
-    console.log("====================================");
+
     let diff = Number(diffString);
-    console.log("==========diffString==========================", diffString);
-    console.log(typeof diff);
-    console.log(
-      "=======CheckOutTime=============================",
-      CheckOutTime
-    );
 
     // calculate to lunch break
     let lunchBreak = [];
     let totalBreakTime = 0;
     if (this.props.employeeCheckIn.dayBreaks !== undefined) {
       lunchBreak = this.props.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "lunchBreak"
+        (item) => item.breakType === "lunchBreak"
       );
       for (let i = 0; i < lunchBreak.length; i++) {
         totalBreakTime += Number(lunchBreak[i].breakDuration);
       }
     }
-    console.log("grossTime", diff);
+
     let grossTime = diff - totalBreakTime;
     let msec = grossTime;
-    console.log("msec", grossTime);
 
     let hh = Number(Math.floor(msec / 1000 / 60 / 60));
 
@@ -365,7 +341,7 @@ class TimeSheet extends React.Component {
       status: "checkOut",
       checkOutLocation: "Desktop",
       dutyTime: dutyTime,
-      dayPay: dayPay
+      dayPay: dayPay,
     };
 
     this.props.employeCheckOut(checkOutData);
@@ -375,56 +351,56 @@ class TimeSheet extends React.Component {
     this.props.history.push("/home/employee/reviewtimeline");
   };
 
-  startBreak = type => {
+  startBreak = (type) => {
     let date = new Date();
 
     let breakData = {
       breakStart: date.toString(),
       breakStatus: type === "break" ? "breakStart" : "lunchBreakStart",
       breakType: type,
-      id: this.props.employeeCheckIn.id
+      id: this.props.employeeCheckIn.id,
     };
-    console.log("breakData", breakData);
+
     this.props.breakStart(breakData);
     if (type === "break") {
       this.setState({
-        breakLoader: true
+        breakLoader: true,
       });
     } else {
       this.setState({
-        lunchBreakLoader: true
+        lunchBreakLoader: true,
       });
     }
   };
 
-  endBreak = type => {
+  endBreak = (type) => {
     let startObj;
     let breakStartTime;
     let array = [];
     let otherTypeArray = [];
     if (type === "break") {
       startObj = this.state.breakData.filter(
-        item => item.breakStatus === "breakStart"
+        (item) => item.breakStatus === "breakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
       array = this.state.breakData.filter(
-        item => item.breakStatus !== "breakStart"
+        (item) => item.breakStatus !== "breakStart"
       );
       otherTypeArray = this.state.lunchBreak;
       this.setState({
-        breakLoader: true
+        breakLoader: true,
       });
     } else {
       startObj = this.state.lunchBreak.filter(
-        item => item.breakStatus === "lunchBreakStart"
+        (item) => item.breakStatus === "lunchBreakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
       array = this.state.lunchBreak.filter(
-        item => item.breakStatus !== "lunchBreakStart"
+        (item) => item.breakStatus !== "lunchBreakStart"
       );
       otherTypeArray = this.state.breakData;
       this.setState({
-        lunchBreakLoader: true
+        lunchBreakLoader: true,
       });
     }
     let endBreak = new Date();
@@ -432,19 +408,10 @@ class TimeSheet extends React.Component {
       endBreak.setDate(endBreak.getDate() + 1);
     }
     let diffString = endBreak - breakStartTime;
-    console.log("==============diffString======================");
-    console.log(diffString);
-    console.log("====================================");
+
     let diff = Number(diffString);
-    console.log("==========diffString==========================", diffString);
-    console.log(typeof diff);
-    console.log("=======endBreak=============================", endBreak);
 
     let breakTime = diff;
-
-    console.log("array", array);
-
-    console.log("startBreak", startObj);
 
     let dayBreaks = {
       dayBreaks: [
@@ -455,13 +422,13 @@ class TimeSheet extends React.Component {
           breakEnd: endBreak.toString(),
           breakStatus: type === "break" ? "breakEnd" : "lunchBreakEnd",
           breakDuration: breakTime,
-          breakType: type
-        }
-      ]
+          breakType: type,
+        },
+      ],
     };
 
     let id = this.props.employeeCheckIn.id;
-    console.log("breakData", dayBreaks);
+
     this.props.breakEnd(dayBreaks, id);
   };
 
@@ -472,7 +439,7 @@ class TimeSheet extends React.Component {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
 
   render() {
@@ -486,9 +453,8 @@ class TimeSheet extends React.Component {
       lunchBreak,
       breakStatus,
       lunchBreakStatus,
-      lunchBreakLoader
+      lunchBreakLoader,
     } = this.state;
-    console.log("lunchBtn", lunchBtn);
 
     return (
       <Container>
@@ -602,9 +568,7 @@ class TimeSheet extends React.Component {
                               color="link"
                               className="fac-button"
                             >
-                              {lunchBreakStatus
-                                ? "End Lunch"
-                                : "Start Lunch"}
+                              {lunchBreakStatus ? "End Lunch" : "Start Lunch"}
                             </Button>
                           )}
                         </ButtonToolbar>
@@ -703,10 +667,10 @@ class TimeSheet extends React.Component {
 }
 
 TimeSheet.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProp = state => ({
+const mapStateToProp = (state) => ({
   employee: state.employeeUserReducer.currentEmp,
   currentEmp: state.employeeUserReducer.currentEmp,
   done: state.attendanceReducer.done,
@@ -717,7 +681,7 @@ const mapStateToProp = state => ({
   status: state.attendanceReducer.status,
   weekStatus: state.attendanceReducer.weekStatus,
   startBreakStatus: state.attendanceReducer.startBreakStatus,
-  breakData: state.attendanceReducer.breakData
+  breakData: state.attendanceReducer.breakData,
 });
 
 export default connect(
@@ -728,6 +692,6 @@ export default connect(
     submitRecord,
     breakStart,
     breakEnd,
-    defaultValue
+    defaultValue,
   }
 )(withStyles(styles)(withRouter(TimeSheet)));

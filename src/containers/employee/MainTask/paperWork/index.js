@@ -37,7 +37,7 @@ class Paperworks extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("==================>", nextProps.user);
+    // console.log("==================>", nextProps.user);
 
     if (nextProps.documents) {
       this.setState({

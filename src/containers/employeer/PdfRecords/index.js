@@ -43,7 +43,7 @@ class PdfRecords extends Component {
 
     render() {
         let { pdfs, loader } = this.state;
-        console.log("Pdfs", pdfs)
+       
 
         return (
             <div>

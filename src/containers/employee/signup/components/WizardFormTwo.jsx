@@ -25,10 +25,7 @@ class WizardFormTwo extends Component {
   componentWillReceiveProps = (nextProps) => {
     this.setState({ loader: false });
     if (nextProps.reducerSignupLoader == false) {
-      console.log(
-        "======================reducer signupLoader====================="
-      );
-      console.log(nextProps.reducerSignupLoader);
+    
       this.props.changeLoaderState(false);
       this.props.resetSignUpLoader();
     }

@@ -36,7 +36,7 @@ class Dashboard extends PureComponent {
     greet: "Good Morning",
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getEmployees(this.props.user.uid);
     this.props.getTask(this.props.user.uid);
     this.props.getLogs(this.props.user.uid);
@@ -211,6 +211,6 @@ export default connect(
     countEmployerPaperWork,
     getEmployerPayStubs,
     getAttendance,
-    getLogs
+    getLogs,
   }
 )(Dashboard);

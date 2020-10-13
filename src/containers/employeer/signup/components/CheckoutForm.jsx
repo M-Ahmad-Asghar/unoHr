@@ -57,9 +57,9 @@ class CheckoutForm extends Component {
   async submit() {
     this.setState({ loader: true });
     const { token } = await this.props.stripe.createToken({ name: "Name" });
-    console.log("token in here===============>", token);
+   
     if (isObject(token)) {
-      console.log("tocken", token);
+    
       this.props.onCheckoutToken(token.id);
       this.setState({
         open: true,
@@ -171,7 +171,7 @@ class CheckoutForm extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('state from checkout',state.employer);
+ 
   
   return {
     isLoading: state.employer.isLoading,

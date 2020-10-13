@@ -7,7 +7,7 @@ import {
   Row,
   CardHeader,
   Collapse,
-  UncontrolledCollapse
+  UncontrolledCollapse,
 } from "reactstrap";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   deleteTask,
-  deletOwnTask
+  deletOwnTask,
 } from "../../../../../redux/actions/TasksActions";
 import { verifyNumber } from "../../../../../redux/actions/employerActions";
 import { updateEmployeeMobNumber } from "../../../../../redux/actions/employeeActions";
@@ -41,7 +41,7 @@ const inCorrect = {
   marginTop: "0px",
   position: "absolute",
   marginLeft: "125px",
-  bottom: "0"
+  bottom: "0",
 };
 
 class ListTasks extends Component {
@@ -81,7 +81,7 @@ class ListTasks extends Component {
       taskCompleted: "",
       id: "",
       uid: "",
-      SelectForAllot: ""
+      SelectForAllot: "",
     };
   }
 
@@ -89,16 +89,16 @@ class ListTasks extends Component {
     // console.log("tabs=> : ", this.props);
     this.setState({
       loader: true,
-      mobileNumber: this.props.user.cell
+      mobileNumber: this.props.user.cell,
     });
     this.props.getOwnTask(this.props.user.employeeid);
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
-        Tasks: nextProps.items
+        Tasks: nextProps.items,
       });
     }
   };
@@ -117,7 +117,7 @@ class ListTasks extends Component {
     this.setState({ open: false });
   };
 
-  handleUpdateDialogOpen = data => {
+  handleUpdateDialogOpen = (data) => {
     this.setState({ updateDialogOpen: true });
   };
 
@@ -136,7 +136,7 @@ class ListTasks extends Component {
   handleclosedialog = () => {
     this.setState({
       otpOpen: false,
-      resendbutton: false
+      resendbutton: false,
     });
   };
 
@@ -146,37 +146,37 @@ class ListTasks extends Component {
     }
   };
 
-  onNumberStatus = status => {
+  onNumberStatus = (status) => {
     this.setState({
-      numberVerified: status
+      numberVerified: status,
     });
   };
 
   checkNumberStatus = () => {
     this.onNumberStatus(false);
     this.setState({
-      numberVerified: false
+      numberVerified: false,
     });
   };
 
-  verifyCodeEnteredInOTp = otp => {
+  verifyCodeEnteredInOTp = (otp) => {
     if (this.state.verificationCode == otp) {
       this.onNumberStatus(true);
       this.setState({
         numberVerified: true,
-        otpOpen: false
+        otpOpen: false,
       });
       toast.success("Phone Number is successfully Verified!");
       this.props.deletOwnTask(this.state.delId);
       this.props.updateEmployeeMobNumber({
         id: this.props.user.docid,
-        cell: this.state.mobileNumber
+        cell: this.state.mobileNumber,
       });
     } else {
       toast.error("Not Verified! Verification Code Incorrect");
       this.onNumberStatus(false);
       this.setState({
-        numberVerified: false
+        numberVerified: false,
       });
     }
   };
@@ -185,7 +185,7 @@ class ListTasks extends Component {
     var val = Math.floor(1000 + Math.random() * 9000);
     let data = {
       message: `Verification message from unhr! use verification code: ${val}`,
-      number: this.state.mobileNumber
+      number: this.state.mobileNumber,
     };
 
     // console.log("Code OTP: ", data);
@@ -193,28 +193,26 @@ class ListTasks extends Component {
     this.setState({
       otpOpen: true,
       resendbutton: false,
-      verificationCode: val
+      verificationCode: val,
     });
   };
 
-  numberChangeHandler = number => {
-    console.log("number checker", number);
-
+  numberChangeHandler = (number) => {
     this.setState({
-      mobileNumber: number
+      mobileNumber: number,
     });
   };
 
   handleresendbutton = () => {
     setTimeout(() => {
       this.setState({
-        resendbutton: true
+        resendbutton: true,
       });
     }, 30000);
   };
 
   handleVerifyNumber = (id) => {
-    this.setState({ delId: id })
+    this.setState({ delId: id });
     this.openDialog();
     this.handleresendbutton();
   };
@@ -222,16 +220,16 @@ class ListTasks extends Component {
   performNumberVerification = () => {
     if (this.state.mobileNumber !== "" || this.state.mobileNumber.length > 0) {
       this.setState({
-        verifyNumber: true
+        verifyNumber: true,
       });
     } else {
       this.setState({
-        verifyNumber: false
+        verifyNumber: false,
       });
     }
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(item) {
       return (
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -251,7 +249,7 @@ class ListTasks extends Component {
   render() {
     const { loader, Tasks } = this.state;
     let { searchQuery } = this.props;
-    console.log("at basic table:", Tasks);
+
     return (
       <Col
         md={12}
@@ -372,7 +370,7 @@ class ListTasks extends Component {
                                         border: "1px solid",
                                         borderColor: "#BEBEBE",
                                         borderRadius: 3,
-                                        marginLeft: "65px"
+                                        marginLeft: "65px",
                                       }}
                                     >
                                       <div className="form__form-group">
@@ -380,7 +378,7 @@ class ListTasks extends Component {
                                           <b>Mobile Number</b>
                                         </span>
                                         <div className="form__form-group-field">
-                                        <IntlTelInput
+                                          <IntlTelInput
                                             fieldName="mobileNumber"
                                             name="mobileNumber"
                                             id="number"
@@ -388,7 +386,9 @@ class ListTasks extends Component {
                                             preferredCountries={["us"]}
                                             defaultCountry="United States"
                                             value={this.state.mobileNumber}
-                                            defaultValue={this.state.mobileNumber}
+                                            defaultValue={
+                                              this.state.mobileNumber
+                                            }
                                             onPhoneNumberChange={(
                                               status,
                                               value,
@@ -399,29 +399,23 @@ class ListTasks extends Component {
                                               this.checkNumberStatus();
 
                                               this.numberChangeHandler(number);
-                                              console.log(
-                                                "onPhoneNumberChange",
-                                                value,
-                                                status,
-                                                // number,
-                                                this.state.mobileNumber
-                                              );
+
                                               if (status) {
                                                 this.setState({
-                                                  numberStatus: true
+                                                  numberStatus: true,
                                                 });
                                               } else {
                                                 this.setState({
-                                                  numberStatus: false
+                                                  numberStatus: false,
                                                 });
                                               }
                                               if (number.length > 0) {
                                                 this.setState({
-                                                  numberEntered: true
+                                                  numberEntered: true,
                                                 });
                                               } else {
                                                 this.setState({
-                                                  numberEntered: false
+                                                  numberEntered: false,
                                                 });
                                               }
                                             }}
@@ -429,17 +423,22 @@ class ListTasks extends Component {
                                               this.performNumberVerification();
                                             }}
                                           />
-                                          {!this.state.numberVerified && this.state.numberEntered && (
-                                            !this.state.numberStatus && 
-                                              ( <p style={inCorrect}>Incorrect Number</p> )
-                                          )}
+                                          {!this.state.numberVerified &&
+                                            this.state.numberEntered &&
+                                            (!this.state.numberStatus && (
+                                              <p style={inCorrect}>
+                                                Incorrect Number
+                                              </p>
+                                            ))}
                                         </div>
                                       </div>
                                       <Button
                                         color="secondary"
                                         type="submit"
                                         style={{ marginLeft: "auto" }}
-                                        onClick={() => this.handleVerifyNumber(item.id)}
+                                        onClick={() =>
+                                          this.handleVerifyNumber(item.id)
+                                        }
                                       >
                                         Verify Number
                                       </Button>
@@ -495,19 +494,23 @@ class ListTasks extends Component {
                                     xl={2}
                                     style={{
                                       textAlign: "center",
-                                      marginTop: "15px"
+                                      marginTop: "15px",
                                     }}
                                   >
                                     <ButtonToolbar>
                                       <Button
                                         color="secondary"
                                         variant="outlined"
-                                        style={{marginLeft: "auto", marginRight: "40px", marginBottom: "10px"}}
+                                        style={{
+                                          marginLeft: "auto",
+                                          marginRight: "40px",
+                                          marginBottom: "10px",
+                                        }}
                                         onClick={() =>
                                           this.setState({
                                             delId: item.id,
                                             open: true,
-                                            taskTitle: item.title
+                                            taskTitle: item.title,
                                           })
                                         }
                                       >
@@ -582,14 +585,14 @@ class ListTasks extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.employeeTaskReducer.empOwnTask,
   user: state.employeeUserReducer.currentEmp,
-  loader: state.employeeTaskReducer.loader
+  loader: state.employeeTaskReducer.loader,
 });
 
 export default reduxForm({
-  form: "ee_task_detail" // a unique identifier for this form
+  form: "ee_task_detail", // a unique identifier for this form
 })(
   connect(
     mapStateToProps,
@@ -597,7 +600,7 @@ export default reduxForm({
       verifyNumber,
       deletOwnTask,
       getOwnTask,
-      updateEmployeeMobNumber
+      updateEmployeeMobNumber,
     }
   )(ListTasks)
 );

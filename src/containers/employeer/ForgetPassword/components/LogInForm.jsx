@@ -71,7 +71,7 @@ class LogInForm extends Component {
         invalidEmail: "",
         loader:true
       });
-      console.log('email',this.state.email);
+     
       this.props.startRessetPassword(this.state.email.toLowerCase());
 
     }

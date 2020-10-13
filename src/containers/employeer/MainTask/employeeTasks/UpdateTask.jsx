@@ -21,7 +21,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
-  DatePicker
+  DatePicker,
 } from "material-ui-pickers";
 import { toast } from "react-toastify";
 import { FastForwardIcon } from "mdi-react";
@@ -29,7 +29,7 @@ class UpdateForm extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -45,32 +45,31 @@ class UpdateForm extends Component {
       uid: "",
       TaskPurpose: "",
       PostedTime: "",
-      updateLoader: false
+      updateLoader: false,
     };
   }
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ AllotedTo: event.target.value });
   };
 
   onValueChange(obj) {
-    // console.log('alloted task obj is: ', obj)
     this.setState({
-      AllotedTo: obj.value
+      AllotedTo: obj.value,
     });
   }
   TaskPurposeHandler(obj) {
     this.setState({
-      TaskPurpose: obj.value
+      TaskPurpose: obj.value,
     });
   }
 
-  AddTask = e => {
+  AddTask = (e) => {
     e.preventDefault();
     if (this.state.title == "" && this.state.Description == "") {
       toast.error("Type the title of the task and description");
     } else {
       this.setState({
-        updateLoader: true
+        updateLoader: true,
       });
       let fields = this.state.AllotedTo.split(",");
       let data = {
@@ -82,22 +81,18 @@ class UpdateForm extends Component {
         PostedTime: this.state.PostedTime,
         TaskPurpose: this.state.TaskPurpose,
         uid: this.state.uid,
-        employeeid: fields[1]
+        employeeid: fields[1],
       };
-      console.log("===========data=========================");
-      console.log(data);
-      console.log("====================================");
+
       this.props.updateTask(data);
     }
   };
-  handleDateChange = date => {
+  handleDateChange = (date) => {
     this.setState({ DueTime: date });
   };
   componentDidMount() {
     let data = this.props.item;
-    console.log("=============from update did mount========");
-    console.log(data);
-    console.log("====================================");
+
     this.setState({
       id: data.id,
       title: data.title,
@@ -106,24 +101,24 @@ class UpdateForm extends Component {
       DueTime: data.DueTime,
       uid: data.uid,
       TaskPurpose: data.TaskPurpose,
-      PostedTime: data.PostedTime
+      PostedTime: data.PostedTime,
     });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.updateTaskStatus == "done") {
       this.setState({
-        updateLoader: false
+        updateLoader: false,
       });
       // this.props.handleClose();
       // this.props.history.push("/home/employeer/employeeTask");
     } else if (nextProps.updateTaskStatus == "error") {
       this.setState({
-        updateLoader: false
+        updateLoader: false,
       });
     }
   }
 
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -131,9 +126,7 @@ class UpdateForm extends Component {
   render() {
     const { employees } = this.props;
     const { title, Description, AllotedTo, DueTime, updateLoader } = this.state;
-    console.log("====================================", title);
-    console.log(Description);
-    console.log("====================================", AllotedTo);
+
     return (
       <Col md={12} lg={12}>
         <Card>
@@ -172,7 +165,7 @@ class UpdateForm extends Component {
                     onChange={this.handleChange}
                     inputProps={{
                       name: "age",
-                      id: "age-simple"
+                      id: "age-simple",
                     }}
                   >
                     {employees.length > 0 ? (
@@ -201,7 +194,7 @@ class UpdateForm extends Component {
                       margin="normal"
                       value={DueTime}
                       onChange={this.handleDateChange}
-                      formatDate={date => moment(date).format("DD-MM-YYYY")}
+                      formatDate={(date) => moment(date).format("DD-MM-YYYY")}
                     />
                   </MuiPickersUtilsProvider>
                 </div>
@@ -225,12 +218,12 @@ class UpdateForm extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.userReducer.user,
   employees: state.employerReducer.employees,
   taskAddStatus: state.TaskReducer.taskAddStatus,
   loading: state.TaskReducer.loading,
-  updateTaskStatus: state.TaskReducer.updateTaskStatus
+  updateTaskStatus: state.TaskReducer.updateTaskStatus,
 });
 
 export default connect(

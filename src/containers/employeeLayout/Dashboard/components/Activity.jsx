@@ -11,7 +11,7 @@ import {
   employeCheckOut,
   breakStart,
   breakEnd,
-  defaultValue
+  defaultValue,
 } from "../../../../redux/actions/attendanceAction";
 class Activity extends Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class Activity extends Component {
       breakStatus: false,
       lunchBreakStatus: false,
       loading: true,
-      currentWeekStatus: false
+      currentWeekStatus: false,
       // end of time setup
     };
   }
@@ -53,26 +53,26 @@ class Activity extends Component {
       this.props.employee.lunchFacility ||
       this.props.employee.breakFacility
     ) {
-      console.log("facility", this.props.employee.breakFacility);
+      // console.log("facility", this.props.employee.breakFacility);
       this.setState({
-        showFacilities: true
+        showFacilities: true,
       });
     }
 
     // manage employee's checkIn status and week status
     this.setState({
-      weekStatus: nextProps.weekStatus
+      weekStatus: nextProps.weekStatus,
     });
 
     this.setState({
-      employeDay: nextProps.employeeDay
+      employeDay: nextProps.employeeDay,
     });
 
     if (nextProps.employeeCheckIn !== undefined) {
       if (nextProps.employeeCheckIn.status == "checkIn") {
         this.setState({
           checkIn: true,
-          checkOut: false
+          checkOut: false,
         });
       }
     }
@@ -80,13 +80,13 @@ class Activity extends Component {
       this.setState({
         checkInLoader: false,
         checkIn: true,
-        checkOut: false
+        checkOut: false,
       });
     } else if (nextProps.status == "checkOut") {
       this.setState({
         checkOutLoader: false,
         checkIn: false,
-        checkOut: true
+        checkOut: true,
       });
     }
 
@@ -99,26 +99,24 @@ class Activity extends Component {
 
       startDate.setDate(startDate.getDate() - ((startDate.getDay() + 6) % 7));
       startDate = moment(startDate).format("MM/DD/YYYY");
-      console.log("startDate", startDate);
+      // console.log("startDate", startDate);
       stopDate.setDate(stopDate.getDate() + ((0 + 7 - stopDate.getDay()) % 7));
       stopDate = moment(stopDate).format("MM/DD/YYYY");
-      console.log(stopDate);
+      // console.log(stopDate);
       let checkingDate = moment(nextProps.weekStatus.submitDate).format(
         "MM/DD/YYYY"
       );
 
       let result = checkingDate >= startDate && checkingDate <= stopDate;
-      console.log("==========new Logic==========================");
-      console.log(checkingDate >= startDate && checkingDate <= stopDate);
-      console.log("====================================");
+
       this.setState({
         loading: false,
-        currentWeekStatus: result
+        currentWeekStatus: result,
       });
     } else {
       this.setState({
         loading: false,
-        currentWeekStatus: false
+        currentWeekStatus: false,
       });
     }
 
@@ -129,7 +127,7 @@ class Activity extends Component {
     ) {
       this.setState({
         breakLoader: false,
-        lunchBreakLoader: false
+        lunchBreakLoader: false,
       });
       this.props.defaultValue();
     }
@@ -138,31 +136,29 @@ class Activity extends Component {
       nextProps.employeeCheckIn.dayBreaks !== undefined
     ) {
       let breakData = nextProps.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "break"
+        (item) => item.breakType === "break"
       );
       let lunchBreak = nextProps.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "lunchBreak"
+        (item) => item.breakType === "lunchBreak"
       );
 
       let startBreak = breakData.filter(
-        item => item.breakStatus === "breakStart"
+        (item) => item.breakStatus === "breakStart"
       );
 
       let breakStatus = startBreak.length > 0 ? true : false;
-      console.log("breakStatus", breakStatus);
 
       let lunchBreakStart = lunchBreak.filter(
-        item => item.breakStatus === "lunchBreakStart"
+        (item) => item.breakStatus === "lunchBreakStart"
       );
 
       let lunchBreakStatus = lunchBreakStart.length > 0 ? true : false;
-      console.log("lunchBreakStatus", lunchBreakStatus);
 
       this.setState({
         breakData,
         lunchBreak,
         breakStatus,
-        lunchBreakStatus
+        lunchBreakStatus,
       });
     }
   }
@@ -170,7 +166,7 @@ class Activity extends Component {
   // function to handle checkIn requests
   checkInHandler = () => {
     this.setState({
-      checkInLoader: true
+      checkInLoader: true,
     });
 
     let date = new Date();
@@ -181,7 +177,7 @@ class Activity extends Component {
       checkInLoc: "Desktop",
       employeeUid: this.props.currentEmp.employeeid,
       employerUid: this.props.currentEmp.employeruid,
-      type: "Punch"
+      type: "Punch",
     };
     this.props.employeCheckIn(checkInData);
   };
@@ -189,7 +185,7 @@ class Activity extends Component {
   // to handle checkout requests
   checkoutHandler = () => {
     this.setState({
-      checkOutLoader: true
+      checkOutLoader: true,
     });
     let CheckOutTime = new Date();
     let CheckInTime;
@@ -199,22 +195,13 @@ class Activity extends Component {
     } else {
       CheckInTime = new Date(this.props.employeeCheckIn.checkInTime);
     }
-    console.log("CheckInTime", CheckInTime);
 
     if (CheckOutTime < CheckInTime) {
       CheckOutTime.setDate(CheckOutTime.getDate() + 1);
     }
     let diffString = CheckOutTime - CheckInTime;
-    console.log("==============diffString======================");
-    console.log(diffString);
-    console.log("====================================");
+
     let diff = Number(diffString);
-    console.log("==========diffString==========================", diffString);
-    console.log(typeof diff);
-    console.log(
-      "=======CheckOutTime=============================",
-      CheckOutTime
-    );
 
     // calculate to lunch break
 
@@ -222,19 +209,15 @@ class Activity extends Component {
     let totalBreakTime = 0;
     if (this.props.employeeCheckIn.dayBreaks !== undefined) {
       lunchBreak = this.props.employeeCheckIn.dayBreaks.filter(
-        item => item.breakType === "lunchBreak"
+        (item) => item.breakType === "lunchBreak"
       );
       for (let i = 0; i < lunchBreak.length; i++) {
         totalBreakTime += Number(lunchBreak[i].breakDuration);
       }
     }
 
-    console.log("lunchObj", lunchBreak);
-
-    console.log("grossTime", diff);
     let grossTime = diff - totalBreakTime;
     let msec = grossTime;
-    console.log("msec", grossTime);
 
     let hh = Number(Math.floor(msec / 1000 / 60 / 60));
 
@@ -265,62 +248,62 @@ class Activity extends Component {
       status: "checkOut",
       checkOutLocation: "Desktop",
       dutyTime: dutyTime,
-      dayPay: dayPay
+      dayPay: dayPay,
     };
 
     this.props.employeCheckOut(checkOutData);
   };
 
-  startBreak = type => {
+  startBreak = (type) => {
     let date = new Date();
 
     let breakData = {
       breakStart: date.toString(),
       breakStatus: type === "break" ? "breakStart" : "lunchBreakStart",
       breakType: type,
-      id: this.props.employeeCheckIn.id
+      id: this.props.employeeCheckIn.id,
     };
-    console.log("breakData", breakData);
+
     this.props.breakStart(breakData);
     if (type === "break") {
       this.setState({
-        breakLoader: true
+        breakLoader: true,
       });
     } else {
       this.setState({
-        lunchBreakLoader: true
+        lunchBreakLoader: true,
       });
     }
   };
 
-  endBreak = type => {
+  endBreak = (type) => {
     let startObj;
     let breakStartTime;
     let array = [];
     let otherTypeArray = [];
     if (type === "break") {
       startObj = this.state.breakData.filter(
-        item => item.breakStatus === "breakStart"
+        (item) => item.breakStatus === "breakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
       array = this.state.breakData.filter(
-        item => item.breakStatus !== "breakStart"
+        (item) => item.breakStatus !== "breakStart"
       );
       otherTypeArray = this.state.lunchBreak;
       this.setState({
-        breakLoader: true
+        breakLoader: true,
       });
     } else {
       startObj = this.state.lunchBreak.filter(
-        item => item.breakStatus === "lunchBreakStart"
+        (item) => item.breakStatus === "lunchBreakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
       array = this.state.lunchBreak.filter(
-        item => item.breakStatus !== "lunchBreakStart"
+        (item) => item.breakStatus !== "lunchBreakStart"
       );
       otherTypeArray = this.state.breakData;
       this.setState({
-        lunchBreakLoader: true
+        lunchBreakLoader: true,
       });
     }
     let endBreak = new Date();
@@ -328,19 +311,10 @@ class Activity extends Component {
       endBreak.setDate(endBreak.getDate() + 1);
     }
     let diffString = endBreak - breakStartTime;
-    console.log("==============diffString======================");
-    console.log(diffString);
-    console.log("====================================");
+
     let diff = Number(diffString);
-    console.log("==========diffString==========================", diffString);
-    console.log(typeof diff);
-    console.log("=======endBreak=============================", endBreak);
 
     let breakTime = diff;
-
-    console.log("array", array);
-
-    console.log("startBreak", startObj);
 
     let dayBreaks = {
       dayBreaks: [
@@ -351,13 +325,12 @@ class Activity extends Component {
           breakEnd: endBreak.toString(),
           breakStatus: type === "break" ? "breakEnd" : "lunchBreakEnd",
           breakDuration: breakTime,
-          breakType: type
-        }
-      ]
+          breakType: type,
+        },
+      ],
     };
 
     let id = this.props.employeeCheckIn.id;
-    console.log("breakData", dayBreaks);
     this.props.breakEnd(dayBreaks, id);
   };
   render() {
@@ -370,7 +343,7 @@ class Activity extends Component {
       lunchBreak,
       breakStatus,
       lunchBreakStatus,
-      lunchBreakLoader
+      lunchBreakLoader,
     } = this.state;
     return (
       <Panel
@@ -382,21 +355,21 @@ class Activity extends Component {
         style={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
         }}
       >
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
           }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-around"
+              justifyContent: "space-around",
             }}
           >
             {this.state.checkInLoader ? (
@@ -445,7 +418,7 @@ class Activity extends Component {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
             >
               {breakLoader ? (
@@ -517,7 +490,7 @@ class Activity extends Component {
   }
 }
 
-const mapStateToProp = state => ({
+const mapStateToProp = (state) => ({
   employee: state.employeeUserReducer.currentEmp,
   currentEmp: state.employeeUserReducer.currentEmp,
   done: state.attendanceReducer.done,
@@ -528,7 +501,7 @@ const mapStateToProp = state => ({
   status: state.attendanceReducer.status,
   weekStatus: state.attendanceReducer.weekStatus,
   startBreakStatus: state.attendanceReducer.startBreakStatus,
-  breakData: state.attendanceReducer.breakData
+  breakData: state.attendanceReducer.breakData,
 });
 
 export default connect(
@@ -539,6 +512,6 @@ export default connect(
     submitRecord,
     breakStart,
     breakEnd,
-    defaultValue
+    defaultValue,
   }
 )(Activity);

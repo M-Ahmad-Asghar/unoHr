@@ -83,12 +83,7 @@ class SettingMain extends React.Component {
     this.props.employeeContacts(this.props.user.uid);
   }
   componentWillReceiveProps(nextProps) {
-    console.log(
-      "====================================",
-      nextProps.getContactStatus
-    );
-    console.log(nextProps);
-    console.log("====================================");
+
 
     this.setState({
       contactsArr: nextProps.empContacts,

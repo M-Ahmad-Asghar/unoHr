@@ -104,7 +104,7 @@ class WizardFormOne extends Component {
   };
   openDialog = () => {
     var val = Math.floor(1000 + Math.random() * 9000);
-    console.log("otp", val);
+   
 
     let data = {
       message: `Verification message from unhr! use verification code: ${val}`,
@@ -306,13 +306,7 @@ class WizardFormOne extends Component {
                   id
                 ) => {
                   this.checkNumberStatus();
-                  console.log(
-                    "onPhoneNumberChange",
-                    value,
-                    status,
-                    // number,
-                    this.props.mobileNumber
-                  );
+                 
                   numberChangeHandler(number);
                   // performNumberVerification();
                   if (status) {

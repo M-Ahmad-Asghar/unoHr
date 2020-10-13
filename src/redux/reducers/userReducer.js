@@ -14,6 +14,7 @@ import {
   SUPPORT_TICKET_REPONSE_FAILED,
   GET_ALL_MY_TICKETS,
   GET_ALL_MY_TICKETS_FAILED,
+  USER_LOADING,
 } from "../actions/userActions";
 
 import { UPDATE_EMPLOYER } from "../actions/profileAction";
@@ -32,6 +33,7 @@ var initialState = {
   submitTicketStatus: false,
   myAllTickets: [],
   myTicketsStatus: "",
+  userLoading: true,
 };
 
 export default function(state = initialState, action) {
@@ -96,6 +98,13 @@ export default function(state = initialState, action) {
         userStatus: true,
         LogoutDone: "notdone",
         user: action.payload,
+        userLoading: false,
+      };
+    }
+    case USER_LOADING: {
+      return {
+        ...state,
+        userLoading: true,
       };
     }
 
@@ -103,6 +112,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         getuserErr: new Date(),
+        userLoading: false,
       };
     }
 
@@ -119,9 +129,6 @@ export default function(state = initialState, action) {
       let user = state.user;
       let newAddress = action.payload;
       let newObj = { ...user, ...newAddress };
-      console.log("==========newObj from reducer==========================");
-      console.log(newObj);
-      console.log("====================================");
 
       return {
         ...state,

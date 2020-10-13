@@ -7,7 +7,7 @@ import {
   Row,
   Col,
   Card,
-  CardBody
+  CardBody,
 } from "reactstrap";
 import { BeatLoader, PulseLoader } from "react-spinners";
 
@@ -16,14 +16,14 @@ import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 import { changeAddress } from "../../../../redux/actions/employeeUserActions";
-import MapApi from '../../../../mapApi';
+import MapApi from "../../../../mapApi";
 import { toast } from "react-toastify";
-const styles = theme => ({
+const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: "80%"
-  }
+    width: "80%",
+  },
 });
 
 class ProfileSettings extends Component {
@@ -37,11 +37,11 @@ class ProfileSettings extends Component {
       // zip: "",
       address: "",
       docid: "",
-      loader: false
+      loader: false,
     };
   }
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.value });
   };
 
@@ -54,42 +54,39 @@ class ProfileSettings extends Component {
       // country: user.country,
       // zip: user.zip,
       address: user.address,
-      docid: user.docid
+      docid: user.docid,
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("=========nextProps===========================");
-    console.log(nextProps.adressStatus);
-    console.log("====================================");
     if (nextProps.adressStatus === "done") {
       this.setState({
-        loader: false
+        loader: false,
       });
       toast.success("Successfully Change the Address");
       this.props.history.push("/home/employee/profile");
     } else if (nextProps.adressStatus === "error") {
       this.setState({
-        loader: false
+        loader: false,
       });
       toast.error("Successfully Change the Address");
     }
   }
 
-  getAddress = address => {
+  getAddress = (address) => {
     this.setState({
-      address
+      address,
     });
   };
 
-  changeAddress = e => {
+  changeAddress = (e) => {
     e.preventDefault();
     this.setState({
-      loader: true
+      loader: true,
     });
     let newAddress = {
       address: this.state.address,
-      docid: this.state.docid
+      docid: this.state.docid,
       // street: this.state.street,
       // city: this.state.city,
       // state: this.state.state,
@@ -111,17 +108,16 @@ class ProfileSettings extends Component {
                   <h5 className="bold-text">Change Address</h5>
                 </div>
                 <form className="form form--horizontal" onSubmit={handleSubmit}>
-                  
-                <div className="form__form-group">
+                  <div className="form__form-group">
                     <span className="form__form-group-label">Address</span>
                     <div className="form__form-group-field">
-                      <div style={{width: '100%'}}>
+                      <div style={{ width: "100%" }}>
                         <MapApi getAddress={this.getAddress} />
                       </div>
                     </div>
                   </div>
-                  
-                 {/* <div className="form__form-group">
+
+                  {/* <div className="form__form-group">
                     <span className="form__form-group-label">Address</span>
                     <div className="form__form-group-field">
                       <TextField
@@ -198,13 +194,13 @@ class ProfileSettings extends Component {
   }
 }
 ProfileSettings.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.employeeUserReducer.currentEmp,
   adressStatus: state.employeeUserReducer.adressStatus,
-  loader: state.employeeUserReducer.loader
+  loader: state.employeeUserReducer.loader,
 });
 
 export default connect(

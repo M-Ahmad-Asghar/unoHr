@@ -38,32 +38,35 @@ import DirectDeposit from "../containers/employeer/DirectDeposit";
 import TransactionHistory from "../containers/employeer/TransactionHistory";
 import EditPayroll from "../containers/employeerLayout/payrollTab/runPayroll/editPayroll";
 import Dashboard from "../containers/employeer/Dashboard";
-import PaperWork from '../containers/employeer/Paperwork';
-import PaperwrokForms from '../containers/employeer/Paperwork/PaperwrokForms';
-import PdfRecords from '../containers/employeer/PdfRecords';
-import DailyTask from '../containers/employeer/MainTask/dailyTask'
+import PaperWork from "../containers/employeer/Paperwork";
+import PaperwrokForms from "../containers/employeer/Paperwork/PaperwrokForms";
+import PdfRecords from "../containers/employeer/PdfRecords";
+import DailyTask from "../containers/employeer/MainTask/dailyTask";
 import RewardEmployee from "../containers/employeer/rewardEmployee";
 import ReportingScreen from "../containers/employeer/reporting";
 import ContactSupport from "../containers/employeer/contactSupport";
 import MyTickets from "../containers/employeer/contactSupport/myTickets";
 
-const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      authUser.uid ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  />
-);
+const RestrictedRoute = ({ component: Component, authUser, ...rest }) => {
+  console.log("US", authUser.uid);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        authUser.uid ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+    />
+  );
+};
 
 const wrappedRoutesEmployeer = () => (
   <div>
@@ -142,7 +145,7 @@ class Router extends React.Component {
   render() {
     // console.log("match", this.props.match.url);
     const { user } = this.props;
-
+    console.log("USER", user);
     return (
       <MainWrapper>
         <main>
@@ -167,11 +170,11 @@ class Router extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log("state", state.userReducer.userStatus);
 
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
   };
 };
 

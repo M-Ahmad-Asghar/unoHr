@@ -172,7 +172,7 @@ class WizardForm extends Component {
             employeeid: this.state.EmpId,
           },
         };
-        console.log("data is: ", data);
+  
         // toast.success("okay done!");
         this.props.employeeSignup(data);
       }
@@ -189,7 +189,6 @@ class WizardForm extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    console.log("malik props: ", nextProps.data);
     this.setState({ loader: false, empData: nextProps.data });
   };
   performEmailVerification = () => {
@@ -227,13 +226,11 @@ class WizardForm extends Component {
   };
 
   getPlan = (plan) => {
-    console.log(plan);
     this.setState({
       plan,
     });
   };
   getAddress = (address) => {
-    console.log(address);
     this.setState({
       address,
     });

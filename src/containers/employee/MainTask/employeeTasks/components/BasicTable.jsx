@@ -15,7 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   deleteTask,
   getTask,
-  completedTask
+  completedTask,
 } from "../../../../../redux/actions/TasksActions";
 import { getEmployees } from "../../../../../redux/actions/employerActions";
 
@@ -49,7 +49,7 @@ class EmployeeTasks extends Component {
       taskCompleted: "",
       id: "",
       uid: "",
-      SelectForAllot: ""
+      SelectForAllot: "",
     };
   }
 
@@ -67,12 +67,12 @@ class EmployeeTasks extends Component {
       PostedTime: data.PostedTime,
       TaskPurpose: data.TaskPurpose,
       completionNote: data.completionNote,
-      TaskPurpose: data.TaskPurpose
+      TaskPurpose: data.TaskPurpose,
     });
 
     if (data.taskCompleted != undefined) {
       this.setState({
-        taskCompleted: this.data.taskCompleted
+        taskCompleted: this.data.taskCompleted,
       });
     }
   }
@@ -89,13 +89,13 @@ class EmployeeTasks extends Component {
         PostedTime: this.state.PostedTime,
         taskCompleted: new Date().toString(),
         TaskPurpose: this.state.TaskPurpose,
-        uid: this.state.uid
+        uid: this.state.uid,
       };
       // this.props.completedTask(data);
-      console("Task completed successfully abaid ", );
+      console("Task completed successfully abaid ");
 
       this.setState({
-        completionModal: false
+        completionModal: false,
         // DueTime: "Completed"
       });
     } else {
@@ -105,7 +105,6 @@ class EmployeeTasks extends Component {
 
   deleteTask = () => {
     this.setState({ open: false });
-    // console.log("check del id:", this.state.delId);
     this.props.deleteTask(this.state.delId);
     // toast.success("Own Task Delete Successfully!");
   };
@@ -118,8 +117,8 @@ class EmployeeTasks extends Component {
     this.setState({ open: false });
   };
 
-  handleUpdateDialogOpen = data => {
-    console.log("check data ::::: ", data);
+  handleUpdateDialogOpen = (data) => {
+    // console.log("check data ::::: ", data);
     this.setState({ updateDialogOpen: true });
   };
 
@@ -128,7 +127,6 @@ class EmployeeTasks extends Component {
   };
 
   handlecompletionModal = () => {
-    console.log("gd click");
     this.setState({ completionModal: true });
   };
 
@@ -139,7 +137,6 @@ class EmployeeTasks extends Component {
   render() {
     const { Tasks } = this.props;
     const { completed } = this.state;
-    console.log("at basic table:", Tasks);
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>
@@ -179,7 +176,7 @@ class EmployeeTasks extends Component {
                             // disabled={true}
                             onClick={() =>
                               this.setState({
-                                completionModal: true
+                                completionModal: true,
                               })
                             }
                             className="colored"
@@ -191,7 +188,7 @@ class EmployeeTasks extends Component {
                             onClick={() =>
                               this.setState({
                                 taskDetail: item,
-                                updateDialogOpen: true
+                                updateDialogOpen: true,
                               })
                             }
                           >
@@ -204,7 +201,7 @@ class EmployeeTasks extends Component {
                               this.setState({
                                 delId: item.id,
                                 open: true,
-                                taskTitle: item.title
+                                taskTitle: item.title,
                               })
                             }
                           >
@@ -273,7 +270,7 @@ class EmployeeTasks extends Component {
             id="scroll-dialog-title"
             style={{
               textAlign: "center",
-              borderBottom: "1px solid lightgrey "
+              borderBottom: "1px solid lightgrey ",
             }}
           >
             Update Task
@@ -334,14 +331,14 @@ class EmployeeTasks extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.TaskReducer.AllTask,
   user: state.userReducer.user,
-  loader: state.TaskReducer.loader
+  loader: state.TaskReducer.loader,
 });
 
 export default reduxForm({
-  form: "ee_task_detail" // a unique identifier for this form
+  form: "ee_task_detail", // a unique identifier for this form
 })(
   connect(
     mapStateToProps,
@@ -349,7 +346,7 @@ export default reduxForm({
       getTask,
       getEmployees,
       deleteTask,
-      completedTask
+      completedTask,
     }
   )(EmployeeTasks)
 );
