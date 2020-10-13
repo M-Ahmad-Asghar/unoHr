@@ -104,6 +104,7 @@ class WizardFormOne extends Component {
   };
   openDialog = () => {
     var val = Math.floor(1000 + Math.random() * 9000);
+   
 
     let data = {
       message: `Verification message from unhr! use verification code: ${val}`,
@@ -139,21 +140,23 @@ class WizardFormOne extends Component {
           emailVerified: false,
         });
       }
-    } else if (typeOfVerification === "number") {
-      if (this.state.verificationCode == otp) {
-        this.props.onNumberStatus(true);
-        this.setState({
-          numberVerified: true,
-          open: false,
-        });
-      } else {
-        toast.error("Not Verified! Verification Code Incorrect");
-        this.props.onNumberStatus(false);
-        this.setState({
-          numberVerified: false,
-        });
-      }
-    } else {
+    }
+    // else if (typeOfVerification === "number") {
+    //   if (this.state.verificationCode == otp) {
+    //     this.props.onNumberStatus(true);
+    //     this.setState({
+    //       numberVerified: true,
+    //       open: false
+    //     });
+    //   } else {
+    //     toast.error("Not Verified! Verification Code Incorrect");
+    //     this.props.onNumberStatus(false);
+    //     this.setState({
+    //       numberVerified: false
+    //     });
+    //   }
+    // }
+    else {
       this.setState({
         verificationType: "",
       });
@@ -303,7 +306,7 @@ class WizardFormOne extends Component {
                   id
                 ) => {
                   this.checkNumberStatus();
-
+                 
                   numberChangeHandler(number);
                   // performNumberVerification();
                   if (status) {
