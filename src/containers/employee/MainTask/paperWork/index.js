@@ -43,7 +43,7 @@ function Paperworks() {
     dispatch(getEmpDocs(user.employeeid));
     setDocuments(stateDocuments);
     setLoader(false);
-  });
+  }, []);
 
   useEffect(() => {
     if (stateDocuments) {

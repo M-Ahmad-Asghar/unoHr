@@ -33,7 +33,6 @@ function EmployeeTask() {
     }
   }, [items, StateLoader]);
 
-  const { t } = this.props;
   return (
     <Container>
       <Row>

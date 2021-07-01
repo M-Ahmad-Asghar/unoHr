@@ -56,9 +56,8 @@ function ContactForm(props) {
     if (title == "" && Description == "") {
       toast.error("Type the title of the task and description");
     } else {
-      setState({
-        loader: true,
-      });
+      setLoader(true);
+
       let data = {
         title: title,
         Description: Description,

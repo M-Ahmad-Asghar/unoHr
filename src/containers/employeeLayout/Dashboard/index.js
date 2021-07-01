@@ -120,7 +120,12 @@ function Dashboard() {
         });
       }
     }
-  }, [stateLoader, employeeCountStatus, getEmployeeAttendancesStatus]);
+  }, [
+    stateLoader,
+    employeeCountStatus,
+    getEmployeeAttendancesStatus,
+    employeeAttendances,
+  ]);
 
   return (
     <Container className="dashboard">

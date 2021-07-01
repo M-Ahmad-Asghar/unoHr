@@ -74,6 +74,7 @@ function EmployeeTasks({ searchQuery }) {
   }, []);
 
   useEffect(() => {
+    console.log("STATELOADER:", stateLoader);
     setLoader(false);
     if (stateLoader === "false") {
       setTasks(items);
@@ -104,7 +105,7 @@ function EmployeeTasks({ searchQuery }) {
       dispatch(completedTask(data));
 
       toast.success("Task completed successfully");
-      this.setState({ completionNote: "" });
+      setCompletionNote("");
     } else {
       toast.error("Failed to complete this task, please write description");
     }
@@ -194,113 +195,91 @@ function EmployeeTasks({ searchQuery }) {
         ) : (
           <CardBody style={{ padding: "0px" }}>
             {Tasks.length > 0 ? (
-              Tasks.filter(this.searchingForName(searchQuery)).map(
-                (item, index) => {
-                  let id = ++index;
-                  return (
-                    <Row className="taskRow" key={index} id={`toggler${index}`}>
-                      <Col
-                        className="taskCol"
-                        xs={4}
-                        sm={4}
-                        md={4}
-                        lg={4}
-                        xl={4}
-                      >
-                        <p>{item.title}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={4}
-                        sm={4}
-                        md={4}
-                        lg={4}
-                        xl={4}
-                      >
-                        <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
-                      </Col>
+              Tasks.filter(searchingForName(searchQuery)).map((item, index) => {
+                let id = ++index;
+                return (
+                  <Row className="taskRow" key={index} id={`toggler${index}`}>
+                    <Col className="taskCol" xs={4} sm={4} md={4} lg={4} xl={4}>
+                      <p>{item.title}</p>
+                    </Col>
+                    <Col className="taskCol" xs={4} sm={4} md={4} lg={4} xl={4}>
+                      <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
+                    </Col>
 
-                      <Col
-                        className="taskCol"
-                        xs={4}
-                        sm={4}
-                        md={4}
-                        lg={4}
-                        xl={4}
-                      >
-                        <p> {moment(item.PostedTime).format("MMM/DD/YYYY")}</p>
-                      </Col>
+                    <Col className="taskCol" xs={4} sm={4} md={4} lg={4} xl={4}>
+                      <p> {moment(item.PostedTime).format("MMM/DD/YYYY")}</p>
+                    </Col>
 
-                      <Col sm={12} md={12} lg={12} xl={12}>
-                        <Divider />
-                        <UncontrolledCollapse
-                          className="with-shadow"
-                          toggler={`#toggler${index}`}
-                        >
-                          <div>
-                            {item.image !== undefined && (
-                              <div style={{ padding: 10 }}>
-                                <img
-                                  src={item.image}
-                                  style={{ height: "auto", width: 100 }}
-                                />
-                              </div>
-                            )}
-                            <div>
-                              <h5>Description :</h5>
-                              <p style={{ marginLeft: "10px" }}>
-                                {item.Description}
-                              </p>
+                    <Col sm={12} md={12} lg={12} xl={12}>
+                      <Divider />
+                      <UncontrolledCollapse
+                        className="with-shadow"
+                        toggler={`#toggler${index}`}
+                      >
+                        <div>
+                          {item.image !== undefined && (
+                            <div style={{ padding: 10 }}>
+                              <img
+                                src={item.image}
+                                style={{ height: "auto", width: 100 }}
+                              />
                             </div>
-                            <Row style={{ marginTop: 5 }}>
-                              <Col sm={6} md={4} xl={4}>
-                                <h5>Task For</h5>
-                              </Col>
-                              <Col sm={6} md={4} xl={4}>
-                                <h5>Recurring Task</h5>
-                              </Col>
-                              <Col sm={6} md={4} xl={4}>
-                                <h5>Task Note</h5>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col sm={6} md={4} xl={4}>
-                                {item.TaskPurpose}
-                              </Col>
-                              <Col sm={6} md={4} xl={4}>
-                                {item.recurringTask ? "True" : "False"}
-                              </Col>
-                              <Col sm={6} md={4} xl={4}>
-                                {item.isTaskNote ? "True" : "False"}
-                              </Col>
-                            </Row>
+                          )}
+                          <div>
+                            <h5>Description :</h5>
+                            <p style={{ marginLeft: "10px" }}>
+                              {item.Description}
+                            </p>
                           </div>
-
+                          <Row style={{ marginTop: 5 }}>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Task For</h5>
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Recurring Task</h5>
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              <h5>Task Note</h5>
+                            </Col>
+                          </Row>
                           <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              style={{
-                                textAlign: "center",
-                                marginTop: "15px",
-                              }}
-                            >
-                              <ButtonToolbar>
-                                <Button
-                                  disabled={this.state.checkIn}
-                                  color="primary"
-                                  onClick={() => {
-                                    setCompletionModal(true);
-                                    setTaskDetail(item);
-                                  }}
-                                >
-                                  Mark as Complete
-                                </Button>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.TaskPurpose}
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.recurringTask ? "True" : "False"}
+                            </Col>
+                            <Col sm={6} md={4} xl={4}>
+                              {item.isTaskNote ? "True" : "False"}
+                            </Col>
+                          </Row>
+                        </div>
 
-                                {/* <Button
-                                  disabled={this.state.checkIn}
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            style={{
+                              textAlign: "center",
+                              marginTop: "15px",
+                            }}
+                          >
+                            <ButtonToolbar>
+                              <Button
+                                // disabled={checkIn}
+                                color="primary"
+                                onClick={() => {
+                                  setCompletionModal(true);
+                                  setTaskDetail(item);
+                                }}
+                              >
+                                Mark as Complete
+                              </Button>
+
+                              {/* <Button
+                                  disabled={checkIn}
                                   color="primary"
                                   variant="outlined"
                                   onClick={() =>
@@ -325,16 +304,15 @@ function EmployeeTasks({ searchQuery }) {
                                 >
                                   Delete
                                 </Button> */}
-                              </ButtonToolbar>
-                            </Col>
-                          </Row>
-                        </UncontrolledCollapse>
-                      </Col>
-                      <Divider />
-                    </Row>
-                  );
-                }
-              )
+                            </ButtonToolbar>
+                          </Col>
+                        </Row>
+                      </UncontrolledCollapse>
+                    </Col>
+                    <Divider />
+                  </Row>
+                );
+              })
             ) : (
               <div style={{ textAlign: "center", padding: 20 }}>
                 <h3>No Found any Employee Task</h3>

@@ -254,7 +254,7 @@ function AllEmployeesSchedule() {
             <div>Schedule</div>
           </DialogTitle>
           <DialogContent align="center">
-            {sDates.length > 0 ? (
+            {state.sDates.length > 0 ? (
               <div style={{ fontSize: 18 }}>
                 <b>Employee: </b>
                 {event.empName}
@@ -319,7 +319,7 @@ function AllEmployeesSchedule() {
             popup={true}
             timeslots={4}
             formats={formats}
-            events={events}
+            events={state.events}
             localizer={localizer}
             defaultView="month"
             toolbar={false}

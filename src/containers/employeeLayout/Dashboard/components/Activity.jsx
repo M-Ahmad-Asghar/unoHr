@@ -65,11 +65,9 @@ function Activity() {
     (state) => state.attendanceReducer.empOldWeekStatus
   );
   const status = useSelector((state) => state.attendanceReducer.status);
-  const weekStatus = useSelector(
-    (state) => state.attendanceReducer.startBreakStatus
-  );
+  const weekStatus = useSelector((state) => state.attendanceReducer.weekStatus);
   const startBreakStatus = useSelector(
-    (state) => state.attendanceReducer.empOldWeekStatus
+    (state) => state.attendanceReducer.startBreakStatus
   );
   const breakData = useSelector((state) => state.attendanceReducer.breakData);
 

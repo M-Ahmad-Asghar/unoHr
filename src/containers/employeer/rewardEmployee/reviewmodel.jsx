@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AlertDialogSlide(props) {
   const [open, setOpen] = React.useState(false);
   const { empArray } = props;
-  
+
   const handleClickOpen = () => {
     if (
       props.sendGiftTo === "" ||
@@ -32,9 +32,8 @@ export default function AlertDialogSlide(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  
-  const sendGift=()=>{
-    
+
+  const sendGift = () => {
     let data = {
       empName: empArray[0],
       empId: empArray[1],
@@ -45,9 +44,10 @@ export default function AlertDialogSlide(props) {
       amount: props.dollars,
       transectionAt: new Date().toString(),
     };
-    console.log("==========>", data);
+    // console.log("==========>", data);
     props.sendGiftReward(data);
-  }
+    handleClose();
+  };
 
   return (
     <div>
