@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -7,7 +7,7 @@ import {
   NavItem,
   NavLink,
   TabContent,
-  TabPane
+  TabPane,
 } from "reactstrap";
 import classnames from "classnames";
 import { translate } from "react-i18next";
@@ -16,91 +16,75 @@ import PropTypes from "prop-types";
 // import OwnTasks from "../../taskView";
 // import EmployeeTasks from '../../taskView/employeeTask'
 
-class DefaultTabsBorderedTop extends Component {
-  static propTypes = {
-    t: PropTypes.func.isRequired
+function DefaultTabsBorderedTop({ t }) {
+  const propTypes = {
+    t: PropTypes.func.isRequired,
   };
+  const [activeTab, setActiveTab] = useState("2");
 
-  constructor() {
-    super();
-    this.state = {
-      activeTab: "2"
-    };
-  }
-
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
+  const toggle = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
     }
   };
 
-  render() {
-    const { t } = this.props;
-
-    return (
-      <Col xs={12} md={12} lg={12} xl={12}>
-        <Card>
-          <CardBody>
-            <div className="tabs tabs--bordered-top">
-              <div className="tabs__wrap">
-                <Nav tabs>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: this.state.activeTab === "1"
-                      })}
-                      onClick={() => {
-                        this.toggle("1");
-                      }}
-                    >
-                      Add Task
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: this.state.activeTab === "2"
-                      })}
-                      onClick={() => {
-                        this.toggle("2");
-                      }}
-                    >
-                      List of Own Task
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: this.state.activeTab === "3"
-                      })}
-                      onClick={() => {
-                        this.toggle("3");
-                      }}
-                    >
-                      List of Employee Task
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-                <TabContent activeTab={this.state.activeTab}>
-                  <TabPane tabId="1">
-                    {/* <HorizontalForm /> */}
-                  </TabPane>
-                  <TabPane tabId="2">
-                    {/* <OwnTasks /> */}
-                  </TabPane>
-                  {/* <TabPane tabId="3">
+  return (
+    <Col xs={12} md={12} lg={12} xl={12}>
+      <Card>
+        <CardBody>
+          <div className="tabs tabs--bordered-top">
+            <div className="tabs__wrap">
+              <Nav tabs>
+                <NavItem>
+                  <NavLink
+                    className={classnames({
+                      active: ctiveTab === "1",
+                    })}
+                    onClick={() => {
+                      toggle("1");
+                    }}
+                  >
+                    Add Task
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    className={classnames({
+                      active: activeTab === "2",
+                    })}
+                    onClick={() => {
+                      toggle("2");
+                    }}
+                  >
+                    List of Own Task
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    className={classnames({
+                      active: activeTab === "3",
+                    })}
+                    onClick={() => {
+                      toggle("3");
+                    }}
+                  >
+                    List of Employee Task
+                  </NavLink>
+                </NavItem>
+              </Nav>
+              <TabContent activeTab={activeTab}>
+                <TabPane tabId="1">{/* <HorizontalForm /> */}</TabPane>
+                <TabPane tabId="2">{/* <OwnTasks /> */}</TabPane>
+                {/* <TabPane tabId="3">
                     <EmployeeTasks />
                   </TabPane> */}
-                </TabContent>
-              </div>
+              </TabContent>
             </div>
-          </CardBody>
-        </Card>
-      </Col>
-    );
-  }
+          </div>
+        </CardBody>
+      </Card>
+    </Col>
+  );
 }
 
 export default translate("common")(DefaultTabsBorderedTop);

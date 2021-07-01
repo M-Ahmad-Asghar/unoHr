@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   ButtonToolbar,
@@ -18,6 +18,8 @@ import PropTypes from "prop-types";
 import { changeAddress } from "../../../../redux/actions/employeeUserActions";
 import MapApi from "../../../../mapApi";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
@@ -26,98 +28,84 @@ const styles = (theme) => ({
   },
 });
 
-class ProfileSettings extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      // street: "",
-      // city: "",
-      // state: "",
-      // country: "",
-      // zip: "",
-      address: "",
-      docid: "",
-      loader: false,
-    };
-  }
+function ProfileSettings({ handleSubmit }) {
+  const [address, setAddress] = useState("");
+  const [docid, setDocid] = useState("");
+  const [loader, setLoader] = useState(false);
 
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value });
-  };
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  componentDidMount() {
-    let user = this.props.user;
-    this.setState({
-      // street: user.street,
-      // city: user.city,
-      // state: user.state,
-      // country: user.country,
-      // zip: user.zip,
-      address: user.address,
-      docid: user.docid,
-    });
-  }
+  //  const  handleChange = (name) => (event) => {
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.adressStatus === "done") {
-      this.setState({
-        loader: false,
-      });
+  //     this.setState({ [name]: event.target.value });
+  //   };
+
+  const user = useSelector((state) => state.employeeUserReducer.currentEmp);
+  const adressStatus = useSelector(
+    (state) => state.employeeUserReducer.adressStatus
+  );
+  const stateLoader = useSelector((state) => state.employeeUserReducer.loader);
+
+  useEffect(() => {
+    setAddress(user.address);
+    setDocid(user.docid);
+  }, []);
+
+  useEffect(() => {
+    if (adressStatus === "done") {
+      setLoader(false);
+
       toast.success("Successfully Change the Address");
-      this.props.history.push("/home/employee/profile");
-    } else if (nextProps.adressStatus === "error") {
-      this.setState({
-        loader: false,
-      });
+      history.push("/home/employee/profile");
+    } else if (adressStatus === "error") {
+      setLoader(false);
+
       toast.error("Successfully Change the Address");
     }
-  }
+  }, [adressStatus]);
 
-  getAddress = (address) => {
-    this.setState({
-      address,
-    });
+  const getAddress = (address) => {
+    setAddress(address);
   };
 
-  changeAddress = (e) => {
+  const changeAddressHandler = (e) => {
     e.preventDefault();
-    this.setState({
-      loader: true,
-    });
+    setLoader(true);
+
     let newAddress = {
-      address: this.state.address,
-      docid: this.state.docid,
+      address,
+      docid,
       // street: this.state.street,
       // city: this.state.city,
       // state: this.state.state,
       // country: this.state.country,
       // zip: this.state.zip
     };
-    this.props.changeAddress(newAddress);
+    dispatch(changeAddress(newAddress));
   };
 
-  render() {
-    const { handleSubmit, reset, classes, user } = this.props;
-    return (
-      <Container>
-        <Row>
-          <Col md={12} lg={12}>
-            <Card>
-              <CardBody>
-                <div className="card__title">
-                  <h5 className="bold-text">Change Address</h5>
-                </div>
-                <form className="form form--horizontal" onSubmit={handleSubmit}>
-                  <div className="form__form-group">
-                    <span className="form__form-group-label">Address</span>
-                    <div className="form__form-group-field">
-                      <div style={{ width: "100%" }}>
-                        <MapApi getAddress={this.getAddress} />
-                      </div>
+  //const { handleSubmit, reset, classes, user } = this.props;
+  return (
+    <Container>
+      <Row>
+        <Col md={12} lg={12}>
+          <Card>
+            <CardBody>
+              <div className="card__title">
+                <h5 className="bold-text">Change Address</h5>
+              </div>
+              <form className="form form--horizontal" onSubmit={handleSubmit}>
+                <div className="form__form-group">
+                  <span className="form__form-group-label">Address</span>
+                  <div className="form__form-group-field">
+                    <div style={{ width: "100%" }}>
+                      <MapApi getAddress={getAddress} />
                     </div>
                   </div>
+                </div>
 
-                  {/* <div className="form__form-group">
+                {/* <div className="form__form-group">
                     <span className="form__form-group-label">Address</span>
                     <div className="form__form-group-field">
                       <TextField
@@ -173,37 +161,27 @@ class ProfileSettings extends Component {
                     </div>
                   </div> */}
 
-                  <ButtonToolbar className="form__button-toolbar">
-                    {this.state.loader ? (
-                      <Button color="primary">
-                        <PulseLoader color={"#123abc"} size={12} />
-                      </Button>
-                    ) : (
-                      <Button color="primary" onClick={this.changeAddress}>
-                        Submit
-                      </Button>
-                    )}
-                  </ButtonToolbar>
-                </form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+                <ButtonToolbar className="form__button-toolbar">
+                  {loader ? (
+                    <Button color="primary">
+                      <PulseLoader color={"#123abc"} size={12} />
+                    </Button>
+                  ) : (
+                    <Button color="primary" onClick={changeAddressHandler}>
+                      Submit
+                    </Button>
+                  )}
+                </ButtonToolbar>
+              </form>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 ProfileSettings.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.employeeUserReducer.currentEmp,
-  adressStatus: state.employeeUserReducer.adressStatus,
-  loader: state.employeeUserReducer.loader,
-});
-
-export default connect(
-  mapStateToProps,
-  { changeAddress }
-)(withStyles(styles)(ProfileSettings));
+export default withStyles(styles)(ProfileSettings);

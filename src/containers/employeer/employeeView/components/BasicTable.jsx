@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Card, CardBody, Col, Badge, Table } from "reactstrap";
 import { translate } from "react-i18next";
 import PropTypes from "prop-types";
@@ -22,49 +22,53 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { PulseLoader } from "react-spinners";
 import './styles.css';
 import { updateEmployee } from '../../../../redux/actions/employeeActions';
+import {useDispatch,useSelector} from 'react-redux'
 
-class BasicTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checkedItems: [],
-      loader: false,
-      updateDialogOpen: false,
-      scroll: "body",
-      isEmpVisible: false,
-      employee: {},
-      nameAlias: '',
-      name: '',
-      value: ''
-    };
+function BasicTable ({ searchQuery } )  {
+  const [checkedItems, setCheckedItems] = useState([])
+  const [loader, setLoader] = useState(false)
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false)
+  const [scroll, setScroll] = useState('body')
+  const [isEmpVisible, setIsEmpVisible] = useState(false)
+  const [employee, setEmployee] = useState({})
+  const [nameAlias, setNameAlias] = useState('')
+  const [name, setName] = useState('')
+  const [value, setValue] = useState('')
+
+const dispatch = useDispatch()
+
+
+
+const employees = useSelector(state=>state.employerReducer.allEmployees)
+const updateEmpStatus = useSelector(state=>state.employeeReducer.updateEmployeeStatus)
+const stateLoader = useSelector(state=>state.employeeReducer.loader)
+
+useEffect(()=>{
+  if (updateEmpStatus === 'done') {
+    let name = name;
+    let value = value;
+    if (name !== '' && value !== '') {
+      let employee1 = employee;
+      employee1[name] = value;
+      setEmployee(employee1)
+   
+    }
+    setLoader(false)
+    setUpdateDialogOpen(false)
+
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.updateEmpStatus === 'done') {
-      let name = this.state.name;
-      let value = this.state.value;
-      if (name !== '' && value !== '') {
-        let employee = this.state.employee;
-        employee[name] = value;
-        this.setState({
-          employee
-        })
-      }
-      this.setState({
-        loader: false,
-        updateDialogOpen: false,
-      })
-    }
-
-    if (nextProps.updateEmpStatus === 'error') {
-      this.setState({
-        loader: false,
-        updateDialogOpen: false
-      })
-    }
+  if (updateEmpStatus === 'error') {
+    setLoader(false)
+    setUpdateDialogOpen(false)
+  
   }
 
-  searchingForName = searchQuery => {
+},[updateEmpStatus])
+
+ 
+
+ const  searchingForName = searchQuery => {
     return function(employee) {
       return (
         employee.status
@@ -79,15 +83,17 @@ class BasicTable extends React.Component {
     };
   };
 
-  handleUpdateDialogOpen = () => {
-    this.setState({ updateDialogOpen: true });
+  const handleUpdateDialogOpen = () => {
+    setUpdateDialogOpen(true)
+  
   };
 
-  handleUpdateDialogClose = () => {
-    this.setState({ updateDialogOpen: false });
+ const  handleUpdateDialogClose = () => {
+   setUpdateDialogOpen(false)
+    
   };
 
-  editValue = (name, value, emp) => {
+ const  editValue = (name, value, emp) => {
       let nameAlias = '';
 
       switch (name) {
@@ -111,42 +117,41 @@ class BasicTable extends React.Component {
               nameAlias = name;
               break;
       }
-      this.setState({
-          employee: emp,
-          name,
-          value,
-          nameAlias,
-          updateDialogOpen: true
-      })
+      setEmployee(emp)
+      setName(name)
+      setValue(value)
+      setNameAlias(nameAlias)
+      setUpdateDialogOpen(true)
+
   }
 
-  updateEmployee = () => {
-      let name = this.state.name;
-      let value = this.state.value;
+  const updateEmployeeData = () => {
+    
+      
 
       if(value === '') {
           toast.error("Empty field not allowed!");
       } else {
-          this.setState({
-              loader: true
-          })
+        setLoader(true)
+      
           let obj = {
-              'docid': this.state.employee.id,
+              'docid': employee.id,
               'name': name,
               'value': value
           }
 
-          this.props.updateEmployee(obj);
+        dispatch(updateEmployee(obj))
+        setLoader(false)
       }
   }
 
-  handleChange = (event) => {
-    this.setState({value: event.target.value});
+ const  handleChange = (event) => {
+   setValue(event.target.value)
+
   }
 
-  render() {
-    const { employees, searchQuery } = this.props;
-    const { loader } = this.state;
+
+
 
     return (
       <Col md={12} lg={12} xl={12}>
@@ -166,10 +171,10 @@ class BasicTable extends React.Component {
               </thead>
               <tbody>
                 {employees.length > 0 ? (
-                  employees.filter(this.searchingForName(searchQuery)).map((emp, index) => {
+                  employees.filter(searchingForName(searchQuery)).map((emp, index) => {
                     return (
                       <React.Fragment>
-                        <tr key={index} onClick={()=>this.setState({ isEmpVisible: !this.state.isEmpVisible })}>
+                        <tr key={index} onClick={()=>setIsEmpVisible(!isEmpVisible) }>
                           <td>{index + 1}</td>
                           <td>{emp.name}</td>
                           <td>{emp.employeeid}</td>
@@ -190,8 +195,8 @@ class BasicTable extends React.Component {
                           <td />
                           <td />
                           <td>
-                            {this.state.isEmpVisible ?
-                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>this.setState({ isEmpVisible: !this.state.isEmpVisible })} >
+                            {isEmpVisible ?
+                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>setIsEmpVisible(!isEmpVisible ) }>
                                 <div style={{ display: 'flex', marginBottom: 15 }}>
                                   <b style={{ marginLeft: '0vw' }}>Time Mode:</b>
                                 </div>
@@ -219,8 +224,8 @@ class BasicTable extends React.Component {
                             }
                           </td>
                           <td>
-                          {this.state.isEmpVisible ?
-                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>this.setState({ isEmpVisible: !this.state.isEmpVisible })} >
+                          {isEmpVisible ?
+                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>setIsEmpVisible(!isEmpVisible )} >
                                 <div style={{ display: 'flex', marginBottom: 15 }}>
                                   <span style={{ marginLeft: 10 }}>
                                     {emp.timeMode}
@@ -262,8 +267,8 @@ class BasicTable extends React.Component {
                             }
                           </td>
                           <td>
-                          {this.state.isEmpVisible ?
-                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>this.setState({ isEmpVisible: !this.state.isEmpVisible })} >
+                          {isEmpVisible ?
+                              <div style={{ display: 'flex', flexDirection: 'column' }} onClick={()=>setIsEmpVisible(!isEmpVisible )} >
                                 <div style={{ display: 'flex' }} className="buttonsGroup">
                                   <Button
                                     color="primary"
@@ -285,7 +290,7 @@ class BasicTable extends React.Component {
                                 <div style={{ display: 'flex' }}>
                                   <Button
                                     color="primary"
-                                    onClick={() => this.editValue("HourlyRate", emp.HourlyRate, emp)}
+                                    onClick={() => editValue("HourlyRate", emp.HourlyRate, emp)}
                                   >
                                     Edit
                                   </Button>
@@ -293,7 +298,7 @@ class BasicTable extends React.Component {
                                 <div style={{ display: 'flex' }}>
                                   <Button
                                     color="primary"
-                                    onClick={() => this.editValue("WeekHr", emp.WeekHr, emp)}
+                                    onClick={() => editValue("WeekHr", emp.WeekHr, emp)}
                                   >
                                     Edit
                                   </Button>
@@ -301,7 +306,7 @@ class BasicTable extends React.Component {
                                 <div style={{ display: 'flex' }}>
                                   <Button
                                     color="primary"
-                                    onClick={() => this.editValue("duties", emp.duties, emp)}
+                                    onClick={() => editValue("duties", emp.duties, emp)}
                                   >
                                     Edit
                                   </Button>
@@ -309,7 +314,7 @@ class BasicTable extends React.Component {
                                 <div style={{ display: 'flex' }}>
                                   <Button
                                     color="primary"
-                                    onClick={() => this.editValue("address", emp.address, emp)}
+                                    onClick={() => editValue("address", emp.address, emp)}
                                   >
                                     Edit
                                   </Button>
@@ -332,9 +337,9 @@ class BasicTable extends React.Component {
                     {/* Update Dialog */}
                     { loader ?
                       <Dialog
-                        open={this.state.updateDialogOpen}
-                        onClose={this.handleUpdateDialogClose}
-                        scroll={this.state.scroll}
+                        open={updateDialogOpen}
+                        onClose={handleUpdateDialogClose}
+                        scroll={scroll}
                         aria-labelledby="scroll-dialog-title"
                         style={{ padding: 25, marginTop: '30vh' }}
                       >
@@ -344,9 +349,9 @@ class BasicTable extends React.Component {
                       </Dialog>
                     :
                       <Dialog
-                        open={this.state.updateDialogOpen}
-                        onClose={this.handleUpdateDialogClose}
-                        scroll={this.state.scroll}
+                        open={updateDialogOpen}
+                        onClose={handleUpdateDialogClose}
+                        scroll={scroll}
                         aria-labelledby="scroll-dialog-title"
                         style={{ padding: 0 }}
                       >
@@ -360,12 +365,12 @@ class BasicTable extends React.Component {
                           Update Task
                             </DialogTitle>
                         <DialogContent style={{ padding: 25, flex: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-                          <p style={{ marginBottom: 10 }}><b>{this.state.nameAlias}</b></p>
-                          <input onChange={this.handleChange} placeholder={this.state.nameAlias} value={this.state.value} style={{ padding: 5, marginBottom: 15 }} />
+                          <p style={{ marginBottom: 10 }}><b>{nameAlias}</b></p>
+                          <input onChange={handleChange} placeholder={nameAlias} value={value} style={{ padding: 5, marginBottom: 15 }} />
                           <Button
                             color="primary"
                             style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-                            onClick={() => this.updateEmployee()}
+                            onClick={updateEmployeeData}
                           >
                             UPDATE
                               </Button>
@@ -378,24 +383,15 @@ class BasicTable extends React.Component {
         </Card>
       </Col>
     );
-  }
+  
 }
 
 BasicTable.propTypes = {
   t: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  employees: state.employerReducer.allEmployees,
-  updateEmpStatus: state.employeeReducer.updateEmployeeStatus,
-  loader: state.employeeReducer.loader
-});
+
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      updateEmployee
-    }
-  )(translate("common")(BasicTable))
+(translate("common")(BasicTable))
 );

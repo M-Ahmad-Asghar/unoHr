@@ -1,39 +1,46 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Col, Container, Row } from "reactstrap";
+import {useDispatch} from 'react-redux'
+function ContactCell ({ contact, onContactSelect } )  {
+ 
 
-class ContactCell extends React.Component {
-  onContactOptionSelect = (event) => {
-    this.setState({ menuState: true, anchorEl: event.currentTarget });
+  const [anchorEl, setAnchorEl] = useStae(undefined)
+  const [menuState, setMenuState] = useStae(false)
+  const [addContactState, setAddContactState] = useStae(false)
+
+
+  const onContactOptionSelect = (event) => {
+    setMenuState(true)
+    setAnchorEl(event.currentTarget)
+
   };
   handleRequestClose = () => {
-    this.setState({ menuState: false });
+    setMenuState(false)
+    
   };
   onContactClose = () => {
-    this.setState({ addContactState: false });
+    setAddContactState(false)
+    
   };
   onDeleteContact = (contact) => {
-    this.setState({ addContactState: false });
-    this.props.onDeleteContact(contact);
+    setAddContactState(false)
+   
+    //this.props.onDeleteContact(contact);
   };
   onEditContact = () => {
-    this.setState({ menuState: false, addContactState: true });
+    setMenuState(false)
+    setAddContactState(true)
+    
   };
 
-  constructor() {
-    super();
-    this.state = {
-      anchorEl: undefined,
-      menuState: false,
-      addContactState: false,
-    };
-  }
 
-  render() {
-    const { contact, onContactSelect } = this.props;
+
+ 
+
     const { title } = contact;
 
     return (
@@ -55,7 +62,7 @@ class ContactCell extends React.Component {
         </Col>
       </Row>
     );
-  }
+  
 }
 
 export default ContactCell;

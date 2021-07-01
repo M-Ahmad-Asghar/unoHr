@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 // import { connect } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 import { translate } from "react-i18next";
@@ -8,49 +8,35 @@ import SearchBar from "../../../employeer/MainTask/SearchBar";
 // import { getOwnTask } from "../../../../redux/actions/EmployeeTaskActions";
 import moment from "moment";
 
-class OwnTask extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // loader: false,
-      // data: []
-      searchQuery: "",
-      filterDate: new Date(),
-    };
-  }
+function OwnTask({ t }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterDate, setFilterDate] = useState(new Date());
 
-  filterMessages = (query) => {
-    this.setState({
-      searchQuery: query,
-    });
+  const filterMessages = (query) => {
+    setSearchQuery(query);
   };
-  handleDate = (date) => {
-    this.setState({
-      filterDate: date,
-      searchQuery: moment(date).format("MMM/DD/YYYY"),
-    });
+  const handleDate = (date) => {
+    setFilterDate(date);
+    setSearchQuery(moment(date).format("MMM/DD/YYYY"));
   };
-  render() {
-    const { data, filterDate } = this.state;
-    const { t } = this.props;
-    return (
-      <Container>
-        <Row>
-          <SearchBar
-            title="List of Own Tasks"
-            filter={this.filterMessages}
-            placeholder="Search by Title, Date"
-            date={filterDate}
-            filterDate={this.handleDate}
-            calendar={true}
-          />
-        </Row>
-        <Row style={{ margin: "0px 10px" }}>
-          <BasicTable searchQuery={this.state.searchQuery} />
-        </Row>
-      </Container>
-    );
-  }
+
+  return (
+    <Container>
+      <Row>
+        <SearchBar
+          title="List of Own Tasks"
+          filter={filterMessages}
+          placeholder="Search by Title, Date"
+          date={filterDate}
+          filterDate={handleDate}
+          calendar={true}
+        />
+      </Row>
+      <Row style={{ margin: "0px 10px" }}>
+        <BasicTable searchQuery={searchQuery} />
+      </Row>
+    </Container>
+  );
 }
 
 export default translate("common")(OwnTask);

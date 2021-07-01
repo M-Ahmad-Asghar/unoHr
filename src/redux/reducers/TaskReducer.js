@@ -29,21 +29,20 @@ const initialState = {
   taskDeleteStatus: "not done",
   completionStatus: "not done",
   updateTaskStatus: "not done",
-  logs: []
+  logs: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
-
     //get all logs
     case GET_ALL_LOG:
-        action.payload.sort(function(a, b) {
-          // Turn your strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
-          return new Date(b.taskCompleted) - new Date(a.taskCompleted);
-        });
+      action.payload.sort(function(a, b) {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.taskCompleted) - new Date(a.taskCompleted);
+      });
       return {
         ...state,
-        logs: action.payload
+        logs: action.payload,
       };
 
     // get all tasks
@@ -56,7 +55,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         AllTask: tasksArray,
-        loader: "false"
+        loader: "false",
       };
 
     // add task
@@ -74,7 +73,7 @@ export default (state = initialState, action) => {
         ...state,
         AllTask: AllTask,
         taskAddStatus: "done",
-        loading: new Date()
+        loading: new Date(),
       };
 
     // for task update
@@ -82,7 +81,7 @@ export default (state = initialState, action) => {
       let updateState = state.AllTask;
       let id = action.payload.id;
 
-      let newList = updateState.filter(item => item.id != id);
+      let newList = updateState.filter((item) => item.id != id);
       newList.unshift(action.payload);
 
       return {
@@ -103,8 +102,8 @@ export default (state = initialState, action) => {
 
       let taskid = action.payload;
 
-      let newState = currentState.filter(item => item.id != taskid);
-      let newCompTask = state.CompletedTask.filter(item => item.id != taskid);
+      let newState = currentState.filter((item) => item.id != taskid);
+      let newCompTask = state.CompletedTask.filter((item) => item.id != taskid);
 
       return {
         ...state,
@@ -112,13 +111,13 @@ export default (state = initialState, action) => {
         CompletedTask: newCompTask,
         deleteStatusCom: "doneCom",
         taskDeleteStatus: "done",
-        loading: new Date()
+        loading: new Date(),
       };
     case DELETE_TASK_ERR:
       return {
         deleteStatusCom: "errorCom",
         taskDeleteStatus: "error",
-        loading: new Date()
+        loading: new Date(),
       };
 
     // to add completed task
@@ -128,20 +127,20 @@ export default (state = initialState, action) => {
 
       let doneId = action.payload.id;
 
-      newState = state.AllTask.filter(item => item.id != doneId);
+      newState = state.AllTask.filter((item) => item.id != doneId);
 
       return {
         ...state,
         AllTask: newState,
         CompletedTask: CompletedTask,
-        completionStatus: "done"
+        completionStatus: "done",
       };
 
     case COMPL_TASK_ERR:
       return {
         ...state,
         completionStatus: "error",
-        loading: new Date()
+        loading: new Date(),
       };
 
     // get all completed tasks
@@ -156,7 +155,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         CompletedTask: completedTaskArray,
-        loader: "false"
+        loader: "false",
       };
 
     // for add own task
@@ -170,7 +169,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         OwnTask: OwnTask,
-        taskAddStatus: "done own"
+        taskAddStatus: "done own",
       };
 
     // get own tasks
@@ -188,25 +187,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         OwnTask: ownTaskArray,
-        loader: "false"
+        loader: "false",
       };
 
     // to delete OWN task
     case DELETE_OWN_TASK:
-      let newOwnTask = state.OwnTask.filter(item => item.id != action.payload);
+      let newOwnTask = state.OwnTask.filter(
+        (item) => item.id != action.payload
+      );
 
       return {
         ...state,
         OwnTask: newOwnTask,
         deleteOwnStatus: "done",
-        loading: new Date()
+        loading: new Date(),
       };
 
     case DELETE_OWN_TASK_ERR:
       return {
         ...state,
         deleteOwnStatus: "error",
-        loading: new Date()
+        loading: new Date(),
       };
 
     default:

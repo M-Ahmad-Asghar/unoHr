@@ -379,7 +379,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { getTemplateSchema, employeeForm }
-)(PaperworkForms);
+export default connect(mapStateToProps, { getTemplateSchema, employeeForm })(
+  PaperworkForms
+);

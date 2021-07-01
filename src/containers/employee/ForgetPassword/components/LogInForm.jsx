@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState,useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
@@ -9,79 +9,61 @@ import PropTypes from "prop-types";
 import { Button, Row, Col } from "reactstrap";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { startRessetPassword } from "../../../../redux/actions/employeeUserActions";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 import "../styles/style.css";
+import {useSelector, useDispatch} from 'react-redux'
 
-class LogInForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired
+export default function LogInForm (props){
+  const [disableBtn, setDisableBtn] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [invalidEmail, setInvalidEmail] = useState("")
+  const [invalidPswrd, setInvalidPswrd] = useState("")
+  const [loader, setLoader] = useState(false)
+  const [hasErroredErr, setHasErroredErr] = useState(false)
+  const  propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
+ const dispatch = useDispatch()
+const forgetWait = useSelector((state)=>state.employeeUserReducer.forgetWait)
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      disableBtn: false,
-      email: "",
-      password: "",
-      invalidEmail: "",
-      invPswrd: "",
-      loader: false,
-      hasErroredErr: false
-    };
-  }
+useEffect(()=>{
+setLoader(false)
+setDisableBtn(false)
 
-  componentWillReceiveProps = nextProps => {
-   
-    this.setState({
-      loader: false,
-      disableBtn: false
-    });
+if (forgetWait === "move") {
+  props.history.push("/employee/login");
+}
+},[nextProps])
 
-    if (nextProps.forgetWait === "move") {
-      this.props.history.push("/employee/login");
-    }
-  };
 
-  onChangeHandler = e => {
+
+  const onChangeHandler = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
-  validateEmail = email => {
+ const  validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
-
-  login = () => {
-
-
-    if (this.state.email == "" || !this.validateEmail(this.state.email)) {
-      this.setState({
-        invalidEmail: "invalid email address"
-      });
+  const login = () => {
+    if (email == "" || !validateEmail(email)) {
+    setInvalidEmail("invalid email address")
+    } else {
+     setInvalidEmail("")
+     setLoader(true)
+      console.log("email", email);
+     dispatch(startRessetPassword(email.toLowerCase()))
     }
-   
-    else  {
-
-      this.setState({
-        invalidEmail: "",
-        loader:true
-      });
-      console.log('email',this.state.email);
-      this.props.startRessetPassword(this.state.email.toLowerCase());
-
-    }
-
-   
-    
   };
 
-  render() {
-    const { disableBtn } = this.state;
+
+    // const { disableBtn } = this.state;
     return (
       <form className="form">
         <div className="form__form-group">
@@ -95,18 +77,21 @@ class LogInForm extends Component {
               component="input"
               type="text"
               placeholder="Email"
-              onChange={this.onChangeHandler}
+              onChange={onChangeHandler}
             />
-            <Tooltip TransitionComponent={Zoom} title="Enter your email address e.g abc@gmail.com">
+            <Tooltip
+              TransitionComponent={Zoom}
+              title="Enter your email address e.g abc@gmail.com"
+            >
               <IconButton className="helpButton">
-                <img className="helpImage" src={HelpIcon} alt="help"/>
+                <img className="helpImage" src={HelpIcon} alt="help" />
               </IconButton>
             </Tooltip>
           </div>
           <div className="account__forgot-password">
             <Link to="/employee/login">Login Page</Link>
           </div>
-          <span style={{ color: "red" }}> {this.state.invalidEmail}</span>
+          <span style={{ color: "red" }}> {invalidEmail}</span>
         </div>
 
         <div className="form__form-group">
@@ -117,7 +102,7 @@ class LogInForm extends Component {
             </p>
           </div>
 
-          {this.state.loader ? (
+          {loader ? (
             <Row>
               <Col style={{ textAlign: "center" }}>
                 <CircularProgress size="22px" />
@@ -131,7 +116,7 @@ class LogInForm extends Component {
                   color="success"
                   className="square"
                   outline
-                  onClick={this.login}
+                  onClick={login}
                 >
                   Forget Password
                 </Button>
@@ -142,20 +127,15 @@ class LogInForm extends Component {
       </form>
     );
   }
-}
 
-const mapStateToProps = state => {
-  return {
-    loader: state.employeeUserReducer.forget,
-    forgetWait: state.employeeUserReducer.forgetWait,
-  };
-};
 
-export default reduxForm({
-  form: "log_in_form" // a unique identifier for this form
-})(
-  connect(
-    mapStateToProps,
-    { startRessetPassword }
-  )(withRouter(LogInForm))
-);
+// const mapStateToProps = (state) => {
+//   return {
+//     loader: state.employeeUserReducer.forget,
+//     forgetWait: state.employeeUserReducer.forgetWait,
+//   };
+// };
+
+// export default reduxForm({
+//   form: "log_in_form", // a unique identifier for this form
+// })(connect(mapStateToProps, { startRessetPassword })(withRouter(LogInForm)));

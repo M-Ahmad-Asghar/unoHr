@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Panel from "../../../../shared/components/Panel";
 import { Typography } from "@material-ui/core";
 import moment from "moment";
@@ -13,77 +13,99 @@ import {
   breakEnd,
   defaultValue,
 } from "../../../../redux/actions/attendanceAction";
-class Activity extends Component {
-  constructor(props) {
-    super(props);
+import { useObjectState } from "./useActivity";
+import { useDispatch, useSelector } from "react-redux";
+function Activity() {
+  const [state, setState] = useObjectState({
+    initialPosition: '{"coords": "data"}',
+    locationShower: "null",
+    checkIn: false,
+    checkOut: true,
+    employee: {},
+    checkInLoader: false,
+    checkingDays: new Date(),
+    checkOutLoader: false,
+    status: "",
+    employeDay: [],
+    weekTotal: "",
+    submitLoader: false,
+    submitDisable: false,
+    weekStatus: {},
+    lunchBtn: false,
+    breakBtn: false,
+    showFacilities: false,
+    breakLoader: false,
+    lunchBreakLoader: false,
+    breakData: [],
+    lunchBreak: [],
+    breakStatus: false,
+    lunchBreakStatus: false,
+    loading: true,
+    currentWeekStatus: false,
+    // end of time setup
+  });
 
-    this.state = {
-      initialPosition: '{"coords": "data"}',
-      locationShower: "null",
-      checkIn: false,
-      checkOut: true,
-      employee: {},
-      checkInLoader: false,
-      checkingDays: new Date(),
-      checkOutLoader: false,
-      status: "",
-      employeDay: [],
-      weekTotal: "",
-      submitLoader: false,
-      submitDisable: false,
-      weekStatus: {},
-      lunchBtn: false,
-      breakBtn: false,
-      showFacilities: false,
-      breakLoader: false,
-      lunchBreakLoader: false,
-      breakData: [],
-      lunchBreak: [],
-      breakStatus: false,
-      lunchBreakStatus: false,
-      loading: true,
-      currentWeekStatus: false,
-      // end of time setup
-    };
-  }
+  const dispatch = useDispatch();
 
-  componentWillReceiveProps(nextProps) {
-    // check whether break facilities is given by the employer to employee
-    if (
-      this.props.employee.lunchFacility ||
-      this.props.employee.breakFacility
-    ) {
-      // console.log("facility", this.props.employee.breakFacility);
-      this.setState({
+  const employee = useSelector((state) => state.employeeUserReducer.currentEmp);
+  const currentEmp = useSelector(
+    (state) => state.employeeUserReducer.currentEmp
+  );
+  const done = useSelector((state) => state.attendanceReducer.done);
+  const submitStatus = useSelector(
+    (state) => state.attendanceReducer.submitStatus
+  );
+  const employeeDay = useSelector(
+    (state) => state.attendanceReducer.employeeDay
+  );
+  const employeeCheckIn = useSelector(
+    (state) => state.attendanceReducer.employeeCheckIn
+  );
+  const empOldWeekStatus = useSelector(
+    (state) => state.attendanceReducer.empOldWeekStatus
+  );
+  const status = useSelector((state) => state.attendanceReducer.status);
+  const weekStatus = useSelector(
+    (state) => state.attendanceReducer.startBreakStatus
+  );
+  const startBreakStatus = useSelector(
+    (state) => state.attendanceReducer.empOldWeekStatus
+  );
+  const breakData = useSelector((state) => state.attendanceReducer.breakData);
+
+  useEffect(() => {
+    if (employee.lunchFacility || employee.breakFacility) {
+      // console.log("facility", props.employee.breakFacility);
+      setState({
         showFacilities: true,
       });
     }
 
     // manage employee's checkIn status and week status
-    this.setState({
-      weekStatus: nextProps.weekStatus,
+    setState({
+      weekStatus: weekStatus,
     });
 
-    this.setState({
-      employeDay: nextProps.employeeDay,
+    setState({
+      employeDay: employeeDay,
     });
 
-    if (nextProps.employeeCheckIn !== undefined) {
-      if (nextProps.employeeCheckIn.status == "checkIn") {
-        this.setState({
+    if (employeeCheckIn !== undefined) {
+      if (employeeCheckIn.status == "checkIn") {
+        setState({
           checkIn: true,
           checkOut: false,
         });
       }
     }
-    if (nextProps.status == "checkIn") {
-      this.setState({
+    if (status == "checkIn") {
+      setState({
         checkInLoader: false,
         checkIn: true,
         checkOut: false,
       });
-    } else if (nextProps.status == "checkOut") {
-      this.setState({
+    } else if (status == "checkOut") {
+      setState({
         checkOutLoader: false,
         checkIn: false,
         checkOut: true,
@@ -92,7 +114,7 @@ class Activity extends Component {
 
     // week status includes whethe the employee submit the current week record or not
 
-    if (nextProps.weekStatus !== undefined) {
+    if (weekStatus !== undefined) {
       let today = new Date();
       let startDate = today;
       let stopDate = today;
@@ -103,42 +125,37 @@ class Activity extends Component {
       stopDate.setDate(stopDate.getDate() + ((0 + 7 - stopDate.getDay()) % 7));
       stopDate = moment(stopDate).format("MM/DD/YYYY");
       // console.log(stopDate);
-      let checkingDate = moment(nextProps.weekStatus.submitDate).format(
-        "MM/DD/YYYY"
-      );
+      let checkingDate = moment(weekStatus.submitDate).format("MM/DD/YYYY");
 
       let result = checkingDate >= startDate && checkingDate <= stopDate;
 
-      this.setState({
+      setState({
         loading: false,
         currentWeekStatus: result,
       });
     } else {
-      this.setState({
+      setState({
         loading: false,
         currentWeekStatus: false,
       });
     }
 
     // manage breaks
-    if (
-      nextProps.startBreakStatus === "done" ||
-      nextProps.startBreakStatus === "error"
-    ) {
-      this.setState({
+    if (startBreakStatus === "done" || startBreakStatus === "error") {
+      setState({
         breakLoader: false,
         lunchBreakLoader: false,
       });
-      this.props.defaultValue();
+      dispatch(defaultValue());
     }
     if (
-      nextProps.employeeCheckIn !== undefined &&
-      nextProps.employeeCheckIn.dayBreaks !== undefined
+      employeeCheckIn !== undefined &&
+      employeeCheckIn.dayBreaks !== undefined
     ) {
-      let breakData = nextProps.employeeCheckIn.dayBreaks.filter(
+      let breakData = employeeCheckIn.dayBreaks.filter(
         (item) => item.breakType === "break"
       );
-      let lunchBreak = nextProps.employeeCheckIn.dayBreaks.filter(
+      let lunchBreak = employeeCheckIn.dayBreaks.filter(
         (item) => item.breakType === "lunchBreak"
       );
 
@@ -154,18 +171,18 @@ class Activity extends Component {
 
       let lunchBreakStatus = lunchBreakStart.length > 0 ? true : false;
 
-      this.setState({
+      setState({
         breakData,
         lunchBreak,
         breakStatus,
         lunchBreakStatus,
       });
     }
-  }
+  }, [startBreakStatus, employee, employeeCheckIn, weekStatus, status]);
 
   // function to handle checkIn requests
-  checkInHandler = () => {
-    this.setState({
+  const checkInHandler = () => {
+    setState({
       checkInLoader: true,
     });
 
@@ -175,25 +192,25 @@ class Activity extends Component {
       day: date.getDay(),
       status: "checkIn",
       checkInLoc: "Desktop",
-      employeeUid: this.props.currentEmp.employeeid,
-      employerUid: this.props.currentEmp.employeruid,
+      employeeUid: currentEmp.employeeid,
+      employerUid: currentEmp.employeruid,
       type: "Punch",
     };
-    this.props.employeCheckIn(checkInData);
+    dispatch(employeCheckIn(checkInData));
   };
 
   // to handle checkout requests
-  checkoutHandler = () => {
-    this.setState({
+  const checkoutHandler = () => {
+    setState({
       checkOutLoader: true,
     });
     let CheckOutTime = new Date();
     let CheckInTime;
 
-    if (this.props.employeeCheckIn.checkInTime.seconds) {
-      CheckInTime = new Date(this.props.employeeCheckIn.checkInTime.toDate());
+    if (employeeCheckIn.checkInTime.seconds) {
+      CheckInTime = new Date(employeeCheckIn.checkInTime.toDate());
     } else {
-      CheckInTime = new Date(this.props.employeeCheckIn.checkInTime);
+      CheckInTime = new Date(employeeCheckIn.checkInTime);
     }
 
     if (CheckOutTime < CheckInTime) {
@@ -207,8 +224,8 @@ class Activity extends Component {
 
     let lunchBreak = [];
     let totalBreakTime = 0;
-    if (this.props.employeeCheckIn.dayBreaks !== undefined) {
-      lunchBreak = this.props.employeeCheckIn.dayBreaks.filter(
+    if (employeeCheckIn.dayBreaks !== undefined) {
+      lunchBreak = employeeCheckIn.dayBreaks.filter(
         (item) => item.breakType === "lunchBreak"
       );
       for (let i = 0; i < lunchBreak.length; i++) {
@@ -231,7 +248,7 @@ class Activity extends Component {
 
     let dutyTime = hh + ":" + mm + ":" + ss;
 
-    let hourlyPayRate = Number(this.props.currentEmp.HourlyRate);
+    let hourlyPayRate = Number(currentEmp.HourlyRate);
 
     let hrPay = hh * hourlyPayRate;
     let minPay = mm * (hourlyPayRate / 60);
@@ -244,65 +261,65 @@ class Activity extends Component {
     let checkOutData = {
       checkOutTime: CheckOutTime,
       lunchBreakTime: totalBreakTime,
-      id: this.props.employeeCheckIn.id,
+      id: employeeCheckIn.id,
       status: "checkOut",
       checkOutLocation: "Desktop",
       dutyTime: dutyTime,
       dayPay: dayPay,
     };
 
-    this.props.employeCheckOut(checkOutData);
+    dispatch(employeCheckOut(checkOutData));
   };
 
-  startBreak = (type) => {
+  const startBreak = (type) => {
     let date = new Date();
 
     let breakData = {
       breakStart: date.toString(),
       breakStatus: type === "break" ? "breakStart" : "lunchBreakStart",
       breakType: type,
-      id: this.props.employeeCheckIn.id,
+      id: employeeCheckIn.id,
     };
 
-    this.props.breakStart(breakData);
+    dispatch(breakStart(breakData));
     if (type === "break") {
-      this.setState({
+      setState({
         breakLoader: true,
       });
     } else {
-      this.setState({
+      setState({
         lunchBreakLoader: true,
       });
     }
   };
 
-  endBreak = (type) => {
+  const endBreak = (type) => {
     let startObj;
     let breakStartTime;
     let array = [];
     let otherTypeArray = [];
     if (type === "break") {
-      startObj = this.state.breakData.filter(
+      startObj = state.breakData.filter(
         (item) => item.breakStatus === "breakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
-      array = this.state.breakData.filter(
+      array = state.breakData.filter(
         (item) => item.breakStatus !== "breakStart"
       );
-      otherTypeArray = this.state.lunchBreak;
-      this.setState({
+      otherTypeArray = state.lunchBreak;
+      setState({
         breakLoader: true,
       });
     } else {
-      startObj = this.state.lunchBreak.filter(
+      startObj = state.lunchBreak.filter(
         (item) => item.breakStatus === "lunchBreakStart"
       );
       breakStartTime = new Date(startObj[0].breakStart);
-      array = this.state.lunchBreak.filter(
+      array = state.lunchBreak.filter(
         (item) => item.breakStatus !== "lunchBreakStart"
       );
-      otherTypeArray = this.state.breakData;
-      this.setState({
+      otherTypeArray = state.breakData;
+      setState({
         lunchBreakLoader: true,
       });
     }
@@ -330,28 +347,24 @@ class Activity extends Component {
       ],
     };
 
-    let id = this.props.employeeCheckIn.id;
-    this.props.breakEnd(dayBreaks, id);
+    let id = employeeCheckIn.id;
+    dispatch(breakEnd(dayBreaks, id));
   };
-  render() {
-    const {
-      breakBtn,
-      lunchBtn,
-      showFacilities,
-      breakLoader,
-      breakData,
-      lunchBreak,
-      breakStatus,
-      lunchBreakStatus,
-      lunchBreakLoader,
-    } = this.state;
-    return (
-      <Panel
-        xl={6}
-        lg={6}
-        md={12}
-        xs={12}
-        title="Activity"
+
+  return (
+    <Panel
+      xl={6}
+      lg={6}
+      md={12}
+      xs={12}
+      title="Activity"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -361,10 +374,52 @@ class Activity extends Component {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
+            flexDirection: "row",
+            justifyContent: "space-around",
           }}
         >
+          {state.checkInLoader ? (
+            <Button disabled={true} style={{ width: 140 }} color="primary">
+              <ScaleLoader
+                sizeUnit={"12px"}
+                size={100}
+                color={"#123abc"}
+                height="15"
+              />
+            </Button>
+          ) : (
+            <Button
+              onClick={checkInHandler}
+              disabled={state.checkIn}
+              color="primary"
+              style={{ width: 140 }}
+            >
+              Clock-in
+            </Button>
+          )}
+          {state.checkOutLoader ? (
+            <Button color="primary" style={{ width: 140 }} disabled={true}>
+              <ScaleLoader
+                sizeUnit={"12px"}
+                size={100}
+                color={"#123abc"}
+                height="15"
+              />
+            </Button>
+          ) : (
+            <Button
+              onClick={checkoutHandler}
+              disabled={
+                state.checkOut || state.lunchBreakStatus || state.breakStatus
+              }
+              style={{ width: 140 }}
+              color="primary"
+            >
+              Clock-out
+            </Button>
+          )}
+        </div>
+        {state.showFacilities && state.checkIn && (
           <div
             style={{
               display: "flex",
@@ -372,108 +427,59 @@ class Activity extends Component {
               justifyContent: "space-around",
             }}
           >
-            {this.state.checkInLoader ? (
-              <Button disabled={true} style={{ width: 140 }} color="primary">
+            {state.breakLoader ? (
+              <Button style={{ width: 140 }} disabled={true} color="primary">
                 <ScaleLoader
                   sizeUnit={"12px"}
                   size={100}
                   color={"#123abc"}
                   height="15"
+                  outline
                 />
               </Button>
             ) : (
               <Button
-                onClick={this.checkInHandler}
-                disabled={this.state.checkIn}
+                disabled={state.breakBtn ? true : state.lunchBreakStatus}
+                onClick={
+                  state.breakStatus
+                    ? () => endBreak("break")
+                    : () => startBreak("break")
+                }
                 color="primary"
                 style={{ width: 140 }}
               >
-                Clock-in
+                {state.breakStatus ? "End Break" : "Start Break"}
               </Button>
             )}
-            {this.state.checkOutLoader ? (
+
+            {state.unchBreakLoader ? (
               <Button color="primary" style={{ width: 140 }} disabled={true}>
                 <ScaleLoader
                   sizeUnit={"12px"}
                   size={100}
                   color={"#123abc"}
                   height="15"
+                  outline
                 />
               </Button>
             ) : (
               <Button
-                onClick={this.checkoutHandler}
-                disabled={
-                  this.state.checkOut || lunchBreakStatus || breakStatus
+                onClick={
+                  state.lunchBreakStatus
+                    ? () => endBreak("lunchBreak")
+                    : () => startBreak("lunchBreak")
                 }
-                style={{ width: 140 }}
                 color="primary"
+                disabled={state.lunchBtn ? true : state.breakStatus}
+                style={{ width: 140 }}
               >
-                Clock-out
+                {state.lunchBreakStatus ? "End Lunch" : "Start Lunch"}
               </Button>
             )}
           </div>
-          {showFacilities && this.state.checkIn && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-              }}
-            >
-              {breakLoader ? (
-                <Button style={{ width: 140 }} disabled={true} color="primary">
-                  <ScaleLoader
-                    sizeUnit={"12px"}
-                    size={100}
-                    color={"#123abc"}
-                    height="15"
-                    outline
-                  />
-                </Button>
-              ) : (
-                <Button
-                  disabled={breakBtn ? true : lunchBreakStatus}
-                  onClick={
-                    breakStatus
-                      ? () => this.endBreak("break")
-                      : () => this.startBreak("break")
-                  }
-                  color="primary"
-                  style={{ width: 140 }}
-                >
-                  {breakStatus ? "End Break" : "Start Break"}
-                </Button>
-              )}
+        )}
 
-              {lunchBreakLoader ? (
-                <Button color="primary" style={{ width: 140 }} disabled={true}>
-                  <ScaleLoader
-                    sizeUnit={"12px"}
-                    size={100}
-                    color={"#123abc"}
-                    height="15"
-                    outline
-                  />
-                </Button>
-              ) : (
-                <Button
-                  onClick={
-                    lunchBreakStatus
-                      ? () => this.endBreak("lunchBreak")
-                      : () => this.startBreak("lunchBreak")
-                  }
-                  color="primary"
-                  disabled={lunchBtn ? true : breakStatus}
-                  style={{ width: 140 }}
-                >
-                  {lunchBreakStatus ? "End Lunch" : "Start Lunch"}
-                </Button>
-              )}
-            </div>
-          )}
-
-          {/* <div
+        {/* <div
             style={{
               display: "flex",I
               flexDirection: "row",
@@ -484,34 +490,9 @@ class Activity extends Component {
               Start Lunch
             </Button>
           </div> */}
-        </div>
-      </Panel>
-    );
-  }
+      </div>
+    </Panel>
+  );
 }
 
-const mapStateToProp = (state) => ({
-  employee: state.employeeUserReducer.currentEmp,
-  currentEmp: state.employeeUserReducer.currentEmp,
-  done: state.attendanceReducer.done,
-  submitStatus: state.attendanceReducer.submitStatus,
-  employeeDay: state.attendanceReducer.employeeDay,
-  employeeCheckIn: state.attendanceReducer.employeeCheckIn,
-  empOldWeekStatus: state.attendanceReducer.empOldWeekStatus,
-  status: state.attendanceReducer.status,
-  weekStatus: state.attendanceReducer.weekStatus,
-  startBreakStatus: state.attendanceReducer.startBreakStatus,
-  breakData: state.attendanceReducer.breakData,
-});
-
-export default connect(
-  mapStateToProp,
-  {
-    employeCheckIn,
-    employeCheckOut,
-    submitRecord,
-    breakStart,
-    breakEnd,
-    defaultValue,
-  }
-)(Activity);
+export default Activity;

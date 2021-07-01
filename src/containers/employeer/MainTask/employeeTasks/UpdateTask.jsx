@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardBody, Col, Button, ButtonToolbar } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -21,126 +21,133 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
-  DatePicker,
+  DatePicker
 } from "material-ui-pickers";
 import { toast } from "react-toastify";
 import { FastForwardIcon } from "mdi-react";
-class UpdateForm extends Component {
-  static propTypes = {
+import {useSelector, useDispatch} from 'react-redux'
+function UpdateForm (props)  {
+  const dispatch = useDispatch()
+  const  propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
+    reset: PropTypes.func.isRequired
+  };
+const [id, setId] = useState("")
+const [title, setTitle] = useState("")
+const [Description, setDescription] = useState("")
+const [AllotedTo, setAllotedTo] = useState("")
+const [DueTime, setDueTime] = useState("")
+const [uid, setUid] = useState("")
+const [TaskPurpose, setTaskPurpose] = useState("")
+const [PostedTime, setPostedTime] = useState("")
+const [updateLoader, setUpdateLoader] = useState(false)
+
+
+
+
+
+const user = useSelector(state=>state.userReducer.user)
+const employees = useSelector(state=>state.employerReducer.employees)
+const taskAddStatus = useSelector(state=>state.TaskReducer.taskAddStatus)
+const loading = useSelector(state=>state.TaskReducer.loading)
+const updateTaskStatus = useSelector(state=>state.TaskReducer.updateTaskStatus)
+
+ const  handleChange = event => {
+   setAllotedTo(event.target.value)
   };
 
-  constructor() {
-    super();
-    this.state = {
-      employees: [],
-
-      id: "",
-      title: "",
-      Description: "",
-      AllotedTo: "",
-      DueTime: "",
-      uid: "",
-      TaskPurpose: "",
-      PostedTime: "",
-      updateLoader: false,
-    };
+ const  onValueChange = (obj) => {
+  setAllotedTo(obj.value)
+ 
   }
-  handleChange = (event) => {
-    this.setState({ AllotedTo: event.target.value });
-  };
-
-  onValueChange(obj) {
-    this.setState({
-      AllotedTo: obj.value,
-    });
-  }
-  TaskPurposeHandler(obj) {
-    this.setState({
-      TaskPurpose: obj.value,
-    });
+  const  taskPurposeHandler = (obj) => {
+    setTaskPurpose(obj.value)
+   
   }
 
-  AddTask = (e) => {
+  const  addTask = e => {
     e.preventDefault();
-    if (this.state.title == "" && this.state.Description == "") {
+    if (title == "" && Description == "") {
       toast.error("Type the title of the task and description");
     } else {
-      this.setState({
-        updateLoader: true,
-      });
-      let fields = this.state.AllotedTo.split(",");
+      setUpdateLoader(true)
+ 
+      let fields = AllotedTo.split(",");
       let data = {
-        id: this.state.id,
-        title: this.state.title,
-        Description: this.state.Description,
+        id: id,
+        title: title,
+        Description: Description,
         AllotedTo: fields[0],
-        DueTime: this.state.DueTime.toString(),
-        PostedTime: this.state.PostedTime,
-        TaskPurpose: this.state.TaskPurpose,
-        uid: this.state.uid,
-        employeeid: fields[1],
+        DueTime: DueTime.toString(),
+        PostedTime: PostedTime,
+        TaskPurpose: TaskPurpose,
+        uid: uid,
+        employeeid: fields[1]
       };
-
-      this.props.updateTask(data);
+ 
+     dispatch(updateTask(data))
     }
   };
-  handleDateChange = (date) => {
-    this.setState({ DueTime: date });
+ const  handleDateChange = date => {
+   setDueTime(date)
+ 
   };
-  componentDidMount() {
-    let data = this.props.item;
 
-    this.setState({
-      id: data.id,
-      title: data.title,
-      Description: data.Description,
-      AllotedTo: data.AllotedTo + "," + data.employeeid,
-      DueTime: data.DueTime,
-      uid: data.uid,
-      TaskPurpose: data.TaskPurpose,
-      PostedTime: data.PostedTime,
-    });
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.updateTaskStatus == "done") {
-      this.setState({
-        updateLoader: false,
-      });
-      // this.props.handleClose();
-      // this.props.history.push("/home/employeer/employeeTask");
-    } else if (nextProps.updateTaskStatus == "error") {
-      this.setState({
-        updateLoader: false,
-      });
+  useEffect(()=>{
+    let data = props.item;
+    setId(data.id)
+    setTitle(data.title)
+    setDescription(data.Description)
+    setAllotedTo(data.AllotedTo + "," + data.employeeid)
+    setDueTime(data.DueTime)
+    setUid(data.uid)
+    setTaskPurpose(data.TaskPurpose)
+    setPostedTime(data.PostedTime)
+
+  },[])
+
+
+  useEffect(()=>{
+    if (updateTaskStatus == "done") {
+      setUpdateLoader(false)
+
+ 
+    } else if (updateTaskStatus == "error") {
+      setUpdateLoader(false)
+
     }
-  }
+  },[updateTaskStatus])
 
-  onChangeHandler = (e) => {
+
+   const onChangeHandler = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+   if(name == "title"){
+     setTitle(value)
+   }
+   if(name == "Description"){
+     setDescription(value)
+   }
   };
 
-  render() {
-    const { employees } = this.props;
-    const { title, Description, AllotedTo, DueTime, updateLoader } = this.state;
 
+ 
+
+   
     return (
       <Col md={12} lg={12}>
         <Card>
           <CardBody>
-            <form className="form form--horizontal" onSubmit={this.AddTask}>
+            <form className="form form--horizontal" onSubmit={addTask}>
               <div className="form__form-group">
-                <span className="form__form-group-label">Title</span>
+                <span className="form__form-group-label">Title </span>
                 <div className="form__form-group-field selectEmply">
                   <TextField
                     name="title"
                     type="text"
-                    value={this.state.title}
+                    value={title}
                     placeholder="Enter The Title"
-                    onChange={this.onChangeHandler}
+                    onChange={onChangeHandler}
                   />
                 </div>
               </div>
@@ -152,7 +159,7 @@ class UpdateForm extends Component {
                     type="text"
                     value={Description}
                     placeholder="Enter the detail"
-                    onChange={this.onChangeHandler}
+                    onChange={onChangeHandler}
                   />
                 </div>
               </div>
@@ -162,10 +169,10 @@ class UpdateForm extends Component {
                 <div className="form__form-group-field selectEmplyUpdate selectPurpose">
                   <Select
                     value={AllotedTo}
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                     inputProps={{
                       name: "age",
-                      id: "age-simple",
+                      id: "age-simple"
                     }}
                   >
                     {employees.length > 0 ? (
@@ -193,8 +200,8 @@ class UpdateForm extends Component {
                     <DatePicker
                       margin="normal"
                       value={DueTime}
-                      onChange={this.handleDateChange}
-                      formatDate={(date) => moment(date).format("DD-MM-YYYY")}
+                      onChange={handleDateChange}
+                      formatDate={date => moment(date).format("DD-MM-YYYY")}
                     />
                   </MuiPickersUtilsProvider>
                 </div>
@@ -216,17 +223,8 @@ class UpdateForm extends Component {
         </Card>
       </Col>
     );
-  }
+  
 }
-const mapStateToProps = (state) => ({
-  user: state.userReducer.user,
-  employees: state.employerReducer.employees,
-  taskAddStatus: state.TaskReducer.taskAddStatus,
-  loading: state.TaskReducer.loading,
-  updateTaskStatus: state.TaskReducer.updateTaskStatus,
-});
 
-export default connect(
-  mapStateToProps,
-  { updateTask }
-)(withRouter(UpdateForm));
+
+export default (withRouter(UpdateForm));

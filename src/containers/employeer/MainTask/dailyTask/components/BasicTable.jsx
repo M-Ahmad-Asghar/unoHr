@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -23,6 +23,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { PulseLoader } from "react-spinners";
+import {useSelector, useDispatch} from 'react-redux'
 
 // import Collapse from "../../../../../shared/components/Collapse";
 
@@ -35,68 +36,79 @@ import { getEmployees } from "../../../../../redux/actions/employerActions";
 
 import UpdateForm from "../../employeeTasks/UpdateTask";
 
-class EmployeeTasks extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      delId: "",
-      open: false,
-      taskTitle: "",
-      updateDialogOpen: false,
-      scroll: "body",
-      taskDetail: {},
-      value: 0,
-      title: "",
-      Description: "",
-      DueTime: "",
-      AlottedTo: "",
-      completionModal: false,
-      completionNote: "",
-      taskStatus: "",
-      loader: true,
-      PostedTime: "",
-      TaskPurpose: "",
-      taskCompleted: "",
-      id: "",
-      uid: "",
-      SelectForAllot: "",
-      collapse: false,
-      deleteLoader: false,
-      completeLoader: false,
-    };
-  }
+function EmployeeTasks ( {searchQuery})  {
+  const dispatch = useDispatch()
 
-  componentDidMount() {
-    this.props.getTask(this.props.user.uid);
-  }
+  const [modal, setModal]=useState(false)
+  const [delId, setDelId] =useState("false")
+  const [open, setOpen] =useState(false)
+  const [taskTitle, setTaskTitle]= useState("")
+  const [updateDialogOpen,setUpdateDialogOpen] =useState(false)
+  const [scroll, setScroll]=useState('body')
+  const [taskDetail, setTaskDetail]= useState({})
+  const [value, setValue]= useState(0)
+  const [title, setTitle]=useState("")
+  const [Description, setDescription] =useState('')
+  const [DueTime, setDueTime] =useState('')
+  const [AlottedTo, setAlottedTo] =useState('')
+  const [completionModal, setCompletionModal] =useState(false)
+  const [completionNote, setCompletionNote] =useState('')
+  const [taskStatus, setTaskStatus] =useState('')
+  const [loader, setLoader] =useState(false)
+  const [PostedTime, setPostedTime] =useState('')
+  const [TaskPurpose, setTaskPurpose] =useState('')
+  const [taskCompleted, setTaskCompleted] =useState('')
+  const [id, setId] =useState('')
+  const [uid, setUid] =useState('')
+  const [SelectForAllot, setSelectForAllot] =useState('')
+  const [collapse, setCollapse] =useState(false)
+  const [deleteLoader, setDeleteLoader] =useState(false)
+  const [completeLoader, setCompleteLoader] =useState(false)
+   
 
-  onChangeHandler = (e) => {
-    this.setState({ completionNote: e.target.value });
+
+
+
+  const items = useSelector(state=>state.TaskReducer.AllTask)
+  const user = useSelector(state=>state.userReducer.user)
+  const stateLoader = useSelector(state=>state.TaskReducer.loader)
+  const taskDeleteStatus = useSelector(state=>state.TaskReducer.taskDeleteStatus)
+  const loading = useSelector(state=>state.TaskReducer.loading)
+  const completionStatus = useSelector(state=>state.TaskReducer.completionStatus)
+
+
+  useEffect(()=>{
+dispatch(getTask(user.uid))
+  },[])
+
+
+
+  const onChangeHandler = (e) => {
+    setCompletionNote(e.target.value)
+    
   };
 
-  CompleteTask = () => {
+ const completeTask = () => {
     // this.setState({ completionModal: false });
 
-    if (this.state.completionNote !== "") {
-      this.setState({
-        completeLoader: true,
-      });
+    if (completionNote !== "") {
+      setCompleteLoader(true)
+   
       let data = {
-        id: this.state.taskDetail.id,
-        title: this.state.taskDetail.title,
-        Description: this.state.taskDetail.Description,
-        AllotedTo: this.state.taskDetail.AllotedTo,
+        id: taskDetail.id,
+        title: taskDetail.title,
+        Description: taskDetail.Description,
+        AllotedTo: taskDetail.AllotedTo,
         DueTime: "Completed",
-        completionNote: this.state.completionNote,
-        PostedTime: this.state.taskDetail.PostedTime,
+        completionNote: completionNote,
+        PostedTime: taskDetail.PostedTime,
         taskCompleted: new Date().toString(),
-        TaskPurpose: this.state.taskDetail.TaskPurpose,
-        uid: this.state.taskDetail.uid,
+        TaskPurpose: taskDetail.TaskPurpose,
+        uid: taskDetail.uid,
       };
 
-      this.props.completedTask(data);
-      // toast.success("Task completed successfully");
+     dispatch(completedTask(data))
+      toast.success("Task completed successfully");
 
       // this.setState({ completionNote: "" });
     } else {
@@ -104,63 +116,62 @@ class EmployeeTasks extends Component {
     }
   };
 
-  handleModelState = () => {
-    this.setState({ completionModal: false });
-  };
+  const handleModelState = () => {
+    setCompletionModal(false)
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.loader === "false") {
-      this.setState({
-        loader: false,
-      });
+  }; 
+
+  useEffect(()=>{
+    if (stateLoader === "false") {
+setLoader(false)
+    if (taskDeleteStatus == "done") {
+      setDeleteLoader(false)
+      setOpen(false)
+   
+    } else if (taskDeleteStatus == "error") {
+      setDeleteLoader(false)
+      setOpen(false)
     }
-    if (nextProps.taskDeleteStatus == "done") {
-      this.setState({
-        deleteLoader: false,
-        open: false,
-      });
-    } else if (nextProps.taskDeleteStatus == "error") {
-      this.setState({
-        deleteLoader: false,
-        open: false,
-      });
+    if (completionStatus == "done") {
+      setCompleteLoader(false)
+      setCompletionModal(false)
+
+    } else if (completionStatus == "error") {
+      setCompleteLoader(false)
     }
-    if (nextProps.completionStatus == "done") {
-      this.setState({
-        completeLoader: false,
-        completionModal: false,
-      });
-    } else if (nextProps.completionStatus == "error") {
-      this.setState({
-        completeLoader: false,
-      });
-    }
+  }},[stateLoader, taskDeleteStatus, completionStatus])
+
+ 
+
+  const handleDeleteTask = () => {
+   setDeleteLoader(true)
+dispatch(deleteTask(delId))
+
+  
+ //toast.success("Own Task Delete Successfully!");
   };
 
-  deleteTask = () => {
-    this.setState({ deleteLoader: true });
+const   handleClickOpen = () => {
+  setOpen(true)
 
-    this.props.deleteTask(this.state.delId);
-    // toast.success("Own Task Delete Successfully!");
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
+ const handleClose = () => {
+    setOpen(false)
+
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+ const  handleUpdateDialogOpen = (data) => {
+   setUpdateDialogOpen(true)
+  
   };
 
-  handleUpdateDialogOpen = (data) => {
-    this.setState({ updateDialogOpen: true });
+  const handleUpdateDialogClose = () => {
+    setUpdateDialogOpen(false)
+
   };
 
-  handleUpdateDialogClose = () => {
-    this.setState({ updateDialogOpen: false });
-  };
-
-  searchingForName = (searchQuery) => {
+ const  searchingForName = (searchQuery) => {
     return function(employeeTask) {
       return (
         employeeTask.AllotedTo.toLowerCase().includes(
@@ -180,13 +191,13 @@ class EmployeeTasks extends Component {
     };
   };
 
-  handleCompleteClose = () => {
-    this.setState({ completionModal: false });
+  const handleCompleteClose = () => {
+    setCompletionModal(false)
+   
   };
 
-  render() {
-    const { items, searchQuery } = this.props;
-    const { loader, deleteLoader, completeLoader } = this.state;
+ 
+
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>
@@ -214,7 +225,7 @@ class EmployeeTasks extends Component {
             <CardBody style={{ padding: "0px" }}>
               {items.length > 0 ? (
                 items
-                  .filter(this.searchingForName(searchQuery))
+                  .filter(searchingForName(searchQuery))
                   .map((item, index) => {
                     return (
                       <Row
@@ -324,11 +335,12 @@ class EmployeeTasks extends Component {
                                 <ButtonToolbar>
                                   <Button
                                     color="primary"
-                                    onClick={() =>
-                                      this.setState({
-                                        completionModal: true,
-                                        taskDetail: item,
-                                      })
+                                    onClick={() => {
+                                      setCompletionModal(true)
+                                      setTaskDetail(item)
+                                    }
+
+                                  
                                     }
                                   >
                                     Mark as Complete
@@ -336,11 +348,12 @@ class EmployeeTasks extends Component {
 
                                   <Button
                                     color="primary"
-                                    onClick={() =>
-                                      this.setState({
-                                        taskDetail: item,
-                                        updateDialogOpen: true,
-                                      })
+                                    onClick={() =>{
+                                      setTaskDetail(item)
+                                      setUpdateDialogOpen(true)
+                                
+                                    }
+                                  
                                     }
                                   >
                                     Edit
@@ -348,12 +361,13 @@ class EmployeeTasks extends Component {
 
                                   <Button
                                     color="secondary"
-                                    onClick={() =>
-                                      this.setState({
-                                        delId: item.id,
-                                        open: true,
-                                        taskTitle: item.title,
-                                      })
+                                    onClick={() =>{
+                                    setDelId(item.id)
+                                    setOpen(true)
+                                    setTaskTitle(item.title)
+                               
+                                    }
+                                    
                                     }
                                   >
                                     Delete
@@ -379,8 +393,8 @@ class EmployeeTasks extends Component {
 
         {/* Delete Dialog */}
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={open}
+          onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -390,12 +404,12 @@ class EmployeeTasks extends Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <strong>Task Name: </strong>
-              <span>{this.state.taskTitle}</span>
+              <span>{taskTitle}</span>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.handleClose}
+              onClick={handleClose}
               variant="contained"
               color="default"
             >
@@ -407,7 +421,7 @@ class EmployeeTasks extends Component {
               </Button>
             ) : (
               <Button
-                onClick={this.deleteTask}
+                onClick={handleDeleteTask}
                 variant="contained"
                 color="secondary"
                 autoFocus
@@ -420,9 +434,9 @@ class EmployeeTasks extends Component {
 
         {/* Update Dialog */}
         <Dialog
-          open={this.state.updateDialogOpen}
-          onClose={this.handleUpdateDialogClose}
-          scroll={this.state.scroll}
+          open={updateDialogOpen}
+          onClose={handleUpdateDialogClose}
+          scroll={scroll}
           aria-labelledby="scroll-dialog-title"
           style={{ padding: 0 }}
         >
@@ -437,8 +451,8 @@ class EmployeeTasks extends Component {
           </DialogTitle>
           <DialogContent style={{ padding: 0 }}>
             <UpdateForm
-              handleClose={this.handleUpdateDialogClose}
-              item={this.state.taskDetail}
+              handleClose={handleUpdateDialogClose}
+              item={taskDetail}
             />
           </DialogContent>
         </Dialog>
@@ -446,8 +460,8 @@ class EmployeeTasks extends Component {
         {/* Completing Dialog */}
 
         <Dialog
-          open={this.state.completionModal}
-          onClose={this.handleCompleteClose}
+          open={completionModal}
+          onClose={handleCompleteClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
           fullWidth={true}
@@ -462,14 +476,14 @@ class EmployeeTasks extends Component {
                 rows="5"
                 placeholder="Task Completion Note"
                 name="completionNote"
-                onChange={this.onChangeHandler}
+                onChange={onChangeHandler}
                 className="completionBox"
               />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.handleCompleteClose}
+              onClick={handleCompleteClose}
               variant="contained"
               color="default"
             >
@@ -482,7 +496,7 @@ class EmployeeTasks extends Component {
               </Button>
             ) : (
               <Button
-                onClick={this.CompleteTask}
+                onClick={completeTask}
                 variant="contained"
                 color="primary"
                 autoFocus
@@ -494,28 +508,12 @@ class EmployeeTasks extends Component {
         </Dialog>
       </Col>
     );
-  }
+  
 }
 
-const mapStateToProps = (state) => ({
-  items: state.TaskReducer.AllTask,
-  user: state.userReducer.user,
-  loader: state.TaskReducer.loader,
-  taskDeleteStatus: state.TaskReducer.taskDeleteStatus,
-  loading: state.TaskReducer.loading,
-  completionStatus: state.TaskReducer.completionStatus,
-});
+
 
 export default reduxForm({
   form: "ee_task_detail", // a unique identifier for this form
-})(
-  connect(
-    mapStateToProps,
-    {
-      getTask,
-      getEmployees,
-      deleteTask,
-      completedTask,
-    }
-  )(EmployeeTasks)
+})(EmployeeTasks
 );

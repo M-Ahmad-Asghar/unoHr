@@ -1,38 +1,38 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 import { translate } from "react-i18next";
 import PropTypes from "prop-types";
 import BasicTable from "./components/BasicTable";
 import SearchBar from "../../employeer/MainTask/SearchBar";
 
-class BasicTables extends Component {
-  
-  state = {
-    searchQuery: ''
-  }
+function BasicTables() {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  filterMessages=(query)=>{
+  const filterMessages = (query) => {
+    setSearchQuery(query);
     this.setState({
-      searchQuery : query,
-    })
-  }
-  
-  render() {
-    return(
-      <Container>
-        <Row>
-          <SearchBar title='Select Paystub' filter={this.filterMessages} placeholder='Search by Date' />
-        </Row>
-        <Row>
-          <BasicTable searchQuery={this.state.searchQuery} />
-        </Row>
-      </Container>
-    );
-  }
+      searchQuery: query,
+    });
+  };
+
+  return (
+    <Container>
+      <Row>
+        <SearchBar
+          title="Select Paystub"
+          filter={filterMessages}
+          placeholder="Search by Date"
+        />
+      </Row>
+      <Row>
+        <BasicTable searchQuery={searchQuery} />
+      </Row>
+    </Container>
+  );
 }
 
 BasicTables.propTypes = {
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
 export default translate("common")(BasicTables);

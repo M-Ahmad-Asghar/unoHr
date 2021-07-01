@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardBody, Col, Button, ButtonToolbar } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -10,124 +10,117 @@ import FormControl from "@material-ui/core/FormControl";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-class ContactForm extends Component {
-  static propTypes = {
+function ContactForm(props) {
+  const propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
   };
+  const [loader, setLoader] = useState(false);
+  const [title, setTitle] = useState("");
+  const [Description, setDescription] = useState("false");
 
-  constructor() {
-    super();
-    this.state = {
-      loader: false,
-      title: "",
-      Description: ""
-    };
-  }
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.contactStatus === "done"){
-      this.setState({
-        loader: false,
-      })
-      this.props.history.push("/home/employee/schedule")
-    }else if(nextProps.contactStatus === "error"){
-      this.setState({
-        loader: false,
-      })
+  const user = useSelector((state) => state.employeeUserReducer.currentEmp);
+  const contactStatus = useSelector(
+    (state) => state.empScheduleReducer.contactStatus
+  );
+  const stateLoader = useSelector((state) => state.empScheduleReducer.loader);
+
+  useEffect(() => {
+    if (contactStatus === "done") {
+      setLoader(false);
+      history.push("/home/employee/schedule");
+    } else if (contactStatus === "error") {
+      setLoader(false);
     }
-  }
+  }, [contactStatus]);
 
-  onChangeHandler = e => {
+  const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    if (name === "title") {
+      setTitle(value);
+    } else {
+      setDescription(value);
+    }
   };
 
-  sendText = e => {
+  const sendText = (e) => {
     e.preventDefault();
 
-    if (this.state.title == "" && this.state.Description == "") {
+    if (title == "" && Description == "") {
       toast.error("Type the title of the task and description");
     } else {
-      this.setState({
-        loader: true
+      setState({
+        loader: true,
       });
       let data = {
-        title: this.state.title,
-        Description: this.state.Description,
+        title: title,
+        Description: Description,
         PostedTime: new Date().toString(),
-        employeeid: this.props.user.employeeid,
-        employeruid: this.props.user.employeruid,
-        employeeName: this.props.user.name,
-        purpose: "schedule change"
+        employeeid: user.employeeid,
+        employeruid: user.employeruid,
+        employeeName: user.name,
+        purpose: "schedule change",
       };
-      this.props.contactEmp(data);
+      dispatch(contactEmp(data));
     }
   };
 
-  render() {
-    const { loader } = this.state;
-    return (
-      <Col md={12} lg={12}>
-        <Card>
-          <CardBody>
-            <form className="form form--horizontal" onSubmit={this.AddTask}>
-              <div className="form__form-group">
-                <span className="form__form-group-label">Title</span>
-                <div className="form__form-group-field">
-                  <FormControl variant="outlined" style={{ width: "100%" }}>
-                    <OutlinedInput
-                      style={{ width: "100%" }}
-                      id="component-outlined"
-                      value={this.state.name}
-                      onChange={this.onChangeHandler}
-                      name="title"
-                    />
-                  </FormControl>
-                </div>
+  return (
+    <Col md={12} lg={12}>
+      <Card>
+        <CardBody>
+          <form className="form form--horizontal" onSubmit={props.AddTask}>
+            <div className="form__form-group">
+              <span className="form__form-group-label">Title</span>
+              <div className="form__form-group-field">
+                <FormControl variant="outlined" style={{ width: "100%" }}>
+                  <OutlinedInput
+                    style={{ width: "100%" }}
+                    id="component-outlined"
+                    value={title}
+                    onChange={onChangeHandler}
+                    name="title"
+                  />
+                </FormControl>
               </div>
-              <div className="form__form-group">
-                <span className="form__form-group-label">Description</span>
-                <div className="form__form-group-field textBox">
-                  <FormControl variant="outlined" style={{ width: "100%" }}>
-                    <OutlinedInput
-                      multiline
-                      rowsMax="4"
-                      id="component-outlined"
-                      onChange={this.onChangeHandler}
-                      name="Description"
-                    />
-                  </FormControl>
-                </div>
+            </div>
+            <div className="form__form-group">
+              <span className="form__form-group-label">Description</span>
+              <div className="form__form-group-field textBox">
+                <FormControl variant="outlined" style={{ width: "100%" }}>
+                  <OutlinedInput
+                    multiline
+                    rowsMax="4"
+                    id="component-outlined"
+                    onChange={onChangeHandler}
+                    name="Description"
+                  />
+                </FormControl>
               </div>
-              <ButtonToolbar className="form__button-toolbar">
-                {loader ? (
-                  <Button color="success" disabled>
-                    <PulseLoader color={"#123abc"} size={12} />
-                  </Button>
-                ) : (
-                  <Button color="success" type="button" onClick={this.sendText}>
-                    Send
-                  </Button>
-                )}
-              </ButtonToolbar>
-            </form>
-          </CardBody>
-        </Card>
-      </Col>
-    );
-  }
+            </div>
+            <ButtonToolbar className="form__button-toolbar">
+              {loader ? (
+                <Button color="success" disabled>
+                  <PulseLoader color={"#123abc"} size={12} />
+                </Button>
+              ) : (
+                <Button color="success" type="button" onClick={sendText}>
+                  Send
+                </Button>
+              )}
+            </ButtonToolbar>
+          </form>
+        </CardBody>
+      </Card>
+    </Col>
+  );
 }
 
-const mapStateToProps = state => ({
-  user: state.employeeUserReducer.currentEmp,
-  contactStatus: state.empScheduleReducer.contactStatus,
-  loader: state.empScheduleReducer.loader
-});
-
-export default connect(
-  mapStateToProps,
-  { contactEmp }
-)(withRouter(ContactForm));
+export default withRouter(ContactForm);
