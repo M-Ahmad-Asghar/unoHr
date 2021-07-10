@@ -1,365 +1,411 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
-import { Label, Input, InputGroup, InputGroupAddon, Button, ButtonToolbar, Modal, ModalBody, ModalFooter } from "reactstrap";
+import {
+  Label,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Button,
+  ButtonToolbar,
+  Modal,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { withRouter } from "react-router-dom";
-import { SketchPicker } from 'react-color';
-import './styles.css';
+import { SketchPicker } from "react-color";
+import "./styles.css";
 
 import { connect } from "react-redux";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import {
-  addShift, getShifts
-} from "../../../../../redux/actions/shiftAction";
-
+import { addShift, getShifts } from "../../../../../redux/actions/shiftAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useObjectState } from "../../../../../utils/commonState";
 const localizer = BigCalendar.momentLocalizer(moment);
 
 let formats = {
-  dateFormat: 'dd',
-  dayFormat: "dddd"
-}
+  dateFormat: "dd",
+  dayFormat: "dddd",
+};
 
+function Selectable(props) {
+  const dispatch = useDispatch();
+  const [state, setState] = useObjectState({
+    events: [],
+    loader: false,
+    modal: false,
+    color: "",
+    shiftName: "",
 
-class Selectable extends Component {
-  constructor(props) {
-    super(props);
+    startTime: "",
+    endTime: "",
+    sm: "AM",
+    em: "AM",
+  });
 
-    this.state = {
-      events: [],
-      loader: false,
-      modal: false,
-      color: '',
-      shiftName: '',
+  const shiftAddStatus = useSelector(
+    (state) => state.shiftReducer.shiftAddStatus
+  );
+  const stateLoader = useSelector((state) => state.shiftReducer.loader);
+  const user = useSelector((state) => state.userReducer.user);
+  const allShifts = useSelector((state) => state.shiftReducer.allShifts);
 
-      startTime: '',
-      endTime: '',
-      sm: 'AM',
-      em: 'AM'
-    };
-  }
+  useEffect(() => {
+    dispatch(getShifts(user.uid));
+  }, []);
 
-  componentDidMount() {
-    this.props.getShifts(this.props.user.uid);
-  }
-
-  toggle = () => {
-    this.setState(prevState => ({
-      modal: !prevState.modal
+  const toggle = () => {
+    setState((prevState) => ({
+      modal: !prevState.modal,
     }));
-  }
+  };
 
-
-  onChangeScroll(slotInfo) {
+  const onChangeScroll = (slotInfo) => {
     let start = new Date(slotInfo.start);
     let end = new Date(slotInfo.end);
     let data = {
       start: start,
-      end: end
+      end: end,
     };
-    let events = this.state.events;
+    let events = state.events;
     let isDuplicate = false;
 
-    events.map(e => {
-      if (moment(e.start).format('dddd') === moment(data.start).format('dddd')) {
+    events.map((e) => {
+      if (
+        moment(e.start).format("dddd") === moment(data.start).format("dddd")
+      ) {
         isDuplicate = true;
       }
-    })
+    });
 
     if (isDuplicate) {
-      events = events.map(e => {
-        if (moment(e.start).format('dddd') === moment(data.start).format('dddd')) {
+      events = events.map((e) => {
+        if (
+          moment(e.start).format("dddd") === moment(data.start).format("dddd")
+        ) {
           return data;
         } else {
           return e;
         }
-      })
+      });
     } else {
       events.push(data);
     }
 
-    this.setState({
-      events
+    setState({
+      events,
     });
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-        loader: false
-      });
-  }
+  };
+  useEffect(() => {
+    setState({
+      loader: false,
+    });
+  }, [stateLoader]);
 
-  handleStartTimeChange = (event) => {
-    this.setState({
-      startTime: event.target.value
-    })
-  }
-
-  handleEndTimeChange = (event) => {
-    this.setState({
-      endTime: event.target.value
-    })
-  }
-
-  resetShift = () => {
-    this.setState({
-      events: []
-    })
-  }
-
-  handleNameChabge = (event) => {
-    this.setState({
-      shiftName: event.target.value
-    })
-  }
-
-  handleChangeComplete = (color) => {
-    this.setState({ color: color.hex });
+  const handleStartTimeChange = (event) => {
+    setState({
+      startTime: event.target.value,
+    });
   };
 
-  onSMChange = () => {
-    
-    this.setState(prevSt => {
-      if(prevSt.sm === "AM") {
-        return {
-          sm: "PM"
-        }
-      } else if(prevSt.sm === "PM") {
-        return {
-          sm: "AM"
-        }
-      }
-    })
-  }
+  const handleEndTimeChange = (event) => {
+    setState({
+      endTime: event.target.value,
+    });
+  };
 
-  onEMChange = () => {
-    
-    this.setState(prevSt => {
-      if(prevSt.em === "AM") {
-        return {
-          em: "PM"
-        }
-      } else if(prevSt.em === "PM") {
-        return {
-          em: "AM"
-        }
-      }
-    })
-  }
+  const resetShift = () => {
+    setState({
+      events: [],
+    });
+  };
 
-  onSetDefaultHandler = () => {
-    let { startTime, endTime, sm, em } = this.state;
-    if( startTime.match(/^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/) && endTime.match(/^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/)) {
-      toast.success(startTime + sm + ' - ' + endTime + em);
-      this.compatibleShift(startTime, endTime, sm, em);
+  const handleNameChabge = (event) => {
+    setState({
+      shiftName: event.target.value,
+    });
+  };
+
+  const handleChangeComplete = (color) => {
+    setState({ color: color.hex });
+  };
+
+  const onSMChange = () => {
+    setState((prevSt) => {
+      if (prevSt.sm === "AM") {
+        return {
+          sm: "PM",
+        };
+      } else if (prevSt.sm === "PM") {
+        return {
+          sm: "AM",
+        };
+      }
+    });
+  };
+
+  const onEMChange = () => {
+    setState((prevSt) => {
+      if (prevSt.em === "AM") {
+        return {
+          em: "PM",
+        };
+      } else if (prevSt.em === "PM") {
+        return {
+          em: "AM",
+        };
+      }
+    });
+  };
+
+  const onSetDefaultHandler = () => {
+    let { startTime, endTime, sm, em } = state;
+    if (
+      startTime.match(/^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/) &&
+      endTime.match(/^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/)
+    ) {
+      toast.success(startTime + sm + " - " + endTime + em);
+      compatibleShift(startTime, endTime, sm, em);
     } else {
-      toast.error('Incorrect Time Format!')
+      toast.error("Incorrect Time Format!");
     }
-  }
+  };
 
-  compatibleShift = (sTime, eTime, sm, em) => {
-    let fStartDate = '';
-    let fEndDate = '';
+  const compatibleShift = (sTime, eTime, sm, em) => {
+    let fStartDate = "";
+    let fEndDate = "";
     let newDate = new Date().toString();
     var nDate = newDate.substring(0, 16);
-    
-    let si = sTime.indexOf(':');
+
+    let si = sTime.indexOf(":");
     let ei = eTime.indexOf(":");
-    if(si === 1) {
+    if (si === 1) {
       sTime = "0" + sTime;
     }
-    if(ei === 1) {
-      eTime = '0' + eTime;
+    if (ei === 1) {
+      eTime = "0" + eTime;
     }
 
-    if(sm === "AM") {
+    if (sm === "AM") {
       sTime = sTime + ":00";
       fStartDate = nDate + sTime + newDate.slice(23);
-    } else if(sm === "PM") {
+    } else if (sm === "PM") {
       sTime = Number(sTime.slice(0, 2)) + 12;
       sTime = sTime + ":00";
       fStartDate = nDate + sTime + newDate.slice(21);
     }
 
-    if(em === "AM") {
+    if (em === "AM") {
       eTime = eTime + ":00";
       fEndDate = nDate + eTime + newDate.slice(23);
-    } else if(em === "PM") {
+    } else if (em === "PM") {
       let e = Number(eTime.slice(0, 2)) + 12;
       eTime = e + eTime.slice(2);
       fEndDate = nDate + eTime + newDate.slice(21);
     }
 
     let arr = [];
-      
+
     let sDate = new Date(fStartDate.slice(0, 24));
     let eDate = new Date(fEndDate.slice(0, 24));
-    let sDays = this.getdaysOfWeek(sDate);
-    let eDays = this.getdaysOfWeek(eDate);
+    let sDays = getdaysOfWeek(sDate);
+    let eDays = getdaysOfWeek(eDate);
 
-    for(let i=0; i<7; i++) {
+    for (let i = 0; i < 7; i++) {
       let data = {
         start: sDays[i],
-        end: eDays[i]
-      }
+        end: eDays[i],
+      };
       arr.push(data);
     }
 
-    this.setState({events: arr});
-  }
+    setState({ events: arr });
+  };
 
-  getdaysOfWeek = (current) => {
+  const getdaysOfWeek = (current) => {
     var week = new Array();
-    current.setDate((current.getDate() - current.getDay() ));
+    current.setDate(current.getDate() - current.getDay());
     for (var i = 0; i < 7; i++) {
-      week.push(
-        new Date(current)
-      );
+      week.push(new Date(current));
       current.setDate(current.getDate() + 1);
     }
     return week;
-  }
+  };
 
-  addNewShift = () => {
-    if (this.state.events.length > 0) {
-      if(this.state.shiftName == "" || this.state.color == "") {
+  const addNewShift = () => {
+    if (state.events.length > 0) {
+      if (state.shiftName == "" || state.color == "") {
         toast.error("Shift name and color are required!");
       } else {
-        this.setState({
-          loader: true
+        setState({
+          loader: true,
         });
-        
-        let events = this.state.events;
-        events = events.map(e => {
+
+        let events = state.events;
+        events = events.map((e) => {
           return {
             start: e.start.toString(),
-            end: e.end.toString()
-          }
-        })
+            end: e.end.toString(),
+          };
+        });
 
         let shift = {
-          employeruid: this.props.user.uid,
+          employeruid: user.uid,
           shifts: events,
-          color: this.state.color,
-          name: this.state.shiftName
+          color: state.color,
+          name: state.shiftName,
         };
         let shifts = [];
-        shifts = this.props.allShifts;
-        if(shifts.length > 0) {
+        shifts = allShifts;
+        if (shifts.length > 0) {
           let shi = [];
-          shi = shifts.filter(sh => sh.name === shift.name);
-          if(shi.length > 0){
+          shi = shifts.filter((sh) => sh.name === shift.name);
+          if (shi.length > 0) {
             toast.error("Shift with same name already exists!");
-            this.setState({
-              loader: false
-            })
-          }
-          else
-            this.props.addShift(shift);  
+            setState({
+              loader: false,
+            });
+          } else dispatch(addShift(shift));
         } else {
-          this.props.addShift(shift);
+          dispatch(addShift(shift));
         }
-          
       }
     } else {
       toast.error("Please select a time for the shift");
     }
   };
 
-  render() {
-    const { events, loader } = this.state;
-    return (
-      <div className="app-calendar app-cul-calendar animated slideInUpTiny animation-duration-3">
-
-        <Label for="shiftName">Name</Label>
-        <Input id="shiftName" value={this.state.shiftName} onChange={this.handleNameChabge} placeholder="Enter Shift Name"  />
-        <Label for="shiftColor" style={{marginTop: '20px'}}>Color</Label>
-        <Input id="shiftColor" value={this.state.color} placeholder="Choose Shift Color" onClick={() => this.setState({ modal: true })} style={{backgroundColor: this.state.color, color: 'white'}} />
-        <Label for="startTime" style={{marginTop: '20px'}}>Default Start Time</Label>
-        <InputGroup className="group">
-          <Input placeholder="Enter Start Time e.g. 01:30" value={this.state.startTime} onChange={this.handleStartTimeChange} />
-          <InputGroupAddon addonType="append" onClick={this.onSMChange} className='SAM AMPM'>{this.state.sm}</InputGroupAddon>
-        </InputGroup>
-        <Label for="endTime" style={{marginTop: '20px'}}>Default End Time</Label>
-        <InputGroup className="group">
-          <Input placeholder="Enter End Time e.g. 01:30" value={this.state.endTime} onChange={this.handleEndTimeChange} />
-          <InputGroupAddon addonType="append"onClick={this.onEMChange}  className='EAM AMPM'>{this.state.em}</InputGroupAddon>
-        </InputGroup>
-        <Button color="success" onClick={this.onSetDefaultHandler} style={{marginTop: 15}}>Set Default Time</Button>
-
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} id="modal">
-          <ModalBody className='modalBody'>
-            <SketchPicker 
-              className="colorPicker"
-              color={this.state.color}
-              onChangeComplete={this.handleChangeComplete}
-            />
-          </ModalBody>
-          <ModalFooter className="modalFooter">
-            <Button close className="closeButton" onClick={() => this.setState({modal: false})}/>
-          </ModalFooter>
-        </Modal>
-
-        <h3 className="callout" style={{marginTop: '20px'}}>
-          Drag the mouse over calendar to set the shedule time for a day.
-        </h3>
-        <BigCalendar
-          selectable
-          formats={formats}
-          events={events}
-          localizer={localizer}
-          defaultView="week"
-          views={["week"]}
-          toolbar={false}
-          showMultiDayTimes={true}
-          scrollToTime={new Date(1970, 1, 1, 6)}
-          defaultDate={new Date()}
-          onSelectSlot={slotInfo => this.onChangeScroll(slotInfo)}
+  return (
+    <div className="app-calendar app-cul-calendar animated slideInUpTiny animation-duration-3">
+      <Label for="shiftName">Name</Label>
+      <Input
+        id="shiftName"
+        value={state.shiftName}
+        onChange={handleNameChabge}
+        placeholder="Enter Shift Name"
+      />
+      <Label for="shiftColor" style={{ marginTop: "20px" }}>
+        Color
+      </Label>
+      <Input
+        id="shiftColor"
+        value={state.color}
+        placeholder="Choose Shift Color"
+        onClick={() => setState({ modal: true })}
+        style={{ backgroundColor: state.color, color: "white" }}
+      />
+      <Label for="startTime" style={{ marginTop: "20px" }}>
+        Default Start Time
+      </Label>
+      <InputGroup className="group">
+        <Input
+          placeholder="Enter Start Time e.g. 01:30"
+          value={state.startTime}
+          onChange={handleStartTimeChange}
         />
-
-        <ButtonToolbar
-          className="form__button-toolbar"
-          style={{
-            marginTop: "20px !important",
-            justifyContent: "flex-end",
-            marginRight: "60px"
-          }}
+        <InputGroupAddon
+          addonType="append"
+          onClick={onSMChange}
+          className="SAM AMPM"
         >
+          {state.sm}
+        </InputGroupAddon>
+      </InputGroup>
+      <Label for="endTime" style={{ marginTop: "20px" }}>
+        Default End Time
+      </Label>
+      <InputGroup className="group">
+        <Input
+          placeholder="Enter End Time e.g. 01:30"
+          value={state.endTime}
+          onChange={handleEndTimeChange}
+        />
+        <InputGroupAddon
+          addonType="append"
+          onClick={onEMChange}
+          className="EAM AMPM"
+        >
+          {state.em}
+        </InputGroupAddon>
+      </InputGroup>
+      <Button
+        color="success"
+        onClick={onSetDefaultHandler}
+        style={{ marginTop: 15 }}
+      >
+        Set Default Time
+      </Button>
 
-          {loader ? (
-            <Button color="success" disabled>
-              <PulseLoader color={"#123abc"} size={12} />
-            </Button>
-          ) : (
-              <Button color="success" onClick={this.resetShift}>
-                Reset
-            </Button>
-            )}
+      <Modal
+        isOpen={state.modal}
+        toggle={toggle}
+        className={props.className}
+        id="modal"
+      >
+        <ModalBody className="modalBody">
+          <SketchPicker
+            className="colorPicker"
+            color={state.color}
+            onChangeComplete={handleChangeComplete}
+          />
+        </ModalBody>
+        <ModalFooter className="modalFooter">
+          <Button
+            close
+            className="closeButton"
+            onClick={() => setState({ modal: false })}
+          />
+        </ModalFooter>
+      </Modal>
 
-          {loader ? (
-            <Button color="success" disabled>
-              <PulseLoader color={"#123abc"} size={12} />
-            </Button>
-          ) : (
-              <Button color="success" onClick={this.addNewShift}>
-                Create Shift
-            </Button>
-            )}
-        </ButtonToolbar>
-      </div>
-    );
-  }
+      <h3 className="callout" style={{ marginTop: "20px" }}>
+        Drag the mouse over calendar to set the shedule time for a day.
+      </h3>
+      <BigCalendar
+        selectable
+        formats={formats}
+        events={state.events}
+        localizer={localizer}
+        defaultView="week"
+        views={["week"]}
+        toolbar={false}
+        showMultiDayTimes={true}
+        scrollToTime={new Date(1970, 1, 1, 6)}
+        defaultDate={new Date()}
+        onSelectSlot={(slotInfo) => onChangeScroll(slotInfo)}
+      />
+
+      <ButtonToolbar
+        className="form__button-toolbar"
+        style={{
+          marginTop: "20px !important",
+          justifyContent: "flex-end",
+          marginRight: "60px",
+        }}
+      >
+        {state.loader ? (
+          <Button color="success" disabled>
+            <PulseLoader color={"#123abc"} size={12} />
+          </Button>
+        ) : (
+          <Button color="success" onClick={resetShift}>
+            Reset
+          </Button>
+        )}
+
+        {state.loader ? (
+          <Button color="success" disabled>
+            <PulseLoader color={"#123abc"} size={12} />
+          </Button>
+        ) : (
+          <Button color="success" onClick={addNewShift}>
+            Create Shift
+          </Button>
+        )}
+      </ButtonToolbar>
+    </div>
+  );
 }
 
-const mapStateToProps = state => ({
-  shiftAddStatus: state.shiftReducer.shiftAddStatus,
-  loader: state.shiftReducer.loader,
-  user: state.userReducer.user,
-  allShifts: state.shiftReducer.allShifts
-});
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    { addShift, getShifts }
-  )(Selectable)
-);
+export default withRouter(Selectable);

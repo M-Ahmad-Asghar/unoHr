@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 import { translate } from "react-i18next";
@@ -7,73 +7,44 @@ import BasicTable from "./components/BasicTable";
 // import { getOwnTask } from "../../../redux/actions/EmployeeTaskActions";
 import { getEmployees } from "../../../../redux/actions/employerActions";
 import { getTask } from "../../../../redux/actions/TasksActions";
+import { useDispatch, useSelector } from "react-redux";
 
-class EmployeeTask extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: "true",
-      DueDate: "",
-      loader: true,
-      dataLength: true,
-      data: []
-    };
-  }
+function EmployeeTask() {
+  const [active, setActive] = useState("true");
+  const [DueDate, setDueDate] = useState("");
+  const [loader, setLoader] = useState(true);
+  const [dataLength, setDataLength] = useState(true);
+  const [data, setData] = useState([]);
 
-  componentDidMount() {
-    //   console.log('props check',this.props.user.uid);
-      this.props.getTask(this.props.user.uid);
-      // this.props.getEmployees(this.props.user.uid);
-    // this.props.getTask("IOGtaKpP7lT56soMtZgdyrShiQq1");
-    // this.props.getEmployees("IOGtaKpP7lT56soMtZgdyrShiQq1");
-  }
+  const dispatch = useDispatch();
 
-  componentWillReceiveProps = nextProps => {
-    // console.log("===========nextProps employee =========================");
-    // console.log(nextProps);
-    // console.log("====================================");
+  const items = useSelector((state) => state.TaskReducer.AllTask);
+  const user = useSelector((state) => state.userReducer.user);
+  const stateLoader = useSelector((state) => state.TaskReducer.loader);
 
-    if (nextProps.loader === "false") {
-      this.setState({
-        loader: false,
-        data: nextProps.items
-      });
+  useEffect(() => {
+    dispatch(getTask(user.uid));
+  }, []);
+
+  useEffect(() => {
+    if (stateLoader === "false") {
+      setLoader(false);
+      setData(items);
     }
-  };
+  }, [items, StateLoader]);
 
-  render() {
-    const { data } = this.state;
-    const {t } = this.props;
-    return (
-      <Container>
-        <Row>
-      <Col md={12}>
-        <h3 className="page-title">{t('Paper Work')}</h3>
-      </Col>
-    </Row>
-        <Row>
-          <h1>Paper Work Page </h1>
-          {/* <BasicTable Tasks={data} /> */}
-        </Row>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Row>
+        <Col md={12}>
+          <h3 className="page-title">{t("Paper Work")}</h3>
+        </Col>
+      </Row>
+      <Row>
+        <h1>Paper Work Page </h1>
+      </Row>
+    </Container>
+  );
 }
 
-const mapStateToProps = state => ({
-  items: state.TaskReducer.AllTask,
-  user: state.userReducer.user,
-  loader: state.TaskReducer.loader
-});
-
-export default translate("common")(
-  connect(
-    mapStateToProps,
-    {
-      getTask,
-      getEmployees
-    }
-  )(EmployeeTask)
-);
-
-
+export default translate("common")(EmployeeTask);

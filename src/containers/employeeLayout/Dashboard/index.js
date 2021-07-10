@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { useEffect } from "react";
 import { Container, Row } from "reactstrap";
 import moment from "moment";
 
@@ -18,9 +18,11 @@ import Activity from "./components/Clock";
 import Tasks from "../../../assets/icon/portfolio.png";
 import PaperWorks from "../../../assets/icon/checklist.png";
 import Clock from "../../../assets/icon/clock.png";
+import { useObjectState } from "./components/useActivity";
+import { useDispatch, useSelector } from "react-redux";
 
-class Dashboard extends PureComponent {
-  state = {
+function Dashboard() {
+  const [state, setState] = useObjectState({
     tasks: [],
     selectedTasks: [],
     empAttendances: [],
@@ -28,47 +30,62 @@ class Dashboard extends PureComponent {
     statement: "No activity yet",
     employee: "Naveed",
     curTime: new Date(),
-  };
+  });
 
-  componentDidMount() {
-    this.props.getTask(this.props.user.employeruid, this.props.user.employeeid);
-    this.props.countEmployeePaperWork(this.props.user.employeeid);
-    this.props.getEmployeeAttendance(this.props.user.employeeid);
-    this.props.getEmployeStatus(
-      this.props.user.employeeid,
-      this.props.user.timeMode
-    );
-    this.props.getWeekStatus(this.props.user.employeeid);
-  }
+  const dispatch = useDispatch();
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.loader === "false") {
+  const tasks = useSelector((state) => state.employeeTaskReducer.AllTask);
+  const user = useSelector((state) => state.employeeUserReducer.currentEmp);
+  const stateLoader = useSelector((state) => state.employeeTaskReducer.loader);
+  const employeeDocsCount = useSelector(
+    (state) => state.paperWorkReducer.employeeDocsCount
+  );
+  const employeeCountStatus = useSelector(
+    (state) => state.paperWorkReducer.employeeCountStatus
+  );
+  const employeeAttendances = useSelector(
+    (state) => state.attendanceReducer.employeeAttendances
+  );
+  const getEmployeeAttendancesStatus = useSelector(
+    (state) => state.attendanceReducer.getEmployeeAttendancesStatus
+  );
+
+  useEffect(() => {
+    dispatch(getTask(user.employeruid, user.employeeid));
+    dispatch(countEmployeePaperWork(user.employeeid));
+    dispatch(getEmployeeAttendance(user.employeeid));
+    dispatch(getEmployeStatus(user.employeeid, user.timeMode));
+    dispatch(getWeekStatus(user.employeeid));
+  }, []);
+
+  useEffect(() => {
+    if (stateLoader === "false") {
       let selectedTasks = [];
-      selectedTasks = nextProps.tasks.filter(
+      selectedTasks = tasks.filter(
         (task) =>
           moment(task.DueTime).format("MMM DD, YYYY") ===
           moment().format("MMM DD, YYYY")
       );
-      this.setState({
+      setState({
         loader: false,
         selectedTasks,
-        tasks: nextProps.tasks,
+        tasks: tasks,
       });
     }
 
-    if (nextProps.employeeCountStatus === "done") {
-      this.setState({
+    if (employeeCountStatus === "done") {
+      setState({
         loader: false,
-        papersCount: nextProps.employeeDocsCount,
+        papersCount: employeeDocsCount,
       });
     }
 
-    if (nextProps.getEmployeeAttendancesStatus === "done") {
-      if (nextProps.employeeAttendances.length > 0) {
-        let emp = this.props.user;
+    if (getEmployeeAttendancesStatus === "done") {
+      if (employeeAttendances.length > 0) {
+        let emp = user;
         let statement = "";
         let sameEmpAtt = [];
-        sameEmpAtt = nextProps.employeeAttendances.filter(
+        sameEmpAtt = employeeAttendances.filter(
           (att) => att.employeeUid === emp.employeeid
         );
         sameEmpAtt = sameEmpAtt.sort(function(a, b) {
@@ -97,53 +114,32 @@ class Dashboard extends PureComponent {
           statement = "No activity found!";
         }
 
-        this.setState({
+        setState({
           statement,
-          empAttendances: nextProps.employeeAttendances,
+          empAttendances: employeeAttendances,
         });
       }
     }
-  };
+  }, [
+    stateLoader,
+    employeeCountStatus,
+    getEmployeeAttendancesStatus,
+    employeeAttendances,
+  ]);
 
-  render() {
-    let { tasks, empAttendances, papersCount, statement } = this.state;
-
-    return (
-      <Container className="dashboard">
-        <Row>
-          <Item ic={Tasks} name="TASKS" number={tasks.length} />
-          <Item ic={PaperWorks} name="PAPERWORKS" number={papersCount} />
-          <Activity ic={Clock} name="CLOCK" statement={statement} />
-        </Row>
-        <Row>
-          <TimeComp />
-          {this.props.user.timeMode === "Punch" && <ActivityAction />}
-        </Row>
-      </Container>
-    );
-  }
+  return (
+    <Container className="dashboard">
+      <Row>
+        <Item ic={Tasks} name="TASKS" number={tasks.length} />
+        <Item ic={PaperWorks} name="PAPERWORKS" number={state.papersCount} />
+        <Activity ic={Clock} name="CLOCK" statement={state.statement} />
+      </Row>
+      <Row>
+        <TimeComp />
+        {user.timeMode === "Punch" && <ActivityAction />}
+      </Row>
+    </Container>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    tasks: state.employeeTaskReducer.AllTask,
-    user: state.employeeUserReducer.currentEmp,
-    loader: state.employeeTaskReducer.loader,
-    employeeDocsCount: state.paperWorkReducer.employeeDocsCount,
-    employeeCountStatus: state.paperWorkReducer.employeeCountStatus,
-    employeeAttendances: state.attendanceReducer.employeeAttendances,
-    getEmployeeAttendancesStatus:
-      state.attendanceReducer.getEmployeeAttendancesStatus,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    getTask,
-    countEmployeePaperWork,
-    getEmployeeAttendance,
-    getEmployeStatus,
-    getWeekStatus,
-  }
-)(Dashboard);
+export default Dashboard;

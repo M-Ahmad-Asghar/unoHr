@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { CustomizerProps, ThemeProps } from '../../shared/prop-types/ReducerProps';
-import YM from './YM';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import {
+  CustomizerProps,
+  ThemeProps,
+} from "../../shared/prop-types/ReducerProps";
+import YM from "./YM";
 // todo: delete ym
 
 class MainWrapper extends Component {
@@ -18,23 +21,21 @@ class MainWrapper extends Component {
 
     const wrapperClass = classNames({
       wrapper: true,
-      'squared-corner-theme': customizer.squaredCorners,
-      'blocks-with-shadow-theme': customizer.withBoxShadow,
-      'top-navigation': customizer.topNavigation,
+      "squared-corner-theme": customizer.squaredCorners,
+      "blocks-with-shadow-theme": customizer.withBoxShadow,
+      "top-navigation": customizer.topNavigation,
     });
 
     return (
       <div className={theme.className}>
         {/* <YM /> */}
-        <div className={wrapperClass}>
-          {this.props.children}
-        </div>
+        <div className={wrapperClass}>{this.props.children}</div>
       </div>
     );
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   theme: state.theme,
   customizer: state.customizer,
 }))(MainWrapper);

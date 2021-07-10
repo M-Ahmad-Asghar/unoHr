@@ -1,34 +1,38 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { Spinner, Button, Card, CardBody, Col, Badge, Table } from "reactstrap";
 import { translate } from "react-i18next";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { requestBackgroundCheck } from "../../../../redux/actions/employerActions";
+import {useSelector, useDispatch} from 'react-redux'
 
-class BasicTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checkedItems: [],
-      loader: ""
-    };
+function BasicTable ({  searchQuery } )  {
+  const [checkedItems, setCheckedItems] = useState([])
+  const [loader, setLoader] = useState('')
+
+
+
+  const employees = useSelector(state=>state.employerReducer.allEmployees)
+  const stateLoader = useSelector(state=>state.employerReducer.loader)
+  const requestBackgroundCheckStatus = useSelector(state=>state.employerReducer.requestBackgroundCheckStatus)
+const  dispatch = useDispatch()
+  
+
+  const clickHandler = emp => {
+    setLoader(emp.id)
+    console.log("EMP_ID", emp.id)
+
+    dispatch(requestBackgroundCheck(emp))
   }
 
-  clickHandler = emp => {
-    this.setState({
-      loader: emp.id
-    });
-    this.props.requestBackgroundCheck(emp);
-  }
+  useEffect(()=>{
+setLoader('')
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      loader: ""
-    });
-  }
+  },[stateLoader])
 
-  searchingForName = searchQuery => {
+
+ const  searchingForName = searchQuery => {
     return function(employee) {
       return (
         employee.status
@@ -43,8 +47,8 @@ class BasicTable extends React.Component {
     };
   };
 
-  render() {
-    const { employees, searchQuery } = this.props;
+
+  
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>
@@ -64,7 +68,7 @@ class BasicTable extends React.Component {
               </thead>
               <tbody>
                 {employees.length > 0 ? (
-                  employees.filter(this.searchingForName(searchQuery)).map((emp, index) => {
+                  employees.filter(searchingForName(searchQuery)).map((emp, index) => {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -86,9 +90,9 @@ class BasicTable extends React.Component {
                             ? 
                               <Button color="secondary" size="sm" style={{marginBottom: 0}} disabled>Requested</Button>
                             :
-                              <Button color="primary"  size="sm" style={{width: 110, marginBottom: 0}} onClick={() => this.clickHandler(emp)}>
+                              <Button color="primary"  size="sm" style={{width: 110, marginBottom: 0}} onClick={() => clickHandler(emp)}>
                                 {
-                                  this.state.loader == emp.id
+                                 loader == emp.id
                                   ?
                                     <Spinner size="sm" color="secondary" />
                                   :
@@ -109,24 +113,14 @@ class BasicTable extends React.Component {
         </Card>
       </Col>
     );
-  }
+  
 }
 
 BasicTable.propTypes = {
   t: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  employees: state.employerReducer.allEmployees,
-  loader: state.employerReducer.loader,
-  requestBackgroundCheckStatus: state.employerReducer.requestBackgroundCheckStatus
-});
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      requestBackgroundCheck
-    }
-  )(translate("common")(BasicTable))
+ (translate("common")(BasicTable))
 );

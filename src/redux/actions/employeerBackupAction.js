@@ -4,7 +4,7 @@ export const GETEMPLOYERPAYSTUBS = "GETEMPLOYERPAYSTUBS";
 export const GETEMPLOYERPAYSTUBSERR = "GETEMPLOYERPAYSTUBSERR";
 
 export function getEmployerBackup(id) {
-  return async dispatch => {
+  return async (dispatch) => {
     db.collection("paystubs")
       .where("employerUid", "==", id)
       .onSnapshot(
@@ -16,19 +16,21 @@ export function getEmployerBackup(id) {
             datatoStore.push({ id, ...data });
           });
 
-          console.log('================At getEmployerBackupAction====================');
-          console.log("id: "+ id, ", data: "+ datatoStore);
-          console.log('====================================');
-           
+          console.log(
+            "================At getEmployerBackupAction===================="
+          );
+          console.log("id: " + id, ", data: " + datatoStore);
+          console.log("====================================");
+
           dispatch({
             type: GETEMPLOYERPAYSTUBS,
-            payload: datatoStore
+            payload: datatoStore,
           });
         },
         function(error) {
           dispatch({
             type: GETEMPLOYERPAYSTUBSERR,
-            payload: new Date()
+            payload: new Date(),
           });
         }
       );

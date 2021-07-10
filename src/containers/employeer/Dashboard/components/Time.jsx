@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import Panel from '../../../../shared/components/Panel';
 import { Typography } from '@material-ui/core';
 import moment from 'moment';
 
-class TimeComp extends Component {
-  state={
-    greet: 'Good Morning',
-    curTime: new Date()
-  }
+export default function TimeComp ()  {
+  const [greet, setGreet] = useState("Good Morning")
+  const [curTime, setCurTime] = useState(new Date())
 
-  componentWillMount() {
+
+  useEffect(()=>{
     var myDate = new Date();
     var hrs = myDate.getHours();
     var greet;
@@ -24,21 +23,22 @@ class TimeComp extends Component {
       greet = 'Good Evening';
     }
 
-    this.setState({
-      greet
-    })
-  }
+    setGreet(greet)
 
-  componentDidMount() {
-      setInterval(() => {
-          this.setState({
-              curTime: new Date().toLocaleString()
-          })
-      }, 10000)
-  }
 
-  render() {
-    let { greet, curTime } = this.state;
+    setInterval(() => {
+    
+          setCurTime(new Date()) 
+   
+  }, 10000)
+  }),[]
+
+
+
+  
+
+
+    
 
     return (
       <Panel xl={6} lg={6} md={12} xs={12} title="Greetings">
@@ -49,7 +49,6 @@ class TimeComp extends Component {
         </div>
       </Panel>
     );
-  }
+  
 } 
 
-export default TimeComp;

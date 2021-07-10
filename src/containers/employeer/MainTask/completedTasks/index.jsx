@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+
 import { Col, Container, Row } from "reactstrap";
 import { translate } from "react-i18next";
 import PropTypes from "prop-types";
@@ -8,52 +8,47 @@ import SearchBar from "../SearchBar";
 // import { getOwnTask } from "../../../redux/actions/EmployeeTaskActions";
 // import { getEmployees } from "../../../redux/actions/employerActions";
 // import { getTask } from "../../../redux/actions/TasksActions";
+import {useSelector} from 'react-redux'
 
 
-class CompletedTask extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: "true",
-      DueDate: "",
-      loader: true,
-      dataLength: true,
-      data: [],
-      searchQuery: ''
-    };
-  }
+function CompletedTask ()  {
+  const [active, setActive] = useState("true")
+  const [DueDate, setDueDate] = useSate("")
+  const [loader, setLoder] = useSate(true)
+  const [dataLength, setDataLength] = useSate(true)
+  const [data, setData] = useSate([])
+  const [searchQuery, setSearchQuery] = useSate('')
 
-  filterMessages=(query)=>{
-    this.setState({
-      searchQuery : query,
-    })
+
+
+  const items = useSelector(state=> state.TaskReducer.CompletedTask)
+  const user = useSelector(state=> sstate.userReducer.user)
+  const stateLoader = useSelector(state=> state.TaskReducer.loader)
+
+
+ const  filterMessages=(query)=>{
+   setSearchQuery(query)
+
   }
   
 
-  render() {
-    const { data } = this.state;
-    const { t } = this.props;
+ 
+
     return (
       <Container>
         <Row>
-          <SearchBar title="List of Completed Tasks" filter= {this.filterMessages} placeholder="Search by Name, Title, Date" />
+          <SearchBar title="List of Completed Tasks" filter= {filterMessages} placeholder="Search by Name, Title, Date" />
         </Row>
         <Row>
-          <BasicTable searchQuery ={ this.state.searchQuery } />
+          <BasicTable searchQuery ={ searchQuery } />
         </Row>
       </Container>
     );
-  }
+  
 }
 
-const mapStateToProps = state => ({
-  items: state.TaskReducer.CompletedTask,
-  user: state.userReducer.user,
-  loader: state.TaskReducer.loader
-});
+
 
 export default translate("common")(
-  connect(
-    mapStateToProps,
-null  )(CompletedTask)
+ (CompletedTask)
 );

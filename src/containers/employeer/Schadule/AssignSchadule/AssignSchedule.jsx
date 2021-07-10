@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, Container, Col, Button, Row } from "reactstrap";
 import MessageTextOutlineIcon from "mdi-react/MessageTextOutlineIcon";
 import { connect } from "react-redux";
@@ -39,128 +39,148 @@ import TextField from "@material-ui/core/TextField";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollarSign, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { getShifts, assignShift, getAssignedShiftsByEmployee } from '../../../../redux/actions/shiftAction';
+import {
+  getShifts,
+  assignShift,
+  getAssignedShiftsByEmployee,
+} from "../../../../redux/actions/shiftAction";
 import { changeSubscriptions } from "../../../../redux/actions/SubscriptionActions";
 import Axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { th } from "date-fns/esm/locale";
+import { useSelector, useDispatch } from "react-redux";
+import { useObjectState } from "../../../../utils/commonState";
 library.add(faDollarSign);
 library.add(faEdit);
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    textAlign:'center',
-    margin:"auto",
+    textAlign: "center",
+    margin: "auto",
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   textField: {
     margin: "0px 8px",
-    width: "100%"
+    width: "100%",
   },
   menu: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
-class SettingMain extends React.Component {
-  state = {
+function SettingMain(props) {
+  const dispatch = useDispatch();
+  const [state, setState] = useObjectState({
     loader: true,
     allEmployees: [],
     allShifts: [],
-    employee: '',
-    shift: '',
+    employee: "",
+    shift: "",
+  });
+
+  const user = useSelector((state) => state.userReducer.user);
+  const loader = useSelector((state) => state.shiftReducer.loader);
+  const getShiftStatus = useSelector(
+    (state) => state.shiftReducer.getShiftStatus
+  );
+  const getAssignedShiftStatus = useSelector(
+    (state) => state.shiftReducer.getAssignedShiftStatus
+  );
+  const shifts = useSelector((state) => state.shiftReducer.allShifts);
+  const employees = useSelector((state) => state.employerReducer.employees);
+  const assignedShifts = useSelector(
+    (state) => state.shiftReducer.assignedShiftsEmployee
+  );
+
+  useEffect(() => {
+    dispatch(getShifts(user.uid));
+  }, []);
+
+  const handleEmployeeChange = (event) => {
+    setState({
+      employee: event.target.value,
+    });
+    dispatch(getAssignedShiftsByEmployee(event.target.value));
   };
 
-  componentDidMount() {
-    this.props.getShifts(this.props.user.uid);
-  }
+  const handleShiftChange = (event) => {
+    setState({
+      shift: event.target.value,
+    });
+  };
 
-  handleEmployeeChange = (event) => {
-    this.setState({
-      employee: event.target.value
-    })
-    this.props.getAssignedShiftsByEmployee(event.target.value);
-  }
-
-  handleShiftChange = (event) => {
-    this.setState({
-      shift: event.target.value
-    })
-  }
-
-  assignSchaduleButton= () => {
-    let { employee, shift } = this.state;
-    if(employee == "" || shift == "") {
+  const assignSchaduleButton = () => {
+    let { employee, shift } = state;
+    if (employee == "" || shift == "") {
       toast.error("Select both fields!");
     } else {
-      this.setState({
-        loader: true
+      setState({
+        loader: true,
       });
 
-      let res = this.props.shifts.filter( sh => sh.name === shift );
+      let res = shifts.filter((sh) => sh.name === shift);
       shift = res[0];
 
-      res = this.props.assignedShifts.filter( s => s.shift.name === shift.name );
-      if(res.length > 0) {
+      res = assignedShifts.filter((s) => s.shift.name === shift.name);
+      if (res.length > 0) {
         toast.error("Shift is already assigned to this user!");
-        this.setState({
-          loader: false
+        setState({
+          loader: false,
         });
       } else {
         let assignedShift = {
           employeeid: employee,
           shift,
-          employerid: this.props.user.uid
-        }
-        this.props.assignShift(assignedShift);
+          employerid: user.uid,
+        };
+        dispatch(assignShift(assignedShift));
+        setState({
+          loader: false,
+        });
       }
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.getShiftStatus == "done") {
-      this.setState({
+  };
+  useEffect(() => {
+    if (getShiftStatus == "done") {
+      setState({
         loader: false,
-        allEmployees: nextProps.employees,
-        allShifts: nextProps.shifts,
+        allEmployees: employees,
+        allShifts: shifts,
       });
-    } else if (nextProps.getShiftStatus == "error") {
-      this.setState({
+    } else if (getShiftStatus == "error") {
+      setState({
         loader: false,
       });
-    } else if (nextProps.getAssignedShiftStatus == "done") {
-      this.setState({
+    } else if (getAssignedShiftStatus == "done") {
+      setState({
         loader: false,
-      })
-    } else if (nextProps.getAssignedShiftStatus == "error") {
-      this.setState({
-        loader: false
-      })
+      });
+    } else if (getAssignedShiftStatus == "error") {
+      setState({
+        loader: false,
+      });
     }
-  }
+  }, [, getShiftStatus, getAssignedShiftStatus]);
 
-  render() {
+  const { classes } = props;
 
-    const { classes } = this.props;
-
-    return (
-      <Container>
-        <Row style={{justifyContent: "center"}}>
-          { this.state.loader ? 
+  return (
+    <Container>
+      <Row style={{ justifyContent: "center" }}>
+        {state.loader ? (
           <Col md={12} lg={8} xl={8} className="text-center">
             <CircularProgress />
           </Col>
-          :
+        ) : (
           <Col md={12} lg={8} xl={8} className="text-center">
-            <Card className="text-center" >
-              <CardBody className="text-center" >
+            <Card className="text-center">
+              <CardBody className="text-center">
                 <List
                   subheader={<ListSubheader>Assign Schedule</ListSubheader>}
                   className={classes.root}
                 >
-                  
                   <ListItem>
                     <ListItemIcon>
                       <Person />
@@ -170,15 +190,15 @@ class SettingMain extends React.Component {
                       select
                       label="Select Employee"
                       className={classes.textField}
-                      value={this.state.employee}
-                      onChange={this.handleEmployeeChange}
+                      value={state.employee}
+                      onChange={handleEmployeeChange}
                       SelectProps={{
                         MenuProps: {
-                          className: classes.menu
-                        }
+                          className: classes.menu,
+                        },
                       }}
                     >
-                      {this.state.allEmployees.map(emp => (
+                      {state.allEmployees.map((emp) => (
                         <MenuItem key={emp.employeeid} value={emp.employeeid}>
                           {emp.name}
                         </MenuItem>
@@ -195,16 +215,23 @@ class SettingMain extends React.Component {
                       select
                       label="Select Shift"
                       className={classes.textField}
-                      value={this.state.shift}
-                      onChange={this.handleShiftChange}
+                      value={state.shift}
+                      onChange={handleShiftChange}
                       SelectProps={{
                         MenuProps: {
-                          className: classes.menu
-                        }
+                          className: classes.menu,
+                        },
                       }}
                     >
-                      {this.state.allShifts.map(shift => (
-                        <MenuItem key={shift.name+shift.employeruid} value={shift.name} style={{backgroundColor: shift.color, color: 'white'}}>
+                      {state.allShifts.map((shift) => (
+                        <MenuItem
+                          key={shift.name + shift.employeruid}
+                          value={shift.name}
+                          style={{
+                            backgroundColor: shift.color,
+                            color: "white",
+                          }}
+                        >
                           {shift.name}
                         </MenuItem>
                       ))}
@@ -212,33 +239,20 @@ class SettingMain extends React.Component {
                   </ListItem>
                 </List>
                 <Button
-                    onClick={this.assignSchaduleButton}
-                    variant="contained"
-                    style={{ marginTop: "25px", marginLeft: "20px" }}
-                    color="primary"
-                  >
-                    Assign Schedule
+                  onClick={assignSchaduleButton}
+                  variant="contained"
+                  style={{ marginTop: "25px", marginLeft: "20px" }}
+                  color="primary"
+                >
+                  Assign Schedule
                 </Button>
               </CardBody>
             </Card>
           </Col>
-          }
-        </Row>  
-      </Container>
-    );
-  }
+        )}
+      </Row>
+    </Container>
+  );
 }
 
-const mapStateToProps = state => ({
-  user: state.userReducer.user,
-  loader: state.shiftReducer.loader,
-  getShiftStatus: state.shiftReducer.getShiftStatus,
-  getAssignedShiftStatus: state.shiftReducer.getAssignedShiftStatus,
-  shifts: state.shiftReducer.allShifts,
-  employees: state.employerReducer.employees,
-  assignedShifts: state.shiftReducer.assignedShiftsEmployee
-});
-
-export default connect(
-  mapStateToProps, { getShifts, assignShift, getAssignedShiftsByEmployee }
-)(withStyles(styles)(SettingMain));
+export default withStyles(styles)(SettingMain);

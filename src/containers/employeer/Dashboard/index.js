@@ -1,8 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, useState, useEffect } from "react";
 import { Container, Row } from "reactstrap";
 import moment from "moment";
 
-import { connect } from "react-redux";
 import { getEmployees } from "../../../redux/actions/employerActions";
 import { getTask, getLogs } from "../../../redux/actions/TasksActions";
 import { countEmployerPaperWork } from "../../../redux/actions/paperWorkActions";
@@ -19,32 +18,66 @@ import Employees from "../../../assets/icon/employee.png";
 import Shifts from "../../../assets/icon/rotation.png";
 import PaperWorks from "../../../assets/icon/checklist.png";
 
-class Dashboard extends PureComponent {
-  state = {
-    tasks: [],
-    employees: [],
-    empAttendances: [],
-    selectedTasks: [],
-    employerPaystubs: [],
-    statements: [],
-    loader: true,
-    papersCount: 0,
-    shiftsCount: 0,
-    employee: "Naveed",
-    status: "active",
-    arrowDown: true,
-    greet: "Good Morning",
-  };
+import { useDispatch, useSelector } from "react-redux";
 
-  componentDidMount() {
-    this.props.getEmployees(this.props.user.uid);
-    this.props.getTask(this.props.user.uid);
-    this.props.getLogs(this.props.user.uid);
-    this.props.countEmployerPaperWork(this.props.user.uid);
-    this.props.countEmployerShifts(this.props.user.uid);
-    this.props.getEmployerPayStubs(this.props.user.uid);
-    this.props.getAttendance(this.props.user.uid);
+function Dashboard(props) {
+  const [tasks, setTasks] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [empAttendances, setEmpAttendances] = useState([]);
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const [employerPaystubs, setEmployerPaystubs] = useState([]);
+  const [statements, setStatements] = useState([]);
+  const [loader, setLoader] = useState(true);
+  const [papersCount, setPapersCount] = useState([]);
+  const [shiftsCount, setShiftsCount] = useState(0);
+  const [employee, setEmployee] = useState("Naveed");
+  const [status, setStatus] = useState("active");
+  const [arrowDown, setArrowDown] = useState(true);
+  const [greet, setGreet] = useState("Good Morning");
+  ////Redux Dispatch///
+  const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.userReducer.user);
+  const done = useSelector((state) => state.employerReducer.done);
+  const stateLoader = useSelector((state) => state.TaskReducer.loader);
+  const attendanceLoader = useSelector(
+    (state) => state.attendanceReducer.loader
+  );
+  const AllTask = useSelector((state) => state.TaskReducer.AllTask);
+  const count = useSelector((state) => state.TaskReducer.AllTask);
+  const stateEmployees = useSelector(
+    (state) => state.employerReducer.employees
+  );
+  const countStatus = useSelector(
+    (state) => state.paperWorkReducer.countStatus
+  );
+  const employerShiftCount = useSelector(
+    (state) => state.shiftReducer.employerShiftCount
+  );
+  const employerShiftCountStatus = useSelector(
+    (state) => state.shiftReducer.employerShiftCountStatus
+  );
+  const stateEmployerPaystubs = useSelector(
+    (state) => state.payStubsReducer.employerPaystubs
+  );
+  const employerPaystubsStatus = useSelector(
+    (state) => state.payStubsReducer.employerPaystubsStatus
+  );
+  const stateEmpAttendances = useSelector(
+    (state) => state.attendanceReducer.empAttendances
+  );
+  const getEmpAttendancesStatus = useSelector(
+    (state) => state.attendanceReducer.getEmpAttendancesStatus
+  );
+
+  useEffect(() => {
+    dispatch(getEmployees(user.uid));
+    dispatch(getTask(user.uid));
+    dispatch(getLogs(user.uid));
+    dispatch(countEmployerPaperWork(user.uid));
+    dispatch(countEmployerShifts(user.uid));
+    dispatch(getEmployerPayStubs(user.uid));
+    dispatch(getAttendance(user.uid));
     var myDate = new Date();
     var hrs = myDate.getHours();
 
@@ -57,61 +90,48 @@ class Dashboard extends PureComponent {
     } else if (hrs >= 17 && hrs <= 24) {
       greet = "Good Evening";
     }
+    setGreet(greet);
+  }, []);
 
-    this.setState({
-      greet,
-    });
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.done === "move") {
-      this.setState({
-        loader: false,
-        employees: nextProps.employees,
-      });
+  useEffect(() => {
+    if (done === "move") {
+      setLoader(false);
+      setEmployee(stateEmployees);
     }
 
-    if (nextProps.loader === "false") {
+    if (stateLoader === "false") {
       let selectedTasks = [];
-      selectedTasks = nextProps.AllTask.filter(
+      selectedTasks = AllTask.filter(
         (task) =>
           moment(task.DueTime).format("MMM DD, YYYY") ===
           moment().format("MMM DD, YYYY")
       );
-      this.setState({
-        loader: false,
-        selectedTasks,
-        tasks: nextProps.AllTask,
-      });
+      setLoader(false);
+      setSelectedTasks(selectedTasks);
+      setTasks(AllTask);
     }
 
-    if (nextProps.countStatus === "done") {
-      this.setState({
-        loader: false,
-        papersCount: nextProps.count,
-      });
+    if (countStatus === "done") {
+      setLoader(false);
+      setPapersCount(count);
     }
 
-    if (nextProps.employerShiftCountStatus === "done") {
-      this.setState({
-        loader: false,
-        shiftsCount: nextProps.employerShiftCount,
-      });
+    if (employerShiftCountStatus === "done") {
+      setLoader(false);
+      setShiftsCount(employerShiftCount);
     }
 
-    if (nextProps.employerPaystubsStatus === "done") {
-      this.setState({
-        employerPaystubs: nextProps.employerPaystubs,
-      });
+    if (employerPaystubsStatus === "done") {
+      setEmployerPaystubs(stateEmployerPaystubs);
     }
 
-    if (nextProps.getEmpAttendancesStatus === "done") {
-      if (nextProps.empAttendances.length > 0) {
-        let employees = this.state.employees;
-        let statements = [];
+    if (getEmpAttendancesStatus === "done") {
+      if (empAttendances.length > 0) {
+        // let employees = employees;
+        // let statements = [];
         employees.map((emp) => {
           let sameEmpAtt = [];
-          sameEmpAtt = nextProps.empAttendances.filter(
+          sameEmpAtt = empAttendances.filter(
             (att) => att.employeeUid === emp.employeeid
           );
           sameEmpAtt = sameEmpAtt.sort(function(a, b) {
@@ -142,75 +162,51 @@ class Dashboard extends PureComponent {
           } else {
             statement = "No activity found!";
           }
-          statements.push({
-            name: emp.name,
-            statement,
-          });
+          setStatements(
+            statements.push({
+              name: emp.name,
+              statement,
+            })
+          );
         });
-        this.setState({
-          statements,
-          empAttendances: nextProps.empAttendances,
-        });
+        setStatements(statements);
+        setEmpAttendances(stateEmpAttendances);
       }
     }
-  };
+  }, [
+    done,
+    stateEmployees,
+    stateLoader,
+    countStatus,
+    employerShiftCountStatus,
+    employerPaystubsStatus,
+    getEmpAttendancesStatus,
+  ]);
 
-  render() {
-    let {
-      tasks,
-      employees,
-      shiftsCount,
-      papersCount,
-      employerPaystubs,
-      statements,
-    } = this.state;
+  // let {
+  //   tasks,
+  //   employees,
+  //   shiftsCount,
+  //   papersCount,
+  //   employerPaystubs,
+  //   statements,
+  // } = this.state;
 
-    return (
-      <Container className="dashboard">
-        <Row>
-          <Item ic={Tasks} name="TASKS" number={tasks.length} />
-          <Item ic={Employees} name="EMPLOYEES" number={employees.length} />
-          <Item ic={Shifts} name="SHIFTS" number={shiftsCount} />
-          <Item ic={PaperWorks} name="PAPERWORKS" number={papersCount} />
-        </Row>
-        <Row>
-          <TimeComp />
-          <Payroll data={employerPaystubs} />
-          <Activities data={statements} />
-        </Row>
-      </Container>
-    );
-  }
+  return (
+    <Container className="dashboard">
+      <Row>
+        <Item ic={Tasks} name="TASKS" number={tasks.length} />
+        <Item ic={Employees} name="EMPLOYEES" number={stateEmployees.length} />
+        <Item ic={Shifts} name="SHIFTS" number={shiftsCount} />
+        <Item ic={PaperWorks} name="PAPERWORKS" number={papersCount.length} />
+      </Row>
+      <Row>
+        <TimeComp />
+        <Payroll data={employerPaystubs} />
+        <Activities data={statements} />
+      </Row>
+    </Container>
+  );
 }
 
-const mapStateToProps = (store) => {
-  return {
-    user: store.userReducer.user,
-    done: store.employerReducer.done,
-    loader: store.TaskReducer.loader,
-    attendanceLoader: store.attendanceReducer.loader,
-    AllTask: store.TaskReducer.AllTask,
-    count: store.paperWorkReducer.docsCount,
-    employees: store.employerReducer.employees,
-    countStatus: store.paperWorkReducer.countStatus,
-    employerShiftCount: store.shiftReducer.employerShiftCount,
-    employerShiftCountStatus: store.shiftReducer.employerShiftCountStatus,
-    employerPaystubs: store.payStubsReducer.employerPaystubs,
-    employerPaystubsStatus: store.payStubsReducer.employerPaystubsStatus,
-    empAttendances: store.attendanceReducer.empAttendances,
-    getEmpAttendancesStatus: store.attendanceReducer.getEmpAttendancesStatus,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    getTask,
-    getEmployees,
-    countEmployerShifts,
-    countEmployerPaperWork,
-    getEmployerPayStubs,
-    getAttendance,
-    getLogs,
-  }
-)(Dashboard);
+export default Dashboard;

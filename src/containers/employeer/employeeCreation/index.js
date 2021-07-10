@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useEffect, useState,Fragment } from "react";
 import PropTypes from "prop-types";
 import { Col, Container, Row } from "reactstrap";
 import { withStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ import {
 } from "../../../redux/actions/employerActions";
 import { connect } from "react-redux";
 import { PulseLoader } from "react-spinners";
-
+import {useSelector, useDispatch} from 'react-redux'
 const styles = (theme) => ({
   root: {
     width: "90%",
@@ -47,64 +47,72 @@ function getSteps() {
 
 // function
 
-class AddEmpSteps extends React.Component {
-  state = {
-    activeStep: 0,
-    empBasicData: {},
-    selectDoc: [],
-    sendLoader: false,
+function AddEmpSteps ({ classes } ) {
+
+  const  [activeStep, setActiveStep] = useState(0)
+  const  [selectDoc, setSelectDoc] = useState([])
+  const  [sendLoader, setSendLoader] = useState(false)
+  const  [empBasicData, setEmpBasicData] = useState('false')
+
+
+
+  const employeruid = useSelector(state=>state.userReducer.user.uid)
+  const stateLoader = useSelector(state=>state.employerReducer.loader)
+  const successDone = useSelector(state=>state.employer.successDone)
+  const addEmpStatus = useSelector(state=>state.employerReducer.addEmpStatus)
+
+
+  
+const dispatch = useDispatch()
+
+  const getEmpData = (data) => {
+    setEmpBasicData(data)
+ 
   };
 
-  getEmpData = (data) => {
-    this.setState({
-      empBasicData: data,
-    });
-  };
-
-  getDocs = (docs) => {
+const  getDocs = (docs) => {
     let documents = docs.filter((doc) => doc.selected);
-    this.setState({
-      selectDoc: documents,
-    });
+    setSelectDoc(document)
+ 
   };
 
-  addEmployee = () => {
-    let empBasicData = this.state.empBasicData;
+const   addEmployee = () => {
+    let empBasicData = empBasicData;
 
     let data = {
       ...empBasicData,
-      documents: this.state.selectDoc,
+      documents: selectDoc,
     };
-    this.props.addNewEmployee(data);
-    this.setState({
-      sendLoader: true,
-    });
+    dispatch(addNewEmployee(data))
+    setSendLoader(true)
+
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      sendLoader: false,
-    });
-    if (nextProps.addEmpStatus === "done") {
-      this.props.history.push("/home/employeer/employeeView");
-    } else if (nextProps.addEmpStatus === "error") {
-      this.setState({
-        activeStep: 0,
-      });
-    }
-  }
 
-  getStepContent = (stepIndex) => {
+  useEffect(()=>{
+    setSendLoader(true)
+
+    if (addEmpStatus === "done") {
+      this.props.history.push("/home/employeer/employeeView");
+    } else if (addEmpStatus === "error") {
+      setActiveStep(0)
+   
+    }
+
+  },[addEmpStatus])
+
+
+  const getStepContent = (stepIndex) => {
     switch (stepIndex) {
       case 0:
         return (
-          <EmpForm handleNext={this.handleNext} getEmpData={this.getEmpData} />
+          <EmpForm handleNext={handleNext} getEmpData={getEmpData} />
         );
       case 1:
         return (
           <SelectDoc
-            getDocs={this.getDocs}
-            data={this.state.empBasicData}
+            getDocs={getDocs}
+            data={empBasicData}
             // stateName={this.state.empBasicData.stateName}
           />
         );
@@ -114,30 +122,29 @@ class AddEmpSteps extends React.Component {
     }
   };
 
-  handleNext = () => {
-    this.setState((state) => ({
-      activeStep: state.activeStep + 1,
-    }));
+  const handleNext = () => {
+    setActiveStep(activeStep+1)
+
   };
 
-  handleBack = () => {
-    this.setState((state) => ({
-      activeStep: state.activeStep - 1,
-    }));
+ const  handleBack = () => {
+   setActiveStep(activeStep -1 )
+  
   };
 
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
+ const  handleReset = () => {
+   setActiveStep(0)
+ 
   };
-  componentDidMount() {
-    this.props.getSystemDocs();
-  }
-  render() {
-    const { classes } = this.props;
+
+  useEffect(()=>{
+    dispatch(getSystemDocs)
+  },[])
+
+  
+    
     const steps = getSteps();
-    const { activeStep, sendLoader } = this.state;
+  
 
     return (
       <Container>
@@ -160,7 +167,7 @@ class AddEmpSteps extends React.Component {
           <Col md={12} className={classes.stepDetail}>
             <Fragment>
               <Typography className={classes.instructions}>
-                {this.getStepContent(activeStep)}
+                {getStepContent(activeStep)}
               </Typography>
               {activeStep == 1 &&
                 (sendLoader ? (
@@ -176,7 +183,7 @@ class AddEmpSteps extends React.Component {
                     className={classes.button}
                     variant="contained"
                     color="primary"
-                    onClick={this.addEmployee}
+                    onClick={addEmployee}
                   >
                     Add Employee
                   </Button>
@@ -186,22 +193,12 @@ class AddEmpSteps extends React.Component {
         </Row>
       </Container>
     );
-  }
+  
 }
 
 AddEmpSteps.propTypes = {
   classes: PropTypes.object,
 };
-const mapStateToProps = (state) => {
-  return {
-    employeruid: state.userReducer.user.uid,
-    loader: state.employerReducer.loader,
-    successDone: state.employer.successDone,
-    addEmpStatus: state.employerReducer.addEmpStatus,
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  { getSystemDocs, addNewEmployee }
-)(withStyles(styles)(AddEmpSteps));
+
+export default (withStyles(styles)(AddEmpSteps));

@@ -14,15 +14,15 @@ import { toast } from "react-toastify";
 const styles = {
   avatar: {
     backgroundColor: blue[100],
-    color: blue[600]
+    color: blue[600],
   },
   card: {
     minWidth: 275,
-    padding: "15px 15px"
+    padding: "15px 15px",
   },
   title: {
     fontSize: 14,
-    color: "#646777"
+    color: "#646777",
   },
   heading: {
     color: "red",
@@ -30,11 +30,11 @@ const styles = {
     fontSize: "1.3125rem",
     fontWeight: "500",
     // fontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
-    lineHeight: "1.16667em"
+    lineHeight: "1.16667em",
   },
   pos: {
-    marginBottom: 12
-  }
+    marginBottom: 12,
+  },
 };
 
 class OtpDialog extends React.Component {
@@ -45,24 +45,24 @@ class OtpDialog extends React.Component {
       verifyButtonDisabled: true,
       numberVerified: false,
       emailVerified: false,
-      reRender: true
+      reRender: true,
     };
   }
   componentDidMount() {}
 
-  getValuesInOtp = v => {
+  getValuesInOtp = (v) => {
     if (v.length === 4) {
       this.setState({
         ValueFromOtp: v,
-        verifyButtonDisabled: false
+        verifyButtonDisabled: false,
       });
     } else {
       this.setState({
-        verifyButtonDisabled: true
+        verifyButtonDisabled: true,
       });
     }
   };
-  handleListItemClick = value => {
+  handleListItemClick = (value) => {
     this.props.onClose(value);
   };
 
@@ -86,7 +86,7 @@ class OtpDialog extends React.Component {
             style={{
               color: "gray",
               textAlign: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
             className={classes.heading}
           >
@@ -101,7 +101,7 @@ class OtpDialog extends React.Component {
                 justifyContent: "center",
                 textAlign: "center",
                 fontSize: "1.3rem",
-                align: "center"
+                align: "center",
               }}
             >
               <Otp
@@ -135,9 +135,14 @@ class OtpDialog extends React.Component {
               >
                 Verify
               </Button>
-              {this.props.resendbutton && <Button 
-               onClick={()=>this.props.resendPhoneCode()}
-              size="small">Resend</Button>}
+              {this.props.resendbutton && (
+                <Button
+                  onClick={() => this.props.resendPhoneCode()}
+                  size="small"
+                >
+                  Resend
+                </Button>
+              )}
             </CardActions>
           </Card>
           {/* <Otp /> */}
@@ -173,7 +178,7 @@ class OtpDialog extends React.Component {
             right: "0",
             padding: "5px 5px 0 0",
             color: "red",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           X
@@ -186,7 +191,7 @@ class OtpDialog extends React.Component {
 OtpDialog.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func,
-  selectedValue: PropTypes.string
+  selectedValue: PropTypes.string,
 };
 
 export default withStyles(styles)(OtpDialog);

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Card, CardBody, Col, Button, Row } from "reactstrap";
 import MessageTextOutlineIcon from "mdi-react/MessageTextOutlineIcon";
 import { connect } from "react-redux";
@@ -9,13 +9,21 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { startRessetPassword } from "../../../../redux/actions/profileAction";
+import {useSelector, useDispatch} from 'react-redux'
 
 library.add(faPen);
 
-class ProfileMain extends React.Component {
-    
-  render() {
-    const { user, employees, tasks, ownTasks } = this.props;
+function ProfileMain () {
+
+  const  dispatch = useDispatch()
+
+
+  const user = useSelector(state=>state.userReducer.user)
+  const employees = useSelector(state=>state.employerReducer.employees)
+  const tasks = useSelector(state=>state.TaskReducer.AllTask)
+  const ownTasks = useSelector(state=>state.TaskReducer.OwnTask)
+
+
     
     return (
       <Col md={12} lg={12} xl={12}>
@@ -95,7 +103,9 @@ class ProfileMain extends React.Component {
                   </Col>
                   <Col md={6} lg={6} xl={6}>
                     <ChangePassword
-                      changePassAction={this.props.startRessetPassword}
+                      changePassAction={()=>{
+                        dispatch(startRessetPassword)
+                      }}
                     />
                   </Col>
                 </Row>
@@ -119,16 +129,8 @@ class ProfileMain extends React.Component {
         </Card>
       </Col>
     );
-  }
+  
 }
-const mapStateToProps = (state) => ({
-  user: state.userReducer.user,
-  employees: state.employerReducer.employees,
-  tasks: state.TaskReducer.AllTask,
-  ownTasks: state.TaskReducer.OwnTask,
-});
 
-export default connect(
-  mapStateToProps,
-  { startRessetPassword }
-)(ProfileMain);
+
+export default(ProfileMain);

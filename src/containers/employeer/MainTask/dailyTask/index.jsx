@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Col, Container, Row, Input, Card, Form, FormGroup } from "reactstrap";
 import { translate } from "react-i18next";
@@ -7,6 +7,7 @@ import { getEmployees } from "../../../../redux/actions/employerActions";
 import { getTask } from "../../../../redux/actions/TasksActions";
 import moment from "moment";
 import SearchBar from "../SearchBar";
+import {useSelector,useDispatch}from 'react-redux'
 const backStyleSearchBox = {
   width: "97%",
   padding: "8px",
@@ -15,79 +16,73 @@ const backStyleSearchBox = {
   borderRadius: "4px",
 };
 
-class EmployeeTask extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: "true",
-      DueDate: "",
-      loader: true,
-      dataLength: true,
-      data: [],
-      searchQuery: "",
-      filterDate: new Date(),
-    };
-  }
+function EmployeeTask () {
+  const [active, setActive] = useState("true")
+  const [DueDate, setDueDate] = useState("")
+  const [loader, setLoader] = useState(true)
+  const [dataLength, setDataLength] = useState(true)
+  const [data, setData] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterDate, setFilterDate] = useState(new Date())
 
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.loader === "false") {
-      this.setState({
-        loader: false,
-        data: nextProps.items,
-      });
+
+
+
+  const items = useSelector(state=> state.TaskReducer.AllTask)
+  const user = useSelector(state=> state.userReducer.user)
+  const stateLoader = useSelector(state=> state.TaskReducer.loader)
+
+  useEffect(()=>{
+    if (stateLoader === "false") {
+      setLoader(false)
+      setData(items)
     }
+  },[stateLoader])
+
+
+  const onSearchChange = (name) => (event) => {
+    console.log(name)
+    // this.setState({
+    //   [name]: event.target.value,
+    // });
   };
 
-  onSearchChange = (name) => (event) => {
-    this.setState({
-      [name]: event.target.value,
-    });
+  const filterMessages = (query) => {
+  
+      setSearchQuery(query) 
+
   };
 
-  filterMessages = (query) => {
-    this.setState({
-      searchQuery: query,
-    });
+  const handleDate = (date) => {
+    setFilterDate(date)
+    setSearchQuery(moment(date).format("MMM/DD/YYYY"))
+ 
+  
   };
-
-  handleDate = (date) => {
-    this.setState({
-      filterDate: date,
-      searchQuery: moment(date).format("MMM/DD/YYYY"),
-    });
-  };
-  render() {
-    const { data, filterDate } = this.state;
-    const { t } = this.props;
+  
+ 
     return (
       <Container>
         <Row>
           <SearchBar
             title="Daily Tasks"
-            filter={this.filterMessages}
+            filter={filterMessages}
             placeholder="Search by Name, Title, Date"
             date={filterDate}
-            filterDate={this.handleDate}
+            filterDate={handleDate}
             calendar={true}
           />
         </Row>
         <Row>
-          <BasicTable searchQuery={this.state.searchQuery} />
+          <BasicTable searchQuery={searchQuery} />
         </Row>
       </Container>
     );
-  }
+  
 }
 
-const mapStateToProps = (state) => ({
-  items: state.TaskReducer.AllTask,
-  user: state.userReducer.user,
-  loader: state.TaskReducer.loader,
-});
+
 
 export default translate("common")(
-  connect(mapStateToProps, {
-    getTask,
-    getEmployees,
-  })(EmployeeTask)
+ (EmployeeTask)
 );

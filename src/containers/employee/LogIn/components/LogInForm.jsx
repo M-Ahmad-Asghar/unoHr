@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState,useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
@@ -17,116 +17,124 @@ import IconButton from '@material-ui/core/IconButton';
 import Zoom from '@material-ui/core/Zoom';
 import HelpIcon from "../../../../assets/help.png";
 import "../styles/style.css";
+import {useSelector,useDispatch} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 
-class LogInForm extends Component {
+  function LogInForm() {
+  const [disableBtn, setDisableBtn] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [invalidEmail, setInvalidEmail] = useState("")
+  const [invalidPswrd, setInvalidPswrd] = useState("")
+  const [loader, setLoader] = useState(useSelector(state=>state.employeeUserReducer.loader))
+  const [hasErroredErr, setHasErroredErr] = useState( useSelector(state=>state.employeeUserReducer.hasErroredErr))
+  const [showPassword, setShowPassword] = useState(false)
 
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired
-  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showPassword: false,
-      disableBtn: false,
-      email: "",
-      password: "",
-      invalidEmail: "",
-      invPswrd: "",
-      loader: false,
-      hasErroredErr: false
+  const dispatch =useDispatch()
+  const history = useHistory()
+
+
+  // const userStatusEmp = useSelector(state=>state.employeeUserReducer.userStatusEmp)
+  
+    // const  propTypes = {
+    //   dispatch: PropTypes.func.isRequired
+    // };
+  
+  
+     // this.showPassword = this.showPassword.bind(this);
+    
+  
+  const stateLoader = useSelector(state=>state.employeeUserReducer.loader)
+  const stateHasErroredErr = useSelector(state=>state.employeeUserReducer.hasErroredErr)
+    useEffect(()=>{
+      setLoader(false)
+      setDisableBtn(false)
+      if (stateHasErroredErr) {
+        
+        setInvalidPswrd("Wrong password Try again!") 
+       
+      }
+      if (stateLoader === "move") {
+        toast.success("Successfully Login!");
+        history.push("/home/employee/dashboard");
+      }
+    },[stateLoader, stateHasErroredErr])
+  
+  
+  const   onChangeHandler = e => {
+      const { name, value } = e.target;
+   if (name == "email"){
+     setEmail(value)
+   }
+   if(name == "password"){
+     setPassword(value)
+   }
     };
 
-    this.showPassword = this.showPassword.bind(this);
-  }
-
-  componentWillReceiveProps = nextProps => {
-    this.setState({
-      loader: false,
-      disableBtn: false
-    });
-
-    if (nextProps.hasErroredErr) {
-      this.setState({
-        invPswrd: "Wrong password Try again!"
-      });
+  
+   const togglePassword = (e) => {
+      e.preventDefault();
+  setShowPassword(!showPassword)
     }
+  
+    const validateEmail = email => {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    };
+   const  validate = () => {
+      if (email == "" || !validateEmail(email)) {
+       
+          setInvalidEmail("invalid email address") 
+       
+      }
+      if (validateEmail(email)) {
+    
+          setInvalidEmail("")
+       
+      }
+      if (password <= 7) {
+    
+        setInvalidPswrd("password must be greater than 8 letters") 
+     
+      }
+  
+      if (password != "") {
+       
+        setInvalidPswrd("")
+       
+      }
+    };
+  
+    const login = e => {
+      e.preventDefault();
+  
+      if (
+        email == "" ||
+       password == "" ||
+        !validateEmail(email)
+      ) {
+        validate();
+      } else if (email !== "" || password !== "") {
+        setLoader(true)
+        setDisableBtn(true)
+    
+  
+        let data = {
+          email: email.toLowerCase(),
+          password: password
+        };
+  
+        // console.log("Data is: ", data);
+        dispatch(startLoginEmployee(data));
+      }
+    };
+  
 
-    if (nextProps.loader === "move") {
-      toast.success("Successfully Login!");
-      this.props.history.push("/home/employee/dashboard");
-    }
-  };
 
-  onChangeHandler = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
-
-  showPassword(e) {
-    e.preventDefault();
-    this.setState({
-      showPassword: !this.state.showPassword
-    });
-  }
-
-  validateEmail = email => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-z  A-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  };
-  validate = () => {
-    if (this.state.email == "" || !this.validateEmail(this.state.email)) {
-      this.setState({
-        invalidEmail: "invalid email address"
-      });
-    }
-    if (this.validateEmail(this.state.email)) {
-      this.setState({
-        invalidEmail: ""
-      });
-    }
-    if (this.state.password <= 7) {
-      this.setState({
-        invPswrd: "password must be greater than 8 letters"
-      });
-    }
-
-    if (this.state.password != "") {
-      this.setState({
-        invPswrd: ""
-      });
-    }
-  };
-
-  login = e => {
-    e.preventDefault();
-
-    if (
-      this.state.email == "" ||
-      this.state.password == "" ||
-      !this.validateEmail(this.state.email)
-    ) {
-      this.validate();
-    } else if (this.state.email !== "" || this.state.password !== "") {
-      this.setState({
-        loader: true,
-        disableBtn: true
-      });
-
-      let data = {
-        email: this.state.email.toLowerCase(),
-        password: this.state.password
-      };
-
-      // console.log("Data is: ", data);
-      this.props.startLoginEmployee(data);
-    }
-  };
-
-  render() {
-    const { disableBtn } = this.state;
-    return (
-      <form className="form" onSubmit={this.login}>
+  return (
+  
+       <form className="form" onSubmit={login}>
         <div className="form__form-group">
           <span className="form__form-group-label">Email</span>
           <div className="form__form-group-field">
@@ -138,7 +146,8 @@ class LogInForm extends Component {
               component="input"
               type="text"
               placeholder="Email"
-              onChange={this.onChangeHandler}
+       
+              onChange={onChangeHandler}
             />
             <Tooltip TransitionComponent={Zoom} title="Enter your email address e.g abc@gmail.com">
               <IconButton className="helpButton">
@@ -146,7 +155,7 @@ class LogInForm extends Component {
               </IconButton>
             </Tooltip>
           </div>
-          <span style={{ color: "red" }}> {this.state.invalidEmail}</span>
+          <span style={{ color: "red" }}> {invalidEmail}</span>
         </div>
         <div className="form__form-group">
           <span className="form__form-group-label">Password</span>
@@ -157,15 +166,15 @@ class LogInForm extends Component {
             <Field
               name="password"
               component="input"
-              type={this.state.showPassword ? "text" : "password"}
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
-              onChange={this.onChangeHandler}
+              onChange={onChangeHandler}
             />
             <button
               className={`form__form-group-button${
-                this.state.showPassword ? " active" : ""
+                showPassword ? " active" : ""
               }`}
-              onClick={e => this.showPassword(e)}
+              onClick={e => togglePassword(e)}
             >
               <EyeIcon />
             </button>
@@ -180,7 +189,7 @@ class LogInForm extends Component {
           <Link to="/employee/forgetpassord" >Forgot a password?</Link>
           
           </div>
-          <span style={{ color: "red" }}> {this.state.invPswrd} </span>
+          <span style={{ color: "red" }}> {invalidPswrd} </span>
         </div>
         <div className="form__form-group">
           <div className="form__form-group-field">
@@ -191,7 +200,7 @@ class LogInForm extends Component {
             />
           </div>
 
-          {this.state.loader ? (
+          {loader ? (
             <Row>
               <Col style={{ textAlign: "center" }}>
                 <CircularProgress size="22px" />
@@ -227,23 +236,12 @@ class LogInForm extends Component {
           )}
         </div>
       </form>
-    );
-  }
+
+
+  )
 }
 
-const mapStateToProps = state => {
-  return {
-    userStatusEmp: state.employeeUserReducer.userStatusEmp,
-    loader: state.employeeUserReducer.loader,
-    hasErroredErr: state.employeeUserReducer.hasErroredErr
-  };
-};
-
 export default reduxForm({
-  form: "log_in_form" // a unique identifier for this form
-})(
-  connect(
-    mapStateToProps,
-    { startLoginEmployee }
-  )(withRouter(LogInForm))
-);
+  form: "log_in_form",
+
+})(LogInForm)
