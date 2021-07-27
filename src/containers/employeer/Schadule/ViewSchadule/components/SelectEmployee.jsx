@@ -257,18 +257,18 @@ function AllEmployeesSchedule() {
             {state.sDates.length > 0 ? (
               <div style={{ fontSize: 18 }}>
                 <b>Employee: </b>
-                {event.empName}
-                <div>{moment(sDates[0]).format("dddd")}</div>
+                {state.event.empName}
+                <div>{moment(state.sDates[0]).format("dddd")}</div>
                 <div style={{ fontWeight: "bold" }}>
                   -----------------------
                 </div>
-                {sDates.map((sD, i) => (
+                {state.sDates.map((sD, i) => (
                   <div style={{ margin: 10, fontSize: 16 }}>
                     <b>Start: </b>
                     {moment(sD).format("hh:mm:ss A")}
                     <br />
                     <b>End: </b>
-                    {"   " + moment(eDates[i]).format("hh:mm:ss A")}
+                    {"   " + moment(state.eDates[i]).format("hh:mm:ss A")}
                     <div style={{ fontWeight: "bold" }}>
                       -----------------------
                     </div>

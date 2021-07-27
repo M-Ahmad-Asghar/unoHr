@@ -89,7 +89,7 @@ function BasicTable() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const user = useSelector((state) => state.employeeUserReducer.currentEmp);
+  const user = useSelector((state) => state.employeeUserReducer.currentEmp)
   const getAssignedShiftStatus = useSelector(
     (state) => state.shiftReducer.getAssignedShiftStatus
   );

@@ -122,7 +122,7 @@ function EmployeeTasks({ searchQuery }) {
   };
 
   const handleClose = () => {
-    setOpen(False);
+    setOpen(false);
   };
 
   const handleUpdateDialogOpen = (data) => {

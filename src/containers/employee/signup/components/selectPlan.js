@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-function SelectPlan() {
+function SelectPlan(props) {
   const [age, setAge] = useState("");
   const [name, setName] = useState("hai");
   const [labelWidth, setLabelWidth] = useState(0);
