@@ -122,7 +122,7 @@ function ListTasks({ searchQuery }) {
   const handleVerifyNumber = (id) => {
     setDelId(id);
 
-    setState({ delId: id });
+    setDelId(id);
     openDialog();
     handleresendbutton();
   };
@@ -140,10 +140,9 @@ function ListTasks({ searchQuery }) {
   const verifyCodeEnteredInOTp = (otp) => {
     if (verificationCode == otp) {
       onNumberStatus(true);
-      setState({
-        numberVerified: true,
-        otpOpen: false,
-      });
+
+      setNumberVerified(true);
+      setOtpOpen(false);
       toast.success("Phone Number is successfully Verified!");
       deletOwnTask(delId);
       updateEmployerMobNumber({
@@ -153,9 +152,8 @@ function ListTasks({ searchQuery }) {
     } else {
       toast.error("Not Verified! Verification Code Incorrect");
       onNumberStatus(false);
-      setState({
-        numberVerified: false,
-      });
+
+      setNumberVerified(false);
     }
   };
 

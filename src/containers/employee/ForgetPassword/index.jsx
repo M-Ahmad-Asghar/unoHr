@@ -17,7 +17,7 @@ export default function LogIn() {
             </h3>
             {/* <h4 className="account__subhead subhead">Start your business easily</h4> */}
           </div>
-          <LogInForm onSubmit />
+          <LogInForm />
         </div>
       </div>
     </div>

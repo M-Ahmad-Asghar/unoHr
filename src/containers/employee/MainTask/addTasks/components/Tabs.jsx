@@ -24,7 +24,7 @@ function DefaultTabsBorderedTop({ t }) {
   const [activeTab, setActiveTab] = useState("2");
 
   const toggle = (tab) => {
-    if (ctiveTab !== tab) {
+    if (activeTab !== tab) {
       setActiveTab(tab);
     }
   };

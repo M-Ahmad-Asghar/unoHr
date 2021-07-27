@@ -113,7 +113,7 @@ function ListTasks({ searchQuery }) {
   };
 
   const handleClickOpen = () => {
-    etState({ open: true });
+    setState({ open: true });
   };
 
   const handleClose = () => {

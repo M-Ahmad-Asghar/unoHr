@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Typography,
   Grid,
@@ -16,43 +16,28 @@ import { BeatLoader } from "react-spinners";
 import SignaturePad from "react-signature-pad";
 import "./styles.css";
 import { toast } from "react-toastify";
-import { useObjectState } from "../../../utils/commonState";
 
-function PaperworkForms(props) {
-  const [state, setState] = useObjectState({
-    loading: true,
-    checkedB: true,
-  });
-  const dispatch = useDispatch();
+class PaperworkForms extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      checkedB: true,
+    };
+  }
 
-  const user = useSelector((state) => state.userReducer.user);
-  const loader = useSelector((state) => state.paperWorkReducer.loader);
-  const templateSchema = useSelector(
-    (state) => state.SystemDocuments.templateSchema
-  );
-  const templateStatus = useSelector(
-    (state) => state.SystemDocuments.templateSchemaStatus
-  );
-  const sLoader = useSelector((state) => state.SystemDocuments.schema_loader);
-  const savePapeworkStatus = useSelector(
-    (state) => state.SystemDocuments.saveEmployerPaperworks
-  );
-  const allEmployerDocs = useSelector(
-    (state) => state.paperWorkReducer.allEmployerDocs
-  );
+  componentDidMount() {
+    let item = this.props.location.state.item;
+    this.props.getTemplateSchema(item.template_id);
+  }
 
-  useEffect(() => {
-    let item = props.location.state.item;
-    dispatch(getTemplateSchema(item.template_id));
-  }, []);
+  submitHandler = () => {
+    this.setState({ loading: true });
 
-  const submitHandler = () => {
-    setState({ loading: true });
-
-    let { data, employeeData } = state;
-    let item = props.location.state.item;
-    let empId = props.location.state.empId;
-    let id = props.location.state.id;
+    let { data, employeeData } = this.state;
+    let item = this.props.location.state.item;
+    let empId = this.props.location.state.empId;
+    let id = this.props.location.state.id;
 
     let isGoodToGo = true;
     let formData = {};
@@ -85,7 +70,7 @@ function PaperworkForms(props) {
     });
 
     if (isGoodToGo) {
-      let documents = props.allEmployerDocs;
+      let documents = this.props.allEmployerDocs;
       let docObj = documents.filter((doc) => doc.employeeid === empId);
       documents = docObj[0].allDocs;
       documents = documents.filter((d) => d.id !== item.id);
@@ -129,23 +114,23 @@ function PaperworkForms(props) {
         doc_name: item.doc_name,
         paperworkId: id,
         employerFormData,
-        employer: props.user,
+        employer: this.props.user,
       };
 
-      dispatch(employerForm(finalObj));
+      this.props.employerForm(finalObj);
     } else {
-      setState({ loading: false });
+      this.setState({ loading: false });
     }
   };
 
-  useEffect(() => {
-    if (templateStatus === "done") {
-      let schema = templateSchema;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.templateStatus === "done") {
+      let schema = nextProps.templateSchema;
 
       if (schema.properties) {
         let data = [];
         let employeeData = [];
-        let item = props.location.state.item;
+        let item = this.props.location.state.item;
         let formData = item.employeeFormData;
 
         // Setting Employee data in state
@@ -178,13 +163,13 @@ function PaperworkForms(props) {
         Object.keys(schema.properties).map((key, index) => {
           if (item.map_keys[key]) {
             if (key.substring(0, 2) === "ep") {
-              if (props.user[item.map_keys[key]]) {
+              if (this.props.user[item.map_keys[key]]) {
                 let required = false;
                 schema.required.map((req, i) => {
                   if (req === key) {
                     required = true;
                     data.push({
-                      [item.map_keys[key]]: props.user[item.map_keys[key]],
+                      [item.map_keys[key]]: this.props.user[item.map_keys[key]],
                       isRequired: true,
                       type: schema.properties[key]["type"],
                     });
@@ -192,7 +177,7 @@ function PaperworkForms(props) {
                 });
                 if (!required) {
                   data.push({
-                    [item.map_keys[key]]: props.user[item.map_keys[key]],
+                    [item.map_keys[key]]: this.props.user[item.map_keys[key]],
                     isRequired: false,
                     type: schema.properties[key]["type"],
                   });
@@ -222,7 +207,7 @@ function PaperworkForms(props) {
             }
           }
         });
-        setState({
+        this.setState({
           data,
           employeeData,
           loading: false,
@@ -230,28 +215,28 @@ function PaperworkForms(props) {
       }
     }
 
-    if (templateSchemaStatus === "error") {
-      setState({
+    if (nextProps.templateSchemaStatus === "error") {
+      this.setState({
         loading: false,
       });
     }
 
-    if (savePapeworkStatus === "done") {
-      setState({
+    if (nextProps.savePapeworkStatus === "done") {
+      this.setState({
         loading: false,
       });
-      props.history.push("/home/employeer/pdfRecords");
+      this.props.history.push("/home/employeer/pdfRecords");
     }
 
-    if (savePapeworkStatus === "error") {
-      setState({
+    if (nextProps.savePapeworkStatus === "error") {
+      this.setState({
         loading: false,
       });
     }
-  }, [templateStatus]);
+  }
 
-  const onChangeHandler = (e) => {
-    let data = state.data;
+  onChangeHandler = (e) => {
+    let data = this.state.data;
 
     let name = e.target.name;
     let value = e.target.value;
@@ -261,69 +246,69 @@ function PaperworkForms(props) {
       }
     });
 
-    setState({
+    this.setState({
       data,
     });
   };
 
-  const checkBoxHandler = (name) => {
-    let data = state.data;
+  checkBoxHandler = (name) => {
+    let data = this.state.data;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = !data[i][name];
       }
     });
 
-    setState({
+    this.setState({
       data,
     });
   };
 
-  const saveSignature = (name) => {
-    let url = refs[name].toDataURL().slice(22);
+  saveSignature = (name) => {
+    let url = this.refs[name].toDataURL().slice(22);
 
-    let data = state.data;
+    let data = this.state.data;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = url;
       }
     });
 
-    setState({
+    this.setState({
       data,
     });
   };
 
-  const clearSignature = (name) => {
-    refs[name].clear();
+  clearSignature = (name) => {
+    this.refs[name].clear();
 
-    let data = state.data;
+    let data = this.state.data;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = "";
       }
     });
 
-    setState({
+    this.setState({
       data,
     });
   };
 
-  const hideImage = (name) => {
-    let data = state.data;
+  hideImage = (name) => {
+    let data = this.state.data;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = "";
       }
     });
 
-    setState({
+    this.setState({
       data,
     });
   };
 
   onEmpChangeHandler = (e) => {
-    let data = state.employeeData;
+    let data = this.state.employeeData;
 
     let name = e.target.name;
     let value = e.target.value;
@@ -333,333 +318,363 @@ function PaperworkForms(props) {
       }
     });
 
-    setState({
+    this.setState({
       employeeData: data,
     });
   };
 
-  const empCheckBoxHandler = (name) => {
-    let data = state.employeeData;
+  empCheckBoxHandler = (name) => {
+    let data = this.state.employeeData;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = !data[i][name];
       }
     });
 
-    setState({
+    this.setState({
       employeeData: data,
     });
   };
 
-  const saveEmpSignature = (name) => {
-    let url = refs[name].toDataURL().slice(22);
+  saveEmpSignature = (name) => {
+    let url = this.refs[name].toDataURL().slice(22);
 
-    let data = state.employeeData;
+    let data = this.state.employeeData;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = url;
       }
     });
 
-    setState({
+    this.setState({
       employeeData: data,
     });
   };
 
-  const clearEmpSignature = (name) => {
-    refs[name].clear();
+  clearEmpSignature = (name) => {
+    this.refs[name].clear();
 
-    let data = state.employeeData;
+    let data = this.state.employeeData;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = "";
       }
     });
 
-    setState({
+    this.setState({
       employeeData: data,
     });
   };
 
-  const hideEmpImage = (name) => {
-    let data = state.employeeData;
+  hideEmpImage = (name) => {
+    let data = this.state.employeeData;
     data.map((d, i) => {
       if (Object.keys(d)[0] == name) {
         data[i][name] = "";
       }
     });
 
-    setState({
+    this.setState({
       employeeData: data,
     });
   };
 
-  return state.loading ? (
-    <div style={{ width: 100, marginLeft: "auto", marginRight: "auto" }}>
-      <BeatLoader color={"#123abc"} />
-    </div>
-  ) : (
-    <Typography align="left" component="div" style={{ padding: 8 * 3 }}>
-      {/* Employee Form Start */}
-      <Typography align="center" variant="h5" style={{ marginBottom: 10 }}>
-        Employee fields
-      </Typography>
+  render() {
+    const { loading, data, employeeData } = this.state;
 
-      <Grid container>
-        {employeeData.length > 0 ? (
-          <Fragment>
-            {employeeData.map((item, index) => {
-              return item.type === "string" ? (
-                <Grid item xs={12} md={12} key={index}>
-                  <TextField
-                    id="outlined-email-input"
-                    label={Object.keys(item)[0]}
-                    onChange={onEmpChangeHandler}
-                    type="text"
-                    value={item[Object.keys(item)[0]]}
-                    name={Object.keys(item)[0]}
-                    autoComplete="name"
-                    margin="normal"
-                    variant="outlined"
-                    align="left"
-                    fullWidth
-                  />
-                </Grid>
-              ) : item.type === "boolean" ? (
-                <Grid item xs={12} md={12} key={index}>
-                  <Checkbox
-                    checked={item[Object.keys(item)[0]]}
-                    style={{ alignSelf: "flex-start" }}
-                    onChange={() => empCheckBoxHandler(Object.keys(item)[0])}
-                    // value="checkedB"
-                    color="primary"
-                    inputProps={{
-                      "aria-label": "secondary checkbox",
-                    }}
-                  />
-                  <Typography style={{ display: "inline" }}>
-                    {" "}
-                    {Object.keys(item)[0]}
-                  </Typography>
-                </Grid>
-              ) : null;
-            })}
+    return loading ? (
+      <div style={{ width: 100, marginLeft: "auto", marginRight: "auto" }}>
+        <BeatLoader color={"#123abc"} />
+      </div>
+    ) : (
+      <Typography align="left" component="div" style={{ padding: 8 * 3 }}>
+        {/* Employee Form Start */}
+        <Typography align="center" variant="h5" style={{ marginBottom: 10 }}>
+          Employee fields
+        </Typography>
 
-            {employeeData.map((item, index) => {
-              return item.type === "object" ? (
-                item[Object.keys(item)[0]] === "" ? (
+        <Grid container>
+          {employeeData.length > 0 ? (
+            <Fragment>
+              {employeeData.map((item, index) => {
+                return item.type === "string" ? (
                   <Grid item xs={12} md={12} key={index}>
-                    <div className="container">
-                      <Typography variant="p" style={{ marginTop: 20 }}>
+                    <TextField
+                      id="outlined-email-input"
+                      label={Object.keys(item)[0]}
+                      onChange={this.onEmpChangeHandler}
+                      type="text"
+                      value={item[Object.keys(item)[0]]}
+                      name={Object.keys(item)[0]}
+                      autoComplete="name"
+                      margin="normal"
+                      variant="outlined"
+                      align="left"
+                      fullWidth
+                    />
+                  </Grid>
+                ) : item.type === "boolean" ? (
+                  <Grid item xs={12} md={12} key={index}>
+                    <Checkbox
+                      checked={item[Object.keys(item)[0]]}
+                      style={{ alignSelf: "flex-start" }}
+                      onChange={() =>
+                        this.empCheckBoxHandler(Object.keys(item)[0])
+                      }
+                      // value="checkedB"
+                      color="primary"
+                      inputProps={{
+                        "aria-label": "secondary checkbox",
+                      }}
+                    />
+                    <Typography style={{ display: "inline" }}>
+                      {" "}
+                      {Object.keys(item)[0]}
+                    </Typography>
+                  </Grid>
+                ) : null;
+              })}
+
+              {employeeData.map((item, index) => {
+                return item.type === "object" ? (
+                  item[Object.keys(item)[0]] === "" ? (
+                    <Grid item xs={12} md={12} key={index}>
+                      <div className="container">
+                        <Typography variant="p" style={{ marginTop: 20 }}>
+                          {Object.keys(item)[0]}
+                        </Typography>
+                        <div className="sigContainer">
+                          <SignaturePad
+                            ref={Object.keys(item)[0]}
+                            style={{
+                              height: 600,
+                              width: 800,
+                              backgroundColor: "white",
+                            }}
+                          />
+                          <button
+                            className="btn btn-default button myClearButton"
+                            onClick={() =>
+                              this.clearEmpSignature(Object.keys(item)[0])
+                            }
+                          >
+                            Clear
+                          </button>
+                          <button
+                            className="btn btn-default button mySaveButton"
+                            onClick={() =>
+                              this.saveEmpSignature(Object.keys(item)[0])
+                            }
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} md={12} key={index}>
+                      <Typography
+                        variant="p"
+                        style={{ marginTop: 20, marginLeft: 15 }}
+                      >
                         {Object.keys(item)[0]}
                       </Typography>
                       <div className="sigContainer">
-                        <SignaturePad
-                          ref={Object.keys(item)[0]}
-                          style={{
-                            height: 600,
-                            width: 800,
-                            backgroundColor: "white",
-                          }}
+                        <img
+                          height="150px"
+                          width="300px"
+                          src={`data:image/png;base64,${
+                            item[Object.keys(item)[0]]
+                          }`}
                         />
                         <button
-                          className="btn btn-default button myClearButton"
+                          className="btn btn-default button myEditButton"
                           onClick={() =>
-                            clearEmpSignature(Object.keys(item)[0])
+                            this.hideEmpImage(Object.keys(item)[0])
                           }
                         >
-                          Clear
-                        </button>
-                        <button
-                          className="btn btn-default button mySaveButton"
-                          onClick={() => saveEmpSignature(Object.keys(item)[0])}
-                        >
-                          Save
+                          Edit
                         </button>
                       </div>
-                    </div>
-                  </Grid>
-                ) : (
+                    </Grid>
+                  )
+                ) : null;
+              })}
+            </Fragment>
+          ) : (
+            <Typography align="center" component="p">
+              No field found for employee!
+            </Typography>
+          )}
+        </Grid>
+        {/*** Employee Form End */}
+
+        {/* Employer Form Start */}
+        <Divider style={{ marginTop: 15 }} />
+        <Typography align="center" variant="h5" style={{ marginTop: 10 }}>
+          Employer's fields
+        </Typography>
+
+        <Grid container>
+          {data.length > 0 ? (
+            <Fragment>
+              {data.map((item, index) => {
+                return item.type === "string" ? (
                   <Grid item xs={12} md={12} key={index}>
-                    <Typography
-                      variant="p"
-                      style={{ marginTop: 20, marginLeft: 15 }}
-                    >
+                    <TextField
+                      id="outlined-email-input"
+                      label={Object.keys(item)[0]}
+                      onChange={this.onChangeHandler}
+                      type="text"
+                      value={item[Object.keys(item)[0]]}
+                      name={Object.keys(item)[0]}
+                      autoComplete="name"
+                      margin="normal"
+                      variant="outlined"
+                      align="left"
+                      fullWidth
+                    />
+                  </Grid>
+                ) : item.type === "boolean" ? (
+                  <Grid item xs={12} md={12} key={index}>
+                    <Checkbox
+                      checked={item[Object.keys(item)[0]]}
+                      style={{ alignSelf: "flex-start" }}
+                      onChange={() =>
+                        this.checkBoxHandler(Object.keys(item)[0])
+                      }
+                      // value="checkedB"
+                      color="primary"
+                      inputProps={{
+                        "aria-label": "secondary checkbox",
+                      }}
+                    />
+                    <Typography style={{ display: "inline" }}>
+                      {" "}
                       {Object.keys(item)[0]}
                     </Typography>
-                    <div className="sigContainer">
-                      <img
-                        height="150px"
-                        width="300px"
-                        src={`data:image/png;base64,${
-                          item[Object.keys(item)[0]]
-                        }`}
-                      />
-                      <button
-                        className="btn btn-default button myEditButton"
-                        onClick={() => hideEmpImage(Object.keys(item)[0])}
-                      >
-                        Edit
-                      </button>
-                    </div>
                   </Grid>
-                )
-              ) : null;
-            })}
-          </Fragment>
-        ) : (
-          <Typography align="center" component="p">
-            No field found for employee!
-          </Typography>
-        )}
-      </Grid>
-      {/*** Employee Form End */}
+                ) : null;
+              })}
 
-      {/* Employer Form Start */}
-      <Divider style={{ marginTop: 15 }} />
-      <Typography align="center" variant="h5" style={{ marginTop: 10 }}>
-        Employer's fields
-      </Typography>
-
-      <Grid container>
-        {data.length > 0 ? (
-          <Fragment>
-            {data.map((item, index) => {
-              return item.type === "string" ? (
-                <Grid item xs={12} md={12} key={index}>
-                  <TextField
-                    id="outlined-email-input"
-                    label={Object.keys(item)[0]}
-                    onChange={onChangeHandler}
-                    type="text"
-                    value={item[Object.keys(item)[0]]}
-                    name={Object.keys(item)[0]}
-                    autoComplete="name"
-                    margin="normal"
-                    variant="outlined"
-                    align="left"
-                    fullWidth
-                  />
-                </Grid>
-              ) : item.type === "boolean" ? (
-                <Grid item xs={12} md={12} key={index}>
-                  <Checkbox
-                    checked={item[Object.keys(item)[0]]}
-                    style={{ alignSelf: "flex-start" }}
-                    onChange={() => checkBoxHandler(Object.keys(item)[0])}
-                    // value="checkedB"
-                    color="primary"
-                    inputProps={{
-                      "aria-label": "secondary checkbox",
-                    }}
-                  />
-                  <Typography style={{ display: "inline" }}>
-                    {" "}
-                    {Object.keys(item)[0]}
-                  </Typography>
-                </Grid>
-              ) : null;
-            })}
-
-            {data.map((item, index) => {
-              return item.type === "object" ? (
-                item[Object.keys(item)[0]] === "" ? (
-                  <Grid item xs={12} md={12} key={index}>
-                    <div className="container">
-                      <Typography variant="p" style={{ marginTop: 20 }}>
+              {data.map((item, index) => {
+                return item.type === "object" ? (
+                  item[Object.keys(item)[0]] === "" ? (
+                    <Grid item xs={12} md={12} key={index}>
+                      <div className="container">
+                        <Typography variant="p" style={{ marginTop: 20 }}>
+                          {Object.keys(item)[0]}
+                        </Typography>
+                        <div className="sigContainer">
+                          <SignaturePad
+                            ref={Object.keys(item)[0]}
+                            style={{
+                              height: 600,
+                              width: 800,
+                              backgroundColor: "white",
+                            }}
+                          />
+                          <button
+                            className="btn btn-default button myClearButton"
+                            onClick={() =>
+                              this.clearSignature(Object.keys(item)[0])
+                            }
+                          >
+                            Clear
+                          </button>
+                          <button
+                            className="btn btn-default button mySaveButton"
+                            onClick={() =>
+                              this.saveSignature(Object.keys(item)[0])
+                            }
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} md={12} key={index}>
+                      <Typography
+                        variant="p"
+                        style={{ marginTop: 20, marginLeft: 15 }}
+                      >
                         {Object.keys(item)[0]}
                       </Typography>
                       <div className="sigContainer">
-                        <SignaturePad
-                          ref={Object.keys(item)[0]}
-                          style={{
-                            height: 600,
-                            width: 800,
-                            backgroundColor: "white",
-                          }}
+                        <img
+                          height="150px"
+                          width="300px"
+                          src={`data:image/png;base64,${
+                            item[Object.keys(item)[0]]
+                          }`}
                         />
                         <button
-                          className="btn btn-default button myClearButton"
-                          onClick={() => clearSignature(Object.keys(item)[0])}
+                          className="btn btn-default button myEditButton"
+                          onClick={() => this.hideImage(Object.keys(item)[0])}
                         >
-                          Clear
-                        </button>
-                        <button
-                          className="btn btn-default button mySaveButton"
-                          onClick={() => saveSignature(Object.keys(item)[0])}
-                        >
-                          Save
+                          Edit
                         </button>
                       </div>
-                    </div>
-                  </Grid>
-                ) : (
-                  <Grid item xs={12} md={12} key={index}>
-                    <Typography
-                      variant="p"
-                      style={{ marginTop: 20, marginLeft: 15 }}
-                    >
-                      {Object.keys(item)[0]}
-                    </Typography>
-                    <div className="sigContainer">
-                      <img
-                        height="150px"
-                        width="300px"
-                        src={`data:image/png;base64,${
-                          item[Object.keys(item)[0]]
-                        }`}
-                      />
-                      <button
-                        className="btn btn-default button myEditButton"
-                        onClick={() => hideImage(Object.keys(item)[0])}
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </Grid>
-                )
-              ) : null;
-            })}
-          </Fragment>
-        ) : (
-          <Typography align="center" component="p">
-            No field found for employer!
-          </Typography>
-        )}
-      </Grid>
-      {/* Employer Form End */}
-
-      {employeeData.length > 0 || data.length > 0 ? (
-        <Grid item xs={12} md={12} align="right" style={{ marginTop: 15 }}>
-          {state.loading ? (
-            <Button align="right" disabled variant="outlined" color="primary">
-              <BeatLoader color={"#123abc"} />
-            </Button>
+                    </Grid>
+                  )
+                ) : null;
+              })}
+            </Fragment>
           ) : (
+            <Typography align="center" component="p">
+              No field found for employer!
+            </Typography>
+          )}
+        </Grid>
+        {/* Employer Form End */}
+
+        {employeeData.length > 0 || data.length > 0 ? (
+          <Grid item xs={12} md={12} align="right" style={{ marginTop: 15 }}>
+            {loading ? (
+              <Button align="right" disabled variant="outlined" color="primary">
+                <BeatLoader color={"#123abc"} />
+              </Button>
+            ) : (
+              <Button
+                align="right"
+                onClick={this.submitHandler}
+                variant="outlined"
+                color="primary"
+              >
+                Submit
+              </Button>
+            )}
+          </Grid>
+        ) : (
+          <Grid item xs={12} md={12} align="right" style={{ marginTop: 15 }}>
             <Button
               align="right"
-              onClick={submitHandler}
               variant="outlined"
+              disabled={true}
               color="primary"
             >
               Submit
             </Button>
-          )}
-        </Grid>
-      ) : (
-        <Grid item xs={12} md={12} align="right" style={{ marginTop: 15 }}>
-          <Button
-            align="right"
-            variant="outlined"
-            disabled={true}
-            color="primary"
-          >
-            Submit
-          </Button>
-        </Grid>
-      )}
-    </Typography>
-  );
+          </Grid>
+        )}
+      </Typography>
+    );
+  }
 }
 
-export default PaperworkForms;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.user,
+    loader: state.paperWorkReducer.loader,
+    templateSchema: state.SystemDocuments.templateSchema,
+    templateStatus: state.SystemDocuments.templateSchemaStatus,
+    sLoader: state.SystemDocuments.schema_loader,
+    savePapeworkStatus: state.SystemDocuments.saveEmployerPaperworks,
+    allEmployerDocs: state.paperWorkReducer.allEmployerDocs,
+  };
+};
+
+export default connect(mapStateToProps, { getTemplateSchema, employerForm })(
+  PaperworkForms
+);
