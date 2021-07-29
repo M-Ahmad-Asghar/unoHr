@@ -104,7 +104,6 @@ class WizardFormOne extends Component {
   };
   openDialog = () => {
     var val = Math.floor(1000 + Math.random() * 9000);
-   
 
     let data = {
       message: `Verification message from unhr! use verification code: ${val}`,
@@ -306,7 +305,7 @@ class WizardFormOne extends Component {
                   id
                 ) => {
                   this.checkNumberStatus();
-                 
+
                   numberChangeHandler(number);
                   // performNumberVerification();
                   if (status) {

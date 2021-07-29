@@ -241,7 +241,7 @@ class HorizontalForm extends Component {
   };
   // Triger search
   triggerSearch = () => {
-    if (this.state.searchText.length > 3) {
+    if (this.state.searchText.length > 0) {
       searchDistrict(this.state.searchText.toUpperCase())
         .then((doc) => {
           let firebaseData = [];
@@ -697,14 +697,11 @@ export default reduxForm({
   onSubmitSuccess: afterSubmit,
 })(
   translate("common")(
-    connect(
-      mapStateToProps,
-      {
-        addNewEmployee,
-        getStateWages,
-        getIndustry,
-      }
-    )(HorizontalForm)
+    connect(mapStateToProps, {
+      addNewEmployee,
+      getStateWages,
+      getIndustry,
+    })(HorizontalForm)
   )
 );
 

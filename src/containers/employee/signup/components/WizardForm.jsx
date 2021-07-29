@@ -329,12 +329,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    getEmployeData,
-    employeeSignup,
-    verifyNumber,
-    verifyEmail,
-  }
-)(WizardForm);
+export default connect(mapStateToProps, {
+  getEmployeData,
+  employeeSignup,
+  verifyNumber,
+  verifyEmail,
+})(WizardForm);

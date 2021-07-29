@@ -9,7 +9,7 @@ class BasicTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedItems: []
+      checkedItems: [],
     };
   }
 
@@ -20,11 +20,11 @@ class BasicTable extends React.Component {
     // console.log('==============""======================');
     this.props.history.push({
       pathname: "/home/employeer/selectpayperiod",
-      search: id
+      search: id,
     });
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(employeeTask) {
       return (
         employeeTask.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,7 +74,7 @@ class BasicTable extends React.Component {
                       );
                     })
                 ) : (
-                  <div>No eployee found!</div>
+                  <div>No employee found!</div>
                 )}
               </tbody>
             </Table>
@@ -86,16 +86,13 @@ class BasicTable extends React.Component {
 }
 
 BasicTable.propTypes = {
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  employees: state.employerReducer.employees
+const mapStateToProps = (state) => ({
+  employees: state.employerReducer.employees,
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    null
-  )(translate("common")(BasicTable))
+  connect(mapStateToProps, null)(translate("common")(BasicTable))
 );
