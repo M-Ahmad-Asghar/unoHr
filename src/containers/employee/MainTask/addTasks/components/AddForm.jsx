@@ -32,7 +32,7 @@ function AddForm() {
   const [title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [AllotedTo, setAllotedTo] = useState("");
-  const [DueTime, setDueTime] = useState(new Date());
+  const [DueTime, setDueTime] = useState("");
   const [employees, setEmployees] = useState("");
 
   const history = useHistory();

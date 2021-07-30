@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 import { ADD_TASK } from "../actions/TasksActions";
 import { GET_TASK } from "../actions/TasksActions";
 import { UPDATE_TASK, UPDATE_TASK_ERR } from "../actions/TasksActions";
@@ -61,7 +63,10 @@ export default (state = initialState, action) => {
     // add task
     case ADD_TASK:
       let AllTask = [...state.AllTask];
-      AllTask.unshift(action.payload);
+      if (action.payload) {
+        AllTask.unshift(action.payload);
+      }
+      toast.success("Task Added Succesfully");
 
       // let newArray = state.AllTask;
       // newArray.unshift(action.payload);

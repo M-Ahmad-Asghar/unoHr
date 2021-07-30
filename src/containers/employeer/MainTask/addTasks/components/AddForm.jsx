@@ -86,14 +86,10 @@ function AddForm() {
   };
 
   useEffect(() => {
+    console.log("stateTaskAddStatus", stateTaskAddStatus);
     if (stateTaskAddStatus == "done") {
-      toast.success("Task add successfully");
-      history.push("/home/employeer/employeeTask");
-      setLoader(true);
+      setLoader(false);
     } else if (stateTaskAddStatus == "done own") {
-      toast.success("Task add successfully");
-
-      history.push("/home/employeer/ownTask");
       setLoader(false);
     }
   }, [stateTaskAddStatus]);
@@ -144,7 +140,7 @@ function AddForm() {
       if (TaskPurpose == "Employee") {
         addEmpolyeeTask();
       } else {
-        let date = {
+        let data = {
           title: title,
           Description: Description,
           AllotedTo: "My Own",
@@ -156,7 +152,7 @@ function AddForm() {
           isTaskNote: isTaskNote,
           recurringTask: recurringTask,
         };
-        dispatch(addOwnTask(date));
+        dispatch(addOwnTask(data, history));
       }
     }
   };
@@ -198,7 +194,8 @@ function AddForm() {
           recurringTask: recurringTask,
           ...empObj,
         };
-        dispatch(addEmpTask(data));
+        console.log("UMAIR", data);
+        dispatch(addEmpTask(data, history));
       } else {
         const imagePath = `taskImages/${stateUser.uid}/${image.name}`;
         await storage.ref(imagePath).put(image);
