@@ -43,6 +43,7 @@ export function addTask(data) {
         // const Taskdata = docRef.data();
         const dataToStore = { id, ...data };
 
+        // toast.success("Task added successfully");
         dispatch({
           type: ADD_TASK,
           payload: dataToStore,
@@ -54,7 +55,7 @@ export function addTask(data) {
   };
 }
 
-export function addEmpTask(data) {
+export function addEmpTask(data, history) {
   // "https://us-central1-promising-saga-232017.cloudfunctions.net/restfullapi/addEmpTask",
   return (dispatch) => {
     axios
@@ -63,6 +64,7 @@ export function addEmpTask(data) {
         console.log("res while add task", res.data);
 
         if (res.data === "successfully added") {
+          history.push("/home/employeer/employeeTask");
           dispatch({
             type: ADD_TASK,
           });
@@ -234,7 +236,7 @@ export function getCompletedTask(data) {
 }
 
 //  add own task function
-export function addOwnTask(data) {
+export function addOwnTask(data, history) {
   return (dispatch) => {
     db.collection("owntask")
       .add(data)
@@ -249,7 +251,9 @@ export function addOwnTask(data) {
         //   duration: 3000,
         //   position: "top"
         // });
+        toast.success("Task added successfully");
 
+        history.push("/home/employeer/ownTask");
         dispatch({
           type: ADD_OWN_TASK,
           payload: dataToStore,

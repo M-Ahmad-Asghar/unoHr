@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -23,8 +24,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { PulseLoader } from "react-spinners";
-import { useSelector, useDispatch } from "react-redux";
 import { useObjectState } from "../../../../../utils/commonState";
+import { useDispatch, useSelector } from "react-redux";
 
 // import Collapse from "../../../../../shared/components/Collapse";
 
@@ -38,7 +39,6 @@ import { getEmployees } from "../../../../../redux/actions/employerActions";
 import UpdateForm from "../../employeeTasks/UpdateTask";
 
 function EmployeeTasks(props) {
-  const dispatch = useDispatch();
   const [state, setState] = useObjectState({
     modal: false,
     delId: "",
@@ -66,57 +66,34 @@ function EmployeeTasks(props) {
     deleteLoader: false,
     completeLoader: false,
   });
-
-  const items = useSelector((state) => state.TaskReducer.AllTask);
-  const user = useSelector((state) => state.userReducer.user);
-  const stateLoader = useSelector((state) => state.TaskReducer.loader);
-  const taskDeleteStatus = useSelector(
-    (state) => state.TaskReducer.taskDeleteStatus
-  );
-  const loading = useSelector((state) => state.TaskReducer.loading);
-  const completionStatus = useSelector(
-    (state) => state.TaskReducer.completionStatus
-  );
+  const mapStateToProps = (state) => ({
+    items: state.TaskReducer.AllTask,
+    user: state.userReducer.user,
+    loader: state.TaskReducer.loader,
+    taskDeleteStatus: state.TaskReducer.taskDeleteStatus,
+    loading: state.TaskReducer.loading,
+    completionStatus: state.TaskReducer.completionStatus,
+  });
+  const {
+    items,
+    user,
+    loader: sLoader,
+    taskDeleteStatus,
+    loading,
+    completionStatus,
+  } = useSelector(mapStateToProps);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTask(user.uid));
   }, []);
-
-  useEffect(() => {
-    if (stateLoader === "false") {
-      setState({
-        loader: false,
-      });
-    }
-    if (taskDeleteStatus == "done") {
-      setState({
-        deleteLoader: false,
-        open: false,
-      });
-    } else if (taskDeleteStatus == "error") {
-      setState({
-        deleteLoader: false,
-        open: false,
-      });
-    }
-    if (completionStatus == "done") {
-      setState({
-        completeLoader: false,
-        completionModal: false,
-      });
-    } else if (completionStatus == "error") {
-      setState({
-        completeLoader: false,
-      });
-    }
-  }, [stateLoader, taskDeleteStatus, completionStatus]);
 
   const onChangeHandler = (e) => {
     setState({ completionNote: e.target.value });
   };
 
   const CompleteTask = () => {
-    //setState({ completionModal: false });
+    // setState({ completionModal: false });
 
     if (state.completionNote !== "") {
       setState({
@@ -137,7 +114,7 @@ function EmployeeTasks(props) {
       dispatch(completedTask(data));
       // toast.success("Task completed successfully");
       // console.log("Task completed successfully");
-      //setState({ completionNote: "" });
+      // setState({ completionNote: "" });
     } else {
       toast.error("Failed to complete this task, please write description");
     }
@@ -147,10 +124,45 @@ function EmployeeTasks(props) {
     setState({ completionModal: false });
   };
 
-  const deleteTask = () => {
-    setState({ deleteLoader: true });
-    // console.log("check del id:",state.delId);
+  useEffect(() => {
+    if (sLoader == "false") {
+      setState({
+        loader: false,
+      });
+    }
+    if (taskDeleteStatus === "done") {
+      console.log("taskDeleteStatus", taskDeleteStatus);
+      setState({
+        deleteLoader: false,
+        open: false,
+      });
+    } else if (taskDeleteStatus == "error") {
+      setState({
+        deleteLoader: false,
+        open: false,
+      });
+    }
+    if (completionStatus == "done") {
+      setState({
+        completeLoader: false,
+        completionModal: false,
+      });
+    } else if (completionStatus == "error") {
+      setState({
+        completeLoader: false,
+      });
+    }
+  }, [sLoader, taskDeleteStatus, completionStatus]);
+
+  const removeTask = () => {
+    // setState({ deleteLoader: true });
+    // console.log("check del id:", state.delId);
     dispatch(deleteTask(state.delId));
+    setState({
+      deleteLoader: false,
+      open: false,
+    });
+
     // toast.success("Own Task Delete Successfully!");
   };
 
@@ -159,7 +171,7 @@ function EmployeeTasks(props) {
   };
 
   const handleClose = () => {
-    setState({ open: false });
+    setState({ open: false, deleteLoader: false });
   };
 
   const handleUpdateDialogOpen = (data) => {
@@ -172,6 +184,7 @@ function EmployeeTasks(props) {
 
   const searchingForName = (searchQuery) => {
     return function(employeeTask) {
+      console.log("e", employeeTask);
       return (
         employeeTask.AllotedTo.toLowerCase().includes(
           searchQuery.toLowerCase()
@@ -278,10 +291,10 @@ function EmployeeTasks(props) {
                             {item.TaskPurpose}
                           </Col>
                           <Col sm={6} md={4} xl={4}>
-                            {item.recurringTask ? "True" : "False"}
+                            {item.recurringTask ? "Yes" : "No"}
                           </Col>
                           <Col sm={6} md={4} xl={4}>
-                            {item.isTaskNote ? "True" : "False"}
+                            {item.isTaskNote ? "Yes" : "No"}
                           </Col>
                         </Row>
 
@@ -359,8 +372,10 @@ function EmployeeTasks(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure to delete this task?"}
+        <DialogTitle style={{ color: "black" }} id="alert-dialog-title">
+          <span style={{ color: "black" }}>
+            Do you want to delete this task?
+          </span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -370,7 +385,7 @@ function EmployeeTasks(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained" color="default">
-            Disagree
+            Cancel
           </Button>
           {deleteLoader ? (
             <Button disabled variant="contained" color="secondary" autoFocus>
@@ -378,12 +393,12 @@ function EmployeeTasks(props) {
             </Button>
           ) : (
             <Button
-              onClick={deleteTask}
+              onClick={removeTask}
               variant="contained"
               color="secondary"
               autoFocus
             >
-              Agree
+              Delete
             </Button>
           )}
         </DialogActions>
@@ -425,7 +440,7 @@ function EmployeeTasks(props) {
         maxWidth={"sm"}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Mark the task as Complete"}
+          <span style={{ color: "black" }}>Description / Add note </span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -444,7 +459,7 @@ function EmployeeTasks(props) {
             variant="contained"
             color="default"
           >
-            Cencel
+            Cancel
           </Button>
 
           {completeLoader ? (
