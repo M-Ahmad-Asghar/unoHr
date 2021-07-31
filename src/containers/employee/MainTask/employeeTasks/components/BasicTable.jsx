@@ -214,7 +214,7 @@ function EmployeeTasks({ Tasks }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure to delete this task?"}
+          <span style={{color="black"}}> Do you want to delete this task?</span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -224,7 +224,7 @@ function EmployeeTasks({ Tasks }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained" color="default">
-            Disagree
+            Cancel
           </Button>
           <Button
             onClick={deleteTask}
@@ -232,7 +232,7 @@ function EmployeeTasks({ Tasks }) {
             color="secondary"
             autoFocus
           >
-            Agree
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -267,7 +267,8 @@ function EmployeeTasks({ Tasks }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Mark the task as Complete"}
+         
+          <span style={{color="black"}}> Mark the task as Complete</span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -293,7 +294,7 @@ function EmployeeTasks({ Tasks }) {
             variant="contained"
             color="default"
           >
-            Cencel
+            Cancel
           </Button>
           <Button
             onClick={handleCompleteClose}

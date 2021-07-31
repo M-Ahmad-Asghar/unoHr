@@ -553,7 +553,9 @@ function ListTasks({ searchQuery }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure to delete this task?"}
+          <span style={{ color: "black" }}>
+            Do you want to delete this task?
+          </span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

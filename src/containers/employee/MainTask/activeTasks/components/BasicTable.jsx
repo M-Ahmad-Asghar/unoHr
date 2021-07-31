@@ -247,10 +247,10 @@ function EmployeeTasks({ searchQuery }) {
                               {item.TaskPurpose}
                             </Col>
                             <Col sm={6} md={4} xl={4}>
-                              {item.recurringTask ? "True" : "False"}
+                              {item.recurringTask ? "Yes" : "No"}
                             </Col>
                             <Col sm={6} md={4} xl={4}>
-                              {item.isTaskNote ? "True" : "False"}
+                              {item.isTaskNote ? "Yes" : "No"}
                             </Col>
                           </Row>
                         </div>

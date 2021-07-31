@@ -215,7 +215,9 @@ function EmployeeTasks({ searchQuery }) {
                       <p>{item.title}</p>
                     </Col>
                     <Col className="taskCol" xs={3} sm={3} md={3} lg={3} xl={3}>
-                      <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
+                      <p>
+                        {moment(item.DueTime.toDate()).format("MMM/DD/YYYY")}
+                      </p>
                     </Col>
                     <Col className="taskCol" xs={3} sm={3} md={3} lg={3} xl={3}>
                       <p>{item.AllotedTo}</p>
