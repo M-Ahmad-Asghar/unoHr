@@ -14,7 +14,7 @@ import {
   CardHeader,
   Collapse,
   Row,
-  UncontrolledCollapse
+  UncontrolledCollapse,
 } from "reactstrap";
 import { PulseLoader } from "react-spinners";
 
@@ -32,7 +32,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {
   deleteTask,
-  getCompletedTask
+  getCompletedTask,
 } from "../../../../../redux/actions/TasksActions";
 import renderCheckBoxField from "../../../../../shared/components/form/CheckBox";
 import Divider from "@material-ui/core/Divider";
@@ -65,7 +65,7 @@ class ListTasks extends Component {
       uid: "",
       SelectForAllot: "",
       data: [],
-      deleteLoader: false
+      deleteLoader: false,
     };
   }
 
@@ -73,11 +73,11 @@ class ListTasks extends Component {
     this.props.getCompletedTask(this.props.user.uid);
   }
 
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.loader === "false") {
       this.setState({
         loader: false,
-        data: nextProps.items
+        data: nextProps.items,
       });
     }
 
@@ -99,14 +99,18 @@ class ListTasks extends Component {
     this.setState({ open: false });
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(employeeTask) {
       return (
-        employeeTask.AllotedTo
+        employeeTask.AllotedTo.toLowerCase().includes(
+          searchQuery.toLowerCase()
+        ) ||
+        employeeTask.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        moment(employeeTask.PostedTime)
+          .format("MMM/DD/YYYY")
           .toLowerCase()
-          .includes(searchQuery.toLowerCase()) || 
-          employeeTask.title.toLowerCase().includes(searchQuery.toLowerCase()) || moment(employeeTask.PostedTime)
-          .format("MMM/DD/YYYY").toLowerCase().includes(searchQuery.toLowerCase()) || !searchQuery
+          .includes(searchQuery.toLowerCase()) ||
+        !searchQuery
       );
     };
   };
@@ -140,159 +144,168 @@ class ListTasks extends Component {
           ) : (
             <CardBody style={{ padding: "0px" }}>
               {data.length > 0 ? (
-                data.filter(this.searchingForName(searchQuery)).map((item, index) => {
-                  return (
-                    <Row className="taskRow" key={index} id={`toggler${index}`}>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
+                data
+                  .filter(this.searchingForName(searchQuery))
+                  .map((item, index) => {
+                    return (
+                      <Row
+                        className="taskRow"
+                        key={index}
+                        id={`toggler${index}`}
                       >
-                        <p>{item.title}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p>{item.DueTime}</p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p> {item.AllotedTo} </p>
-                      </Col>
-                      <Col
-                        className="taskCol"
-                        xs={3}
-                        sm={3}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                      >
-                        <p>
-                          {moment(item.taskCompleted).format(
-                            "MMM/DD/YYYY hh:mm"
-                          )}
-                        </p>
-                      </Col>
-
-                      <Col sm={12} md={12} lg={12} xl={12}>
-                        <Divider />
-                        <UncontrolledCollapse
-                          className="with-shadow"
-                          toggler={`#toggler${index}`}
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
                         >
-                          <div>
-                            <h5>Description : {item.Description}</h5>
-                            {/* <p style={{ marginLeft: "10px" }}>
+                          <p>{item.title}</p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p>{item.DueTime}</p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p> {item.AllotedTo} </p>
+                        </Col>
+                        <Col
+                          className="taskCol"
+                          xs={3}
+                          sm={3}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                        >
+                          <p>
+                            {moment(item.taskCompleted).format(
+                              "MMM/DD/YYYY hh:mm"
+                            )}
+                          </p>
+                        </Col>
+
+                        <Col sm={12} md={12} lg={12} xl={12}>
+                          <Divider />
+                          <UncontrolledCollapse
+                            className="with-shadow"
+                            toggler={`#toggler${index}`}
+                          >
+                            <div>
+                              <h5>Description : {item.Description}</h5>
+                              {/* <p style={{ marginLeft: "10px" }}>
                              
                             </p> */}
-                          </div>
-                          <div style={{ marginTop: "15px" }}>
-                            <h5>Completion Note : {item.completionNote}</h5>
-                            {/* <p style={{ marginLeft: "10px" }}> */}
+                            </div>
+                            <div style={{ marginTop: "15px" }}>
+                              <h5>Completion Note : {item.completionNote}</h5>
+                              {/* <p style={{ marginLeft: "10px" }}> */}
 
-                            {/* </p> */}
-                          </div>
-                          <Row>
-                            <Col
-                              sm={5}
-                              md={5}
-                              lg={5}
-                              xl={5}
-                              style={{
-                                textAlign: "left",
-                                marginTop: "15px",
-                                flexDirection: "row"
-                              }}
-                            >
-                              <div
+                              {/* </p> */}
+                            </div>
+                            <Row>
+                              <Col
+                                sm={5}
+                                md={5}
+                                lg={5}
+                                xl={5}
                                 style={{
-                                  display: "flex",
-                                  flexDirection: "row"
+                                  textAlign: "left",
+                                  marginTop: "15px",
+                                  flexDirection: "row",
                                 }}
                               >
-                                <p>Task For: </p>
-                                <h5 style={{ marginLeft: "10px" }}>
-                                  {item.TaskPurpose}
-                                </h5>
-                              </div>
-                            </Col>
-
-                            <Col sm={2} md={2} lg={2} xl={2} />
-                            <Col
-                              sm={5}
-                              md={5}
-                              lg={5}
-                              xl={5}
-                              style={{
-                                textAlign: "center",
-                                marginTop: "15px",
-                                flexDirection: "row"
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row"
-                                }}
-                              >
-                                <p>Posted At: </p>
-                                <h5 style={{ marginLeft: "10px" }}>
-                                  {moment(item.PostedTime).format(
-                                    "MMM/DD/YYYY"
-                                  )}
-                                </h5>
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              style={{ textAlign: "center", marginTop: "15px" }}
-                            >
-                              <ButtonToolbar>
-                                <Button
-                                  color="secondary"
-                                  variant="outlined"
-                                  onClick={() =>
-                                    this.setState({
-                                      delId: item.id,
-                                      open: true,
-                                      taskTitle: item.title
-                                    })
-                                  }
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                  }}
                                 >
-                                  Delete
-                                </Button>
-                                {/* )} */}
-                              </ButtonToolbar>
-                            </Col>
-                          </Row>
-                        </UncontrolledCollapse>
-                      </Col>
-                      <Divider />
-                    </Row>
-                  );
-                })
+                                  <p>Task For: </p>
+                                  <h5 style={{ marginLeft: "10px" }}>
+                                    {item.TaskPurpose}
+                                  </h5>
+                                </div>
+                              </Col>
+
+                              <Col sm={2} md={2} lg={2} xl={2} />
+                              <Col
+                                sm={5}
+                                md={5}
+                                lg={5}
+                                xl={5}
+                                style={{
+                                  textAlign: "center",
+                                  marginTop: "15px",
+                                  flexDirection: "row",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                  }}
+                                >
+                                  <p>Posted At: </p>
+                                  <h5 style={{ marginLeft: "10px" }}>
+                                    {moment(item.PostedTime).format(
+                                      "MMM/DD/YYYY"
+                                    )}
+                                  </h5>
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                xl={12}
+                                style={{
+                                  textAlign: "center",
+                                  marginTop: "15px",
+                                }}
+                              >
+                                <ButtonToolbar>
+                                  <Button
+                                    color="secondary"
+                                    variant="outlined"
+                                    onClick={() =>
+                                      this.setState({
+                                        delId: item.id,
+                                        open: true,
+                                        taskTitle: item.title,
+                                      })
+                                    }
+                                  >
+                                    Delete
+                                  </Button>
+                                  {/* )} */}
+                                </ButtonToolbar>
+                              </Col>
+                            </Row>
+                          </UncontrolledCollapse>
+                        </Col>
+                        <Divider />
+                      </Row>
+                    );
+                  })
               ) : (
                 <div style={{ textAlign: "center" }}>
-                  <h3>No Found any Completed Task</h3>
+                  <h3>Not Found any Completed Task</h3>
                 </div>
               )}
             </CardBody>
@@ -344,18 +357,13 @@ class ListTasks extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   items: state.TaskReducer.CompletedTask,
   user: state.userReducer.user,
   loader: state.TaskReducer.loader,
-  deleteStatusCom: state.TaskReducer.deleteStatusCom
+  deleteStatusCom: state.TaskReducer.deleteStatusCom,
 });
 
 export default reduxForm({
-  form: "ee_task_detail" // a unique identifier for this form
-})(
-  connect(
-    mapStateToProps,
-    { deleteTask, getCompletedTask }
-  )(ListTasks)
-);
+  form: "ee_task_detail", // a unique identifier for this form
+})(connect(mapStateToProps, { deleteTask, getCompletedTask })(ListTasks));

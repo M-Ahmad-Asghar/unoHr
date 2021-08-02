@@ -42,6 +42,7 @@ function UpdateForm(props) {
   const [TaskPurpose, setTaskPurpose] = useState("");
   const [PostedTime, setPostedTime] = useState("");
   const [updateLoader, setUpdateLoader] = useState(false);
+  const [pickerValue, setPickerValue] = useState(new Date());
 
   const user = useSelector((state) => state.userReducer.user);
   const employees = useSelector((state) => state.employerReducer.employees);
@@ -90,6 +91,7 @@ function UpdateForm(props) {
 
   useEffect(() => {
     let data = props.item;
+    getDate(data.DueTime);
     setId(data.id);
     setTitle(data.title);
     setDescription(data.Description);
@@ -109,10 +111,22 @@ function UpdateForm(props) {
   }, [updateTaskStatus]);
 
   const handleDateChange = (date) => {
-    console.log("NEW", new Date(date));
-    console.log("NEW@", DueTime);
-
     setDueTime(new Date(date));
+    getDate(date);
+  };
+  const getDate = (date) => {
+    let newDate = date;
+    try {
+      newDate = newDate.toDate();
+      if (newDate) {
+        setPickerValue(newDate);
+      }
+    } catch {
+      newDate = date;
+      setPickerValue(newDate);
+    }
+    console.log("UMAIR", date);
+    // return newData;
   };
 
   const onChangeHandler = (e) => {
@@ -190,7 +204,7 @@ function UpdateForm(props) {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     margin="normal"
-                    value={new Date()}
+                    value={pickerValue}
                     onChange={handleDateChange}
                     formatDate={(date) => moment(date).format("DD-MM-YYYY")}
                   />
