@@ -12,7 +12,7 @@ import Loading from "react-fullscreen-loading";
 
 import {
   getPayPariod,
-  createPayStub
+  createPayStub,
 } from "../../../../../../redux/actions/employerActions";
 
 class BasicTable extends React.Component {
@@ -23,7 +23,7 @@ class BasicTable extends React.Component {
       payperiod: [],
       empName: "",
       modalVisible: false,
-      payStbLoader: false
+      payStbLoader: false,
     };
   }
 
@@ -42,33 +42,33 @@ class BasicTable extends React.Component {
     console.log(nextProps.payPeriod);
     console.log("====================================");
     this.setState({
-      payPeriod: nextProps.payPeriod
+      payPeriod: nextProps.payPeriod,
     });
     if (nextProps.payStubStatus === "done") {
       this.setState({
-        payStbLoader: false
+        payStbLoader: false,
       });
     } else if (nextProps.payStubStatus === "error") {
       this.setState({
-        payStbLoader: false
+        payStbLoader: false,
       });
     }
 
     if (nextProps.payPeriodStatus === "done") {
       this.setState({
-        loader: false
+        loader: false,
       });
     } else if (nextProps.payPeriodStatus === "error") {
       this.setState({
-        loader: false
+        loader: false,
       });
     }
   }
 
-  createPaystub = pay => {
+  createPaystub = (pay) => {
     let param = this.props.location.search;
     let id = param.split("?")[1];
-    let employees = this.props.employees.filter(e => e.employeeid === id);
+    let employees = this.props.employees.filter((e) => e.employeeid === id);
     console.log("employs", employees);
 
     let employeeFS = "";
@@ -89,7 +89,7 @@ class BasicTable extends React.Component {
 
       this.props.history.push({
         pathname: "/home/employeer/editpayroll",
-        state: objForPayStub
+        state: objForPayStub,
       });
       // this.props.createPayStub(objForPayStub);
     } else if (employees[0].paymentMethod === "direct deposit") {
@@ -109,12 +109,12 @@ class BasicTable extends React.Component {
           employeeName,
           employerFundingSource: employerFS,
           employeeFundingSource: employeeFS,
-          paymentMethod
+          paymentMethod,
         };
 
         this.props.history.push({
           pathname: "/home/employeer/editpayroll",
-          state: objForPayStub
+          state: objForPayStub,
         });
         // this.props.createPayStub(objForPayStub);
       }
@@ -123,7 +123,7 @@ class BasicTable extends React.Component {
     }
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(pay) {
       console.log("PAYING", pay);
       return (
@@ -210,9 +210,7 @@ class BasicTable extends React.Component {
                           </td>
                           <td>{moment(pay.recordTo).format("MMM/DD/YYYY")}</td>
 
-                          <td>
-                            {dutyTime}
-                          </td>
+                          <td>{dutyTime}</td>
                           <td>$ {pay.grossPay}</td>
                         </tr>
                       );
@@ -235,21 +233,20 @@ class BasicTable extends React.Component {
 }
 
 BasicTable.propTypes = {
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   empName: state.userReducer.user.name,
   user: state.userReducer.user,
   employees: state.employerReducer.employees,
   payPeriod: state.employerReducer.payPeriod,
   payPeriodStatus: state.employerReducer.payPeriodStatus,
-  payStubStatus: state.employerReducer.payStubStatus
+  payStubStatus: state.employerReducer.payStubStatus,
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { getPayPariod, createPayStub }
-  )(translate("common")(BasicTable))
+  connect(mapStateToProps, { getPayPariod, createPayStub })(
+    translate("common")(BasicTable)
+  )
 );

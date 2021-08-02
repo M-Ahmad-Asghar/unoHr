@@ -74,9 +74,8 @@ function EmployeeTasks({ searchQuery }) {
   }, []);
 
   useEffect(() => {
-    console.log("STATELOADER:", stateLoader);
-    setLoader(false);
     if (stateLoader === "false") {
+      setLoader(false);
       setTasks(items);
     }
   }, [stateLoader]);
@@ -194,7 +193,7 @@ function EmployeeTasks({ searchQuery }) {
           </div>
         ) : (
           <CardBody style={{ padding: "0px" }}>
-            {Tasks.length > 0 ? (
+            {Tasks.length ? (
               Tasks.filter(searchingForName(searchQuery)).map((item, index) => {
                 let id = ++index;
                 return (
@@ -247,10 +246,10 @@ function EmployeeTasks({ searchQuery }) {
                               {item.TaskPurpose}
                             </Col>
                             <Col sm={6} md={4} xl={4}>
-                              {item.recurringTask ? "True" : "False"}
+                              {item.recurringTask ? "Yes" : "No"}
                             </Col>
                             <Col sm={6} md={4} xl={4}>
-                              {item.isTaskNote ? "True" : "False"}
+                              {item.isTaskNote ? "Yes" : "No"}
                             </Col>
                           </Row>
                         </div>
@@ -315,7 +314,7 @@ function EmployeeTasks({ searchQuery }) {
               })
             ) : (
               <div style={{ textAlign: "center", padding: 20 }}>
-                <h3>No Found any Employee Task</h3>
+                <h3>Not Found Any Employee Task</h3>
               </div>
             )}
           </CardBody>
