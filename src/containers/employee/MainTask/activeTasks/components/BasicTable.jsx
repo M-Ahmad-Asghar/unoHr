@@ -202,7 +202,9 @@ function EmployeeTasks({ searchQuery }) {
                       <p>{item.title}</p>
                     </Col>
                     <Col className="taskCol" xs={4} sm={4} md={4} lg={4} xl={4}>
-                      <p>{moment(item.DueTime).format("MMM/DD/YYYY")}</p>
+                      <p>
+                        {moment(item.DueTime.toDate()).format("MMM/DD/YYYY")}
+                      </p>
                     </Col>
 
                     <Col className="taskCol" xs={4} sm={4} md={4} lg={4} xl={4}>
@@ -385,7 +387,7 @@ function EmployeeTasks({ searchQuery }) {
         maxWidth={"sm"}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Mark the task as Complete"}
+          <span style={{ color: "black" }}> Mark the task as Complete</span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -404,7 +406,7 @@ function EmployeeTasks({ searchQuery }) {
             variant="contained"
             color="default"
           >
-            Cencel
+            Cancel
           </Button>
           <Button
             onClick={CompleteTask}
