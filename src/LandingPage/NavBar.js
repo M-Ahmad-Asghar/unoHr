@@ -153,11 +153,56 @@ const NavBar = (props) => {
                 </div>
                 <div className="lp-navItems">
                   <ul style={{ display: "inline" }}>
-                    <li className={classes.navList}> Home </li>
-                    <li className={classes.navList}> Features </li>
-                    <li className={classes.navList}> Pricing </li>
-                    <li className={classes.navList}> FAQ </li>
-                    <li className={classes.navList}> Contact </li>
+                    <li
+                      style={{ cursor: "pointer" }}
+                      className={classes.navList}
+                      onClick={() => {
+                        props.executeScroll("home");
+                      }}
+                    >
+                      {" "}
+                      Home{" "}
+                    </li>
+                    <li
+                      style={{ cursor: "pointer" }}
+                      className={classes.navList}
+                      onClick={() => {
+                        props.executeScroll("features");
+                      }}
+                    >
+                      {" "}
+                      Features{" "}
+                    </li>
+                    <li
+                      style={{ cursor: "pointer" }}
+                      className={classes.navList}
+                      onClick={() => {
+                        props.executeScroll("pricing");
+                      }}
+                    >
+                      {" "}
+                      Pricing{" "}
+                    </li>
+                    <li
+                      style={{ cursor: "pointer" }}
+                      className={classes.navList}
+                      onClick={() => {
+                        props.executeScroll("faq");
+                      }}
+                    >
+                      {" "}
+                      FAQ{" "}
+                    </li>
+                    <li
+                      style={{ cursor: "pointer" }}
+                      className={classes.navList}
+                      onClick={() => {
+                        props.executeScroll("contact");
+                      }}
+                    >
+                      {" "}
+                      Contact{" "}
+                    </li>
                   </ul>
                   <button
                     className={clsx("lp-empBtton", "lp-unoBtton")}

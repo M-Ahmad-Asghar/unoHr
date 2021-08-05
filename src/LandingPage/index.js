@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./NavBar";
 import Main from "./Main";
 import Features from "./features";
@@ -21,6 +21,34 @@ const Landing = (props) => {
   const [currentScreen, setCurrentScreen] = useState(true);
   const [selectApp, setSelectApp] = useState(null);
   const [loader, setLoader] = useState(true);
+
+  const featuresRef = useRef();
+  const pricingRef = useRef();
+  const faqRef = useRef();
+  const contactRef = useRef();
+  const executeScroll = (page) => {
+    switch (page) {
+      case "home":
+        window.scrollTo(0, 0);
+        break;
+      case "features":
+        featuresRef.current.scrollIntoView();
+        break;
+      case "pricing":
+        pricingRef.current.scrollIntoView();
+        break;
+      case "faq":
+        faqRef.current.scrollIntoView();
+        break;
+      case "contact":
+        contactRef.current.scrollIntoView();
+        break;
+      default:
+        // homeRef.currenct.scrollIntoView();
+        window.scrollTo(0, 0);
+        break;
+    }
+  };
 
   //testing code
 
@@ -92,18 +120,32 @@ const Landing = (props) => {
       <div className="lp-body-styles">
         {/* test code */}
 
-        <NavBar EmployerApp={EmployerApp} EmployeeApp={EmployeeApp} />
+        <NavBar
+          executeScroll={executeScroll}
+          EmployerApp={EmployerApp}
+          EmployeeApp={EmployeeApp}
+        />
+
         <Main />
+
         {/* <form onSubmit={submitFile}> */}
         {/* <label>Upload file</label> */}
         {/* <input type="file" onChange={event => setFile(event.target.files)} /> */}
         {/* <button onClick={submitFile}>Send</button> */}
         {/* </form> */}
         <div className="lp-wrapper">
-          <Features />
-          <Pricing />
-          <FAQ />
-          <About />
+          <div ref={featuresRef}>
+            <Features />
+          </div>
+          <div ref={pricingRef}>
+            <Pricing />
+          </div>
+          <div ref={faqRef}>
+            <FAQ />
+          </div>
+          <div ref={contactRef}>
+            <About />
+          </div>
         </div>
         <Footer />
       </div>
@@ -131,10 +173,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { getStartAppFromStorage, startGetCurrentUser, startGetCurrentUserEmployee }
-)(Landing);
+export default connect(mapStateToProps, {
+  getStartAppFromStorage,
+  startGetCurrentUser,
+  startGetCurrentUserEmployee,
+})(Landing);
 
 const Loading = () => (
   <div className="load">
