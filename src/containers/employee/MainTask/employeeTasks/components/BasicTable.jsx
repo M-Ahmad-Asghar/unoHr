@@ -268,7 +268,7 @@ function EmployeeTasks({ Tasks }) {
       >
         <DialogTitle id="alert-dialog-title">
          
-          <span style={{color="black"}}> Mark the task as Complete</span>
+          <span style={{color:"black"}}> Mark the task as Complete</span>
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

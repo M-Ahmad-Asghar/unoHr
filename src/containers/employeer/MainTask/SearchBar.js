@@ -106,7 +106,7 @@ function Bar(props) {
           </Typography>
           {calendar && (
             <>
-              <IconButton onClick={() => alert("hi")}>
+              <IconButton>
                 <CalendarToday />
               </IconButton>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
