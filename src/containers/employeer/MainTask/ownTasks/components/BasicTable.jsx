@@ -86,7 +86,6 @@ function ListTasks({ searchQuery }) {
     if (stateLoader === "false") {
       setLoader(false);
       setData(items);
-      console.log("DATA", items);
     }
 
     if (deleteOwnStatus == "done") {
@@ -96,7 +95,7 @@ function ListTasks({ searchQuery }) {
       setOpen(false);
       setDeleteLoader(false);
     }
-  }, [stateLoader, deleteOwnStatus]);
+  }, [stateLoader, deleteOwnStatus, items]);
 
   const handleInputChange = (telNumber, selectedCountry) => {};
 
@@ -306,10 +305,10 @@ function ListTasks({ searchQuery }) {
                                 {item.TaskPurpose}
                               </Col>
                               <Col sm={6} md={4} xl={4}>
-                                {item.recurringTask ? "True" : "False"}
+                                {item.recurringTask ? "Yes" : "No"}
                               </Col>
                               <Col sm={6} md={4} xl={4}>
-                                {item.isTaskNote ? "True" : "False"}
+                                {item.isTaskNote ? "Yes" : "No"}
                               </Col>
                             </Row>
                             <Row>
@@ -414,10 +413,10 @@ function ListTasks({ searchQuery }) {
                                 {item.TaskPurpose}
                               </Col>
                               <Col sm={6} md={4} xl={4}>
-                                {item.recurringTask ? "True" : "False"}
+                                {item.recurringTask ? "Yes" : "No"}
                               </Col>
                               <Col sm={6} md={4} xl={4}>
-                                {item.isTaskNote ? "True" : "False"}
+                                {item.isTaskNote ? "Yes" : "No"}
                               </Col>
                             </Row>
                             <Row>
