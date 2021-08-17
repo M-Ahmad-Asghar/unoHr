@@ -19,7 +19,7 @@ class SelectDocs extends Component {
         if (
           doc.tag === "employee" ||
           this.props.data.stateName === doc.state ||
-          this.props.data.district.zipCode === doc.district.zipCode ||
+          // this.props.data.district.zipCode === doc.district.zipCode ||
           this.props.data.industry === doc.industry.name
         ) {
           this.state.selectedDocs.push({ ...doc, selected: true });
