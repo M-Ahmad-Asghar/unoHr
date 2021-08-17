@@ -166,9 +166,11 @@ class HorizontalForm extends Component {
       toast.error("Please select the Employee State");
     } else if (this.state.industry == "") {
       toast.error("Please select the Employee Industry");
-    } else if (this.state.district.zipCode == undefined) {
-      toast.error("Please select a district");
-    } else if (this.state.paymentMethod == "") {
+    }
+    // else if (this.state.district.zipCode == undefined) {
+    //   toast.error("Please select a district");
+    // }
+    else if (this.state.paymentMethod == "") {
       toast.error("Please select a payment method");
     } else if (this.state.HourlyRate == "") {
       toast.error("Set an Hourly Rate for the Employee");
@@ -204,7 +206,7 @@ class HorizontalForm extends Component {
         lunchFacility: false,
         breakFacility: false,
         industry: this.state.industry,
-        district: this.state.district,
+        district: this.state.district || {},
       };
       this.props.getEmpData(employeeData);
       // this.props.addNewEmployee(employeeData);
@@ -440,7 +442,7 @@ class HorizontalForm extends Component {
                 </div>
               </div>
               {/* Searching districts */}
-              <div className="form__form-group">
+              {/* <div className="form__form-group">
                 <span className="form__form-group-label">District</span>
                 <div className="form__form-group-field">
                   <Autocomplete
@@ -486,7 +488,7 @@ class HorizontalForm extends Component {
                     </IconButton>
                   </Tooltip>
                 </div>
-              </div>
+              </div> */}
 
               <div className="form__form-group">
                 <span className="form__form-group-label">Payment Method</span>
