@@ -124,6 +124,7 @@ class WizardFormOne extends Component {
   verifyCodeEnteredInOTp = (otp) => {
     // alert("Message by FormOne:perform number verification here" + otp);
     var verificationCode = this.state.verificationCode;
+    // alert(verificationCode);
     var typeOfVerification = this.state.verificationType;
     if (typeOfVerification === "email") {
       if (this.state.verificationCode == otp) {
