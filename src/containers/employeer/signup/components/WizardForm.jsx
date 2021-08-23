@@ -123,7 +123,7 @@ class WizardForm extends Component {
   };
   // Triger search
   triggerSearch = () => {
-    if (this.state.searchText.length > 3) {
+    if (this.state.searchText.length > 1) {
       searchDistrict(this.state.searchText.toUpperCase())
         .then((doc) => {
           let firebaseData = [];
@@ -410,14 +410,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    registerEmployer,
-    verifyNumber,
-    verifyEmail,
-    getWcStates,
-    getIndustry,
-    getSystemDocuments,
-  }
-)(withRouter(WizardForm));
+export default connect(mapStateToProps, {
+  registerEmployer,
+  verifyNumber,
+  verifyEmail,
+  getWcStates,
+  getIndustry,
+  getSystemDocuments,
+})(withRouter(WizardForm));
