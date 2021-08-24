@@ -23,7 +23,7 @@ class TimeSheet extends React.Component {
       weekStatus: {},
       weekData: [],
       payPeriod: {},
-      loader: true
+      loader: true,
     };
   }
 
@@ -33,21 +33,21 @@ class TimeSheet extends React.Component {
     if (nextProps.payStubStatus === "done") {
       this.setState({
         submitDisable: false,
-        submitLoader: false
+        submitLoader: false,
       });
       this.props.history.push({
         pathname: "/home/employeer/selectpayperiod",
-        search: this.state.payPeriod.employeeUid
+        search: this.state.payPeriod.employeeUid,
       });
     } else if (nextProps.payStubStatus === "error") {
       this.setState({
         submitDisable: false,
-        submitLoader: false
+        submitLoader: false,
       });
     }
   }
 
-  updateTotalTime = weekData => {
+  updateTotalTime = (weekData) => {
     let total = 0;
     for (let i = 0; i < weekData.length; i++) {
       total += Number(weekData[i].dayPay);
@@ -68,23 +68,23 @@ class TimeSheet extends React.Component {
       ...this.state.payPeriod,
       weekData: weekData,
       totalTime: totalTimeSec,
-      grossPay: total
+      grossPay: total,
     };
 
     console.log(newPayPeriod);
 
     this.setState({
       weekTotal: total.toFixed(2),
-      payPeriod: newPayPeriod
+      payPeriod: newPayPeriod,
     });
   };
   componentDidMount = () => {
     let param = this.props.location.state;
-    console.log("pa", param);
+    console.log("pa", this.props);
     this.setState({
       payPeriod: param,
       weekData: param.weekData,
-      loader: false
+      loader: false,
     });
     let total = 0;
     for (let i = 0; i < param.weekData.length; i++) {
@@ -92,16 +92,15 @@ class TimeSheet extends React.Component {
     }
 
     this.setState({
-      weekTotal: total.toFixed(2)
+      weekTotal: total.toFixed(2),
     });
   };
 
   runPayroll = () => {
     this.setState({
       submitLoader: true,
-      submitDisable: true
+      submitDisable: true,
     });
-    console.log("pay", this.state.payPeriod);
 
     this.props.createPayStub(this.state.payPeriod);
   };
@@ -113,7 +112,7 @@ class TimeSheet extends React.Component {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
 
   render() {
@@ -165,15 +164,14 @@ class TimeSheet extends React.Component {
 }
 
 TimeSheet.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   payStubStatus: state.employerReducer.payStubStatus,
-  loader: state.employerReducer.loader
+  loader: state.employerReducer.loader,
 });
 
-export default connect(
-  mapStateToProps,
-  { createPayStub }
-)(withStyles(styles)(withRouter(TimeSheet)));
+export default connect(mapStateToProps, { createPayStub })(
+  withStyles(styles)(withRouter(TimeSheet))
+);

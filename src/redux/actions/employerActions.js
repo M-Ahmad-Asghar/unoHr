@@ -260,7 +260,7 @@ export function createPayStub(payStubData) {
     axios
       .post(`${client_url}${payrollApi.generate_payStubs}`, payStubData)
       .then((res) => {
-        console.log("res", res);
+        console.log("PayStubResponse", res.data);
         if (res.data === "successfully work done") {
           dispatch({
             type: CREATE_PAYSTUB,
@@ -316,10 +316,7 @@ export function verifyNumber(data) {
 export function verifyEmail(data) {
   return (dispatch) => {
     axios
-      .post(
-        " https://us-central1-promising-saga-232017.cloudfunctions.net/superAdminApi/sendemail",
-        data
-      )
+      .post(`${client_url}/sendMail`, data)
       .then((res) => {
         console.log("res", res.data);
         if (res.data == "successfully sent") {

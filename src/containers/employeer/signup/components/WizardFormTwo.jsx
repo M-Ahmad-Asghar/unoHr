@@ -63,7 +63,7 @@ class WizardFormTwo extends Component {
       districts,
       onChangeText,
       district,
-      onChangeAutoComplete
+      onChangeAutoComplete,
     } = this.props;
 
     return (
@@ -184,7 +184,7 @@ class WizardFormTwo extends Component {
               onChange={onChangeAutoComplete}
               renderOption={(option) => (
                 <>
-                  <p style={{fontSize:10}}>
+                  <p style={{ fontSize: 10 }}>
                     Zip: {option.zipCode}, County: {option.county} City: (
                     {option.city})
                   </p>
@@ -268,6 +268,7 @@ class WizardFormTwo extends Component {
             </Tooltip>
           </div>
         </div>
+
         <h6 style={{ color: "purple", marginBottom: "3px" }}>
           If No, we will apply EIN for you
         </h6>
