@@ -165,7 +165,7 @@ class WizardForm extends Component {
       toast.error("Please Enter Bank Account Number");
     } else if (this.state.bankAccountNumber.length !== 12) {
       toast.error(
-        "Bank Routing Number Is Required & Must be Equal To 9 Digits"
+        "Bank Account Number Is Required & Must be Equal To 12 Digits"
       );
     } else if (this.state.bankRoutingNumber.length !== 9) {
       toast.error(

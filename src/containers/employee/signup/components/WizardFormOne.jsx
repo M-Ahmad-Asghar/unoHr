@@ -124,7 +124,7 @@ class WizardFormOne extends Component {
   verifyCodeEnteredInOTp = (otp) => {
     // alert("Message by FormOne:perform number verification here" + otp);
     var verificationCode = this.state.verificationCode;
-    alert(verificationCode);
+    // alert(verificationCode);
     var typeOfVerification = this.state.verificationType;
     if (typeOfVerification === "email") {
       if (this.state.verificationCode == otp) {
@@ -389,6 +389,87 @@ class WizardFormOne extends Component {
               <Tooltip
                 TransitionComponent={Zoom}
                 title="Enter your employee id that your employer provided"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Name</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankName"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Name "
+              />
+              <Tooltip TransitionComponent={Zoom} title="Enter your bank name">
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Number</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountNumber"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Account Number "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank account number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Routing Number</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankRoutingNumber"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Routing Number "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank routing number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Type</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountType"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Account Type "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank account type"
               >
                 <IconButton className="helpButton">
                   <img className="helpImage" src={HelpIcon} alt="help" />

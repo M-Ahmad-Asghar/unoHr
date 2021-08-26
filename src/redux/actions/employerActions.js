@@ -316,7 +316,7 @@ export function verifyNumber(data) {
 export function verifyEmail(data) {
   return (dispatch) => {
     axios
-      .post(`${client_url}/sendMail`, data)
+      .post(`${client_url}/emails/sendMail`, data)
       .then((res) => {
         console.log("res", res.data);
         if (res.data == "successfully sent") {

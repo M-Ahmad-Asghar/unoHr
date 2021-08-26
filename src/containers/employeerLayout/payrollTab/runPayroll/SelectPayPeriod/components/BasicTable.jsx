@@ -84,7 +84,7 @@ class BasicTable extends React.Component {
       //   payStbLoader: true
       // });
       let employeeName = this.props.empName;
-      console.log("UMAIR", employees);
+
       let checkEmployeeId = employees[0].checkEmployeeId || "";
       let checkWorkplace = employees[0].checkWorkplace || "";
       let checkEmployerId = employees[0].checkEmployerId || "";

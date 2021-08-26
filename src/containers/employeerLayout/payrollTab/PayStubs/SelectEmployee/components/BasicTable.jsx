@@ -9,7 +9,7 @@ class BasicTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedItems: []
+      checkedItems: [],
     };
   }
 
@@ -31,7 +31,7 @@ class BasicTable extends React.Component {
       status: "active",
 
       street: "sdf",
-      zip: "xvcsd"
+      zip: "xvcsd",
     },
     {
       HourlyRate: "55",
@@ -50,24 +50,23 @@ class BasicTable extends React.Component {
       status: "active",
 
       street: "sdf",
-      zip: "xvcsd"
-    }
+      zip: "xvcsd",
+    },
   ];
-  selectedEmp = id => {
+  selectedEmp = (id, empData) => {
     this.props.history.push({
       pathname: "/home/employeer/selectpaystub",
-      search: id
+      search: id,
+      empData,
     });
   };
 
-  searchingForName = searchQuery => {
+  searchingForName = (searchQuery) => {
     return function(employeeTask) {
-      console.log("searchQuery: ", searchQuery ,employeeTask.name, employeeTask.state, employeeTask.status);
+      console.log("searchQuery: ", employeeTask);
       return (
-        employeeTask.name
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) || 
-          !searchQuery
+        employeeTask.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        !searchQuery
       );
     };
   };
@@ -90,23 +89,29 @@ class BasicTable extends React.Component {
               </thead>
               <tbody>
                 {employees.length > 0 ? (
-                  employees.filter(this.searchingForName(searchQuery)).map((emp, index) => {
-                    let id = emp.employeeid;
-                    return (
-                      <tr key={index} onClick={() => this.selectedEmp(id)}>
-                        {/* <Link to=""> */}
-                        <td>{index + 1}</td>
-                        <td>{emp.name}</td>
-                        <td>{emp.state}</td>
-                        <td>{emp.cell}</td>
+                  employees
+                    .filter(this.searchingForName(searchQuery))
+                    .map((emp, index) => {
+                      let id = emp.employeeid;
+                      let empData = emp;
+                      return (
+                        <tr
+                          key={index}
+                          onClick={() => this.selectedEmp(id, empData)}
+                        >
+                          {/* <Link to=""> */}
+                          <td>{index + 1}</td>
+                          <td>{emp.name}</td>
+                          <td>{emp.state}</td>
+                          <td>{emp.cell}</td>
 
-                        <td>
-                          <Badge color="success">{emp.status}</Badge>
-                        </td>
-                        {/* </Link> */}
-                      </tr>
-                    );
-                  })
+                          <td>
+                            <Badge color="success">{emp.status}</Badge>
+                          </td>
+                          {/* </Link> */}
+                        </tr>
+                      );
+                    })
                 ) : (
                   <h3>There is no Employee</h3>
                 )}
@@ -120,16 +125,13 @@ class BasicTable extends React.Component {
 }
 
 BasicTable.propTypes = {
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  employees: state.employerReducer.employees
+const mapStateToProps = (state) => ({
+  employees: state.employerReducer.employees,
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    null
-  )(translate("common")(BasicTable))
+  connect(mapStateToProps, null)(translate("common")(BasicTable))
 );

@@ -1,44 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.css";
+import { getCheckPayStubPDF } from "../../../redux/actions/paystubsActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { useDispatch, useSelector } from "react-redux";
+import { Document, Page } from "react-pdf";
 
-class PdfViewer extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      url: "https://www.cpp.edu/~jcmcgarvey/513_2016/ASmarterWaytoLearnJavaScript.pdf",
-      loader: false
-    };
-  }
+function PdfViewer(props) {
+  const dispatch = useDispatch();
+  const [url, setUrl] = useState(
+    "https://www.cpp.edu/~jcmcgarvey/513_2016/ASmarterWaytoLearnJavaScript.pdf"
+  );
+  const [loader, setLoader] = useState(true);
+  const checkPayStubPDF = useSelector(
+    (state) => state.payStubsReducer.checkPayStubPDF
+  );
+  console.log("checkPayStubPDF", checkPayStubPDF);
 
-  
-  componentWillMount() {
-    this.setState({url:this.props.data})
-  }
-  
-
-  render() {
-    const { url, loader } = this.state;
-    return (
-      <div class="embed-container">
-        {loader ? (
-          <div style={{ marginTop: "35px", textAlign: "center" }}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <iframe
-            src={url}
-            frameborder="0"
-            webkitAllowFullScreen
-            mozallowfullscreen
-            allowFullScreen
-          />
-        )}
-      </div>
-    );
-  }
+  useEffect(() => {
+    setLoader(true);
+    dispatch(getCheckPayStubPDF(props.employeeId, props.payrollId));
+    setUrl(props.data);
+  }, []);
+  useEffect(() => {
+    setLoader(false);
+  }, [checkPayStubPDF]);
+  return (
+    <div class="embed-container">
+      {loader ? (
+        <div style={{ marginTop: "35px", textAlign: "center" }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <iframe
+          src={checkPayStubPDF}
+          frameborder="0"
+          webkitAllowFullScreen
+          mozallowfullscreen
+          allowFullScreen
+        />
+      )}
+    </div>
+  );
 }
 
 PdfViewer.propTypes = {};

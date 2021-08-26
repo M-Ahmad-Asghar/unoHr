@@ -16,7 +16,7 @@
   border-radius: 5px;
 
   @include themify($themes) {
-    background-color: themed('colorBackground');
+    background-color: themed("colorBackground");
   }
 }
 
@@ -45,48 +45,43 @@
     font-size: 13px;
   }
 }
-.taskRow{
+.taskRow {
   cursor: pointer;
   padding-left: 20px;
   padding-right: 20px;
   margin: 0;
 }
-.taskRow:hover{
+.taskRow:hover {
   background-color: #f2f4f7;
 }
 
-.completionBox{
+.completionBox {
   border-radius: 8px;
   padding: 8px;
   width: 100%;
   align-self: auto;
-
 }
 
 .taskCol {
-  padding: 10px
-
+  padding: 10px;
+  width: 100px;
 }
-.comDialog p{
- text-align: center;
-
+.comDialog p {
+  text-align: center;
 }
-.with-shadow{
+.with-shadow {
   margin-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 0.3px solid lightgray
-
+  border-bottom: 0.3px solid lightgray;
 }
 
 .squared-corner-theme {
-
   .card-body {
     border-radius: 0;
   }
 }
 
 .blocks-with-shadow-theme {
-
   .card-body {
     box-shadow: 0 10px 30px 1px rgba(0, 0, 0, 0.06);
   }

@@ -6,8 +6,13 @@ export let restful_url =
 
 // "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
 export const client_url =
-  //"https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
-  "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
+  "https://us-central1-promising-saga-232017.cloudfunctions.net/clientApi";
+//  "http://localhost:5001/promising-saga-232017/us-central1/clientApi";
+
+export const checkApi = "31ba7c4f1931eca6915bb2108993160621182f09";
+export const checkApiUrl =
+  // "https://cors-anywhere.herokuapp.com/https://sandbox.checkhq.com";
+  "https://sandbox.checkhq.com";
 
 export const dwollaApi = {
   customer_add_funding: "/dwolla/customer_Add_FundingSource",
