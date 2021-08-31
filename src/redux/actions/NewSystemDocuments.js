@@ -218,55 +218,55 @@ export const GENERATE_PDF_ERR = "GENERATE_PDF_ERR";
 export function getTemplateSchema(id) {
   console.log("id get", id);
 
-  return dispatch => {
+  return (dispatch) => {
     axios
       .post(`${Endpoint}/formapi/getTemplateSchema`, { id: id })
-      .then(res => {
-        // console.log("res", res.data);
+      .then((res) => {
+        console.log("getTemplateSchemaResponser", res.data);
 
         if (res.data.properties) {
           let datatoStore = {
             ...res.data,
-            template_id: id
+            template_id: id,
           };
           dispatch({
             type: GET_TEMPLATESCHEMA,
-            payload: datatoStore
+            payload: datatoStore,
           });
         } else {
           console.error("err", res.data);
           toast.error("Error Has been Occoured! Try again later");
           dispatch({
-            type: GET_TEMPLATESCHEMA_ERR
+            type: GET_TEMPLATESCHEMA_ERR,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         dispatch({
-          type: GET_TEMPLATESCHEMA_ERR
+          type: GET_TEMPLATESCHEMA_ERR,
         });
         toast.error("Error Has been Occoured! Try again later");
       });
   };
 }
 
-export const employeeForm = data => {
+export const employeeForm = (data) => {
   // create batch for multiple docs update
-  return dispatch => {
+  return (dispatch) => {
     var batch = db.batch();
     db.collection("autopopulate")
       .get()
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         let autoPopulateObj = {};
         let docId = "";
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           autoPopulateObj = doc.data();
           docId = doc.id;
         });
 
-        Array.prototype.diff = function (a) {
-          return this.filter(function (i) {
+        Array.prototype.diff = function(a) {
+          return this.filter(function(i) {
             return a.indexOf(i) < 0;
           });
         };
@@ -276,28 +276,27 @@ export const employeeForm = data => {
         let employeeKeys = Object.keys(data.employee);
         let keysOfFormData = Object.keys(formData);
         var difEmployeeArray = keysOfFormData.diff(employeeKeys);
-        
-        let difForEmployee = {}
-        difEmployeeArray.forEach(item => (difForEmployee[item] = formData[item]));
 
-        var empDocument = db
-          .collection("employees")
-          .doc(data.employee.docid)
+        let difForEmployee = {};
+        difEmployeeArray.forEach(
+          (item) => (difForEmployee[item] = formData[item])
+        );
+
+        var empDocument = db.collection("employees").doc(data.employee.docid);
         batch.update(empDocument, difForEmployee);
 
         // 2nd task
         // get difference for auto populate document
         let keysOfAutoPopulateObj = Object.keys(autoPopulateObj.employee);
 
-
         var difPopulateArray = keysOfFormData.diff(keysOfAutoPopulateObj);
         var difPopulate = {};
-        difPopulateArray.forEach(item => (difPopulate[item] = item));
-        
+        difPopulateArray.forEach((item) => (difPopulate[item] = item));
+
         let difPopulateObj = {
-          employee: { ...difPopulate, ...autoPopulateObj.employee }
+          employee: { ...difPopulate, ...autoPopulateObj.employee },
         };
-        
+
         var autoPopulateDoc = db.collection("autopopulate").doc(docId);
         batch.update(autoPopulateDoc, difPopulateObj);
 
@@ -305,59 +304,59 @@ export const employeeForm = data => {
         // update in paperworktask;
 
         let obj = {
-          documents: data.documents
+          documents: data.documents,
         };
-        
+
         var paperWork = db.collection("paperworktasks").doc(data.paperworkId);
 
-        console.log("Paperwork", obj)
+        console.log("Paperwork", obj);
         batch.update(paperWork, obj);
         batch
           .commit()
-          .then(function () {
-            toast.success("Paperwork saved successfully!")
+          .then(function() {
+            toast.success("Paperwork saved successfully!");
             dispatch({
-              type: SAVE_EMPLOYEE_PAPERWORKS
+              type: SAVE_EMPLOYEE_PAPERWORKS,
             });
           })
           .catch((err) => {
             console.log("err", err);
-            toast.error(`Error: ${err}`)
+            toast.error(`Error: ${err}`);
             dispatch({
-              type: SAVE_EMPLOYEE_PAPERWORKS_ERR
+              type: SAVE_EMPLOYEE_PAPERWORKS_ERR,
             });
-          })
+          });
       })
 
-      .catch(err => {
+      .catch((err) => {
         console.log("err", err);
-        toast.error(`Error: ${err}`)
+        toast.error(`Error: ${err}`);
         dispatch({
-          type: SAVE_EMPLOYEE_PAPERWORKS_ERR
+          type: SAVE_EMPLOYEE_PAPERWORKS_ERR,
         });
       });
-  }
+  };
 };
 
-export const employerForm = data => {
+export const employerForm = (data) => {
   // create batch for multiple docs update
   console.log("<><><><><><><><><><><><><><><><><><><><><><><><>");
-  
-  return dispatch => {
+
+  return (dispatch) => {
     var batch = db.batch();
     db.collection("autopopulate")
       .get()
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         let autoPopulateObj = {};
         let docId = "";
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           autoPopulateObj = doc.data();
           docId = doc.id;
         });
         console.log("autoPopulateObj", autoPopulateObj);
 
-        Array.prototype.diff = function (a) {
-          return this.filter(function (i) {
+        Array.prototype.diff = function(a) {
+          return this.filter(function(i) {
             return a.indexOf(i) < 0;
           });
         };
@@ -365,105 +364,105 @@ export const employerForm = data => {
         let employerKeys = Object.keys(data.employer);
         let keysOfEmpFormData = Object.keys(data.employerFormData);
         var difEmployerArray = keysOfEmpFormData.diff(employerKeys);
-        console.log("difEmployerArray", difEmployerArray)
-        let difForEmployer = {}
-        difEmployerArray.forEach(item => (difForEmployer[item] = data.employerFormData[item]));
+        console.log("difEmployerArray", difEmployerArray);
+        let difForEmployer = {};
+        difEmployerArray.forEach(
+          (item) => (difForEmployer[item] = data.employerFormData[item])
+        );
         console.log("diffForEmployees", difForEmployer);
 
-        var empDocument = db
-          .collection("employers")
-          .doc(data.employer.docid)
+        var empDocument = db.collection("employers").doc(data.employer.docid);
         batch.update(empDocument, difForEmployer);
 
         // 2nd task
         // get difference for auto populate document
         let keysOfAutoPopulateObj = Object.keys(autoPopulateObj.employer);
 
-
         var difPopulateArray = keysOfEmpFormData.diff(keysOfAutoPopulateObj);
         var difPopulate = {};
-        difPopulateArray.forEach(item => (difPopulate[item] = item));
-        
+        difPopulateArray.forEach((item) => (difPopulate[item] = item));
+
         let difPopulateObj = {
-          employer: { ...difPopulate, ...autoPopulateObj.employer }
+          employer: { ...difPopulate, ...autoPopulateObj.employer },
         };
         console.log("diffForPopulat", difPopulateObj);
         var autoPopulateDoc = db.collection("autopopulate").doc(docId);
         batch.update(autoPopulateDoc, difPopulateObj);
-        
+
         batch
           .commit()
-          .then(function () {
-
+          .then(function() {
             let sendToServer = data.pdfObj;
 
             axios
               .post(`${Endpoint}/formapi/generatePDF`, sendToServer)
-              .then(res => {
-                console.log(res);
+              .then((res) => {
+                console.log("geberatePDF Response");
                 if (res.data.status === "success") {
                   var batch = db.batch();
 
                   let obj = {
-                    documents: data.documents
+                    documents: data.documents,
                   };
-                  var paperWork = db.collection("paperworktasks").doc(data.paperworkId);
+                  var paperWork = db
+                    .collection("paperworktasks")
+                    .doc(data.paperworkId);
                   batch.update(paperWork, obj);
 
-                  let pdfObject = { 
+                  let pdfObject = {
                     employeeid: data.empId,
                     doc_name: data.doc_name,
                     template_id: data.pdfObj.id,
                     employerid: data.employer.uid,
                     url: res.data.submission.download_url,
-                  }
-                  var pdfRecord = db.collection('pdfRecords').doc();
+                  };
+                  var pdfRecord = db.collection("pdfRecords").doc();
                   batch.set(pdfRecord, pdfObject);
 
                   batch
                     .commit()
-                    .then(function () {
+                    .then(function() {
                       dispatch({
-                        type: SAVE_EMPLOYER_PAPERWORKS
+                        type: SAVE_EMPLOYER_PAPERWORKS,
                       });
                       toast.success("PDF has been Generated!");
-                    }).catch(err => {
+                    })
+                    .catch((err) => {
                       console.log("err", err);
-                      toast.error(`Error: ${err}`)
+                      toast.error(`Error: ${err}`);
                       dispatch({
-                        type: SAVE_EMPLOYER_PAPERWORKS_ERR
+                        type: SAVE_EMPLOYER_PAPERWORKS_ERR,
                       });
                     });
-
                 } else {
-                  toast.error(`Error: Please try again!`)
+                  toast.error(`Error: Please try again!`);
                   dispatch({
-                    type: SAVE_EMPLOYER_PAPERWORKS_ERR
+                    type: SAVE_EMPLOYER_PAPERWORKS_ERR,
                   });
                 }
               })
-              .catch(err => {
-                toast.error(`Error: ${err}`)
+              .catch((err) => {
+                toast.error(`Error: ${err}`);
                 dispatch({
-                  type: SAVE_EMPLOYER_PAPERWORKS_ERR
+                  type: SAVE_EMPLOYER_PAPERWORKS_ERR,
                 });
               });
           })
           .catch((err) => {
             console.log("err", err);
-            toast.error(`Error: ${err}`)
+            toast.error(`Error: ${err}`);
             dispatch({
-              type: SAVE_EMPLOYER_PAPERWORKS_ERR
+              type: SAVE_EMPLOYER_PAPERWORKS_ERR,
             });
-          })
+          });
       })
 
-      .catch(err => {
+      .catch((err) => {
         console.log("err", err);
-        toast.error(`Error: ${err}`)
+        toast.error(`Error: ${err}`);
         dispatch({
-          type: SAVE_EMPLOYER_PAPERWORKS_ERR
+          type: SAVE_EMPLOYER_PAPERWORKS_ERR,
         });
       });
-  }
+  };
 };

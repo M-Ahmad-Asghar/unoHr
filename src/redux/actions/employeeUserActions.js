@@ -195,7 +195,8 @@ export function startRessetPassword(data) {
       })
       .catch(function(error) {
         // An error happened.
-        toast.error("Error Occoureds! Try Again");
+        console.log("ERROR RESETTING PASSWORD", error);
+        toast.error("Email doesn't exist in database!");
         dispatch({
           type: FORGETPASSWORDERR,
         });

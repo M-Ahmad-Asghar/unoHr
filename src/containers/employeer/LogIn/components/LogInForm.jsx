@@ -157,7 +157,7 @@ function LogInForm() {
           </Tooltip>
         </div>
         <div className="account__forgot-password">
-          <Link to="/employeer/forgetpassord">Forgot a password?</Link>
+          <Link to="/employeer/forgetpassword">Forgot a password?</Link>
         </div>
         <span style={{ color: "red" }}> {invalidPswrd} </span>
       </div>
