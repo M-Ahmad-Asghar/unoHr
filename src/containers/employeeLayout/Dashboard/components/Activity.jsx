@@ -3,6 +3,7 @@ import Panel from "../../../../shared/components/Panel";
 import { Typography } from "@material-ui/core";
 import moment from "moment";
 import { Button } from "reactstrap";
+import { Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { ScaleLoader } from "react-spinners";
 import {
@@ -349,7 +350,24 @@ function Activity() {
     dispatch(breakEnd(dayBreaks, id));
   };
 
-  return (
+  return state.currentWeekStatus ? (
+    <Panel
+      xl={6}
+      lg={6}
+      md={12}
+      xs={12}
+      title="Activity"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <Typography component="p">
+        You have been submitted attendance for this week!
+      </Typography>
+    </Panel>
+  ) : (
     <Panel
       xl={6}
       lg={6}

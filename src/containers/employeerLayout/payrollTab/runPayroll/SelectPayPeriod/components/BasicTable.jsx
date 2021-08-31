@@ -84,7 +84,18 @@ class BasicTable extends React.Component {
       //   payStbLoader: true
       // });
       let employeeName = this.props.empName;
-      let objForPayStub = { ...pay, employeeName, paymentMethod };
+
+      let checkEmployeeId = employees[0].checkEmployeeId || "";
+      let checkWorkplace = employees[0].checkWorkplace || "";
+      let checkEmployerId = employees[0].checkEmployerId || "";
+      let objForPayStub = {
+        ...pay,
+        employeeName,
+        checkEmployeeId,
+        checkEmployerId,
+        checkWorkplace,
+        paymentMethod,
+      };
       console.log("payObj in", objForPayStub);
 
       this.props.history.push({
@@ -104,9 +115,17 @@ class BasicTable extends React.Component {
         //   payStbLoader: true
         // });
         let employeeName = this.props.empName;
+        console.log("UMAIR", employees);
+        let checkEmployeeId = employees[0].checkEmployeeId || "";
+        let checkWorkplace = employees[0].checkWorkplace || "";
+        let checkEmployerId = employees[0].checkEmployerId || "";
+
         let objForPayStub = {
           ...pay,
           employeeName,
+          checkEmployeeId,
+          checkEmployerId,
+          checkWorkplace,
           employerFundingSource: employerFS,
           employeeFundingSource: employeeFS,
           paymentMethod,
@@ -151,6 +170,7 @@ class BasicTable extends React.Component {
   render() {
     const { payPeriod, searchQuery } = this.props;
     const { payStbLoader } = this.state;
+
     return (
       <Col md={12} lg={12} xl={12}>
         <Card>

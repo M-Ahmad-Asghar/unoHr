@@ -11,7 +11,7 @@ import {
   CardBody,
   Input,
   CardHeader,
-  Collapse
+  Collapse,
 } from "reactstrap";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
@@ -61,7 +61,7 @@ class EditPayroll extends Component {
         thursday: "hh:mm:ss",
         friday: "hh:mm:ss",
         saturday: "hh:mm:ss",
-        sunday: "hh:mm:ss"
+        sunday: "hh:mm:ss",
       },
       dayEarn: {
         monday: "0.00",
@@ -70,11 +70,11 @@ class EditPayroll extends Component {
         thursday: "0.00",
         friday: "0.00",
         saturday: "0.00",
-        sunday: "0.00"
+        sunday: "0.00",
       },
       days: [],
       weekData: [],
-      payPeriod: {}
+      payPeriod: {},
     };
   }
 
@@ -137,12 +137,12 @@ class EditPayroll extends Component {
         day: day,
         employeeUid: this.props.currentEmp.employeeid,
         employerUid: this.props.currentEmp.employeruid,
-        type: "Manual"
+        type: "Manual",
       };
       console.log("fData", this.state.weekData);
 
       let remainingPayPeriods = this.state.weekData.filter(
-        item => item.day !== day
+        (item) => item.day !== day
       );
       remainingPayPeriods.push(checkOutData);
       console.log("new Week", remainingPayPeriods);
@@ -158,7 +158,7 @@ class EditPayroll extends Component {
       this.setState({
         totalTime: { ...this.state.totalTime, ...obj },
         dayEarn: { ...this.state.dayEarn, ...earnObj },
-        weekData: remainingPayPeriods
+        weekData: remainingPayPeriods,
       });
     }
   }
@@ -175,7 +175,7 @@ class EditPayroll extends Component {
       thursday: "0:0:0",
       friday: "0:0:0",
       saturday: "0:0:0",
-      sunday: "0:0:0"
+      sunday: "0:0:0",
     };
     let dayEarn = {
       monday: "0.00",
@@ -184,9 +184,9 @@ class EditPayroll extends Component {
       thursday: "0.00",
       friday: "0.00",
       saturday: "0.00",
-      sunday: "0.00"
+      sunday: "0.00",
     };
-    weekData.forEach(element => {
+    weekData.forEach((element) => {
       switch (element.day) {
         case 1:
           totalTime.monday = this.calculateTotalTIime(
@@ -248,7 +248,7 @@ class EditPayroll extends Component {
       totalTime,
       dayEarn,
       weekData,
-      payPeriod
+      payPeriod,
     });
   };
 
@@ -294,7 +294,7 @@ class EditPayroll extends Component {
     "wednesday",
     "thursday",
     "friday",
-    "saturday"
+    "saturday",
   ];
 
   render() {
@@ -308,7 +308,7 @@ class EditPayroll extends Component {
       sundayClp,
       loader,
       totalTime,
-      dayEarn
+      dayEarn,
     } = this.state;
     const { empOldWeekStatus } = this.props;
 
@@ -339,7 +339,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              mondayClp: !mondayClp
+              mondayClp: !mondayClp,
             })
           }
         >
@@ -365,15 +365,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    mondayStartTime: e._d
+                    mondayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -388,15 +388,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    mondayEndTime: e._d
+                    mondayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -412,7 +412,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "monday" ? (
@@ -430,7 +430,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -452,7 +452,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              tuesdayClp: !tuesdayClp
+              tuesdayClp: !tuesdayClp,
             })
           }
         >
@@ -478,15 +478,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    tuesdayStartTime: e._d
+                    tuesdayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -501,15 +501,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    tuesdayEndTime: e._d
+                    tuesdayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -525,7 +525,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "tuesday" ? (
@@ -543,7 +543,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -564,7 +564,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              wednesdayClp: !wednesdayClp
+              wednesdayClp: !wednesdayClp,
             })
           }
         >
@@ -590,15 +590,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    wednesdayStartTime: e._d
+                    wednesdayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -613,15 +613,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    wednesdayEndTime: e._d
+                    wednesdayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -637,7 +637,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "wednesday" ? (
@@ -655,7 +655,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -680,7 +680,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              thursdayClp: !thursdayClp
+              thursdayClp: !thursdayClp,
             })
           }
         >
@@ -706,15 +706,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    thursdayStartTime: e._d
+                    thursdayStartTime: e._d,
                   });
                   console.log("startTime", e._d);
                 }}
@@ -730,15 +730,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    thursdayEndTime: e._d
+                    thursdayEndTime: e._d,
                   });
                   console.log("end", e);
                 }}
@@ -754,7 +754,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "thursday" ? (
@@ -772,7 +772,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -797,7 +797,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              fridayClp: !fridayClp
+              fridayClp: !fridayClp,
             })
           }
         >
@@ -823,15 +823,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    fridayStartTime: e._d
+                    fridayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -846,15 +846,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    fridayEndTime: e._d
+                    fridayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -870,7 +870,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "friday" ? (
@@ -888,7 +888,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -909,7 +909,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              seturdayClp: !seturdayClp
+              seturdayClp: !seturdayClp,
             })
           }
         >
@@ -935,15 +935,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    saturdayStartTime: e._d
+                    saturdayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -958,15 +958,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    saturdayEndTime: e._d
+                    saturdayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -982,7 +982,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "saturday" ? (
@@ -1000,7 +1000,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -1025,7 +1025,7 @@ class EditPayroll extends Component {
           className="taskRow"
           onClick={() =>
             this.setState({
-              sundayClp: !sundayClp
+              sundayClp: !sundayClp,
             })
           }
         >
@@ -1051,15 +1051,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Starting Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    sundayStartTime: e._d
+                    sundayStartTime: e._d,
                   });
                 }}
                 margin="normal"
@@ -1074,15 +1074,15 @@ class EditPayroll extends Component {
               lg={5}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <span>Ending Time</span>
               <Field
                 name="new"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
-                    sundayEndTime: e._d
+                    sundayEndTime: e._d,
                   });
                   console.log("time for", e);
                 }}
@@ -1098,7 +1098,7 @@ class EditPayroll extends Component {
               lg={2}
               style={{
                 textAlign: "center",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               {loader === "sunday" ? (
@@ -1116,7 +1116,7 @@ class EditPayroll extends Component {
                     marginTop: "19px",
                     height: "33px",
                     paddingTop: "5px",
-                    paddingBottom: "5px"
+                    paddingBottom: "5px",
                   }}
                   disabled={empOldWeekStatus}
                   color="primary"
@@ -1137,7 +1137,7 @@ class EditPayroll extends Component {
     );
   }
 }
-const mapStateToProp = state => ({
+const mapStateToProp = (state) => ({
   employee: state.employeeUserReducer.currentEmp,
   currentEmp: state.employeeUserReducer.currentEmp,
   done: state.attendanceReducer.done,
@@ -1146,7 +1146,7 @@ const mapStateToProp = state => ({
   employeeCheckIn: state.attendanceReducer.employeeCheckIn,
   empOldWeekStatus: state.attendanceReducer.empOldWeekStatus,
   status: state.attendanceReducer.status,
-  submitDayStatus: state.attendanceReducer.submitDayStatus
+  submitDayStatus: state.attendanceReducer.submitDayStatus,
 });
 
 export default connect(
@@ -1154,6 +1154,6 @@ export default connect(
   // { recordAttendence, setDefault, updateAttnd }
 )(
   reduxForm({
-    form: "time_picker_form" // a unique identifier for this form
+    form: "time_picker_form", // a unique identifier for this form
   })(EditPayroll)
 );

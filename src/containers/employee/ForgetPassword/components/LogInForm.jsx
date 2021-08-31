@@ -62,6 +62,9 @@ function LogInForm(props) {
       setLoader(true);
       console.log("email", email);
       dispatch(startRessetPassword(email.toLowerCase()));
+      setTimeout(() => {
+        setLoader(false);
+      }, 2000);
     }
   };
 

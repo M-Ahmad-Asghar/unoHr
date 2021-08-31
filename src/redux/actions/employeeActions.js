@@ -24,6 +24,7 @@ export function getEmployeData(id) {
         let datatoStore = {};
         querySnapshot.forEach(function(doc) {
           let data = doc.data();
+
           let docid = doc.id;
           let final = {
             ...data,

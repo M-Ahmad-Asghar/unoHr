@@ -262,6 +262,7 @@ class TimeSheet extends React.Component {
   checkInHandler = () => {
     this.setState({
       checkInLoader: true,
+      submitDisable: true,
     });
 
     let date = new Date();
@@ -280,6 +281,7 @@ class TimeSheet extends React.Component {
   checkoutHandler = () => {
     this.setState({
       checkOutLoader: true,
+      submitDisable: false,
     });
     let CheckOutTime = new Date();
     let CheckInTime;
@@ -641,7 +643,6 @@ class TimeSheet extends React.Component {
 
                     <ButtonToolbar className="invoice__toolbar">
                       {this.state.submitLoader ? <CircularProgress /> : <p />}
-
                       <Button
                         color="primary"
                         onClick={this.submitWeek}
@@ -684,14 +685,11 @@ const mapStateToProp = (state) => ({
   breakData: state.attendanceReducer.breakData,
 });
 
-export default connect(
-  mapStateToProp,
-  {
-    employeCheckIn,
-    employeCheckOut,
-    submitRecord,
-    breakStart,
-    breakEnd,
-    defaultValue,
-  }
-)(withStyles(styles)(withRouter(TimeSheet)));
+export default connect(mapStateToProp, {
+  employeCheckIn,
+  employeCheckOut,
+  submitRecord,
+  breakStart,
+  breakEnd,
+  defaultValue,
+})(withStyles(styles)(withRouter(TimeSheet)));

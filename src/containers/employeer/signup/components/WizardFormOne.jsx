@@ -7,9 +7,9 @@ import OtpDialog from "./otpDialog";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { toast } from "react-toastify";
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Zoom from "@material-ui/core/Zoom";
 import HelpIcon from "../../../../assets/help.png";
 
 const correct = {
@@ -21,7 +21,7 @@ const correct = {
   textAlign: "right",
   position: "absolute",
   right: "0",
-  bottom: "0"
+  bottom: "0",
 };
 const inCorrect = {
   marginBottom: "-20px",
@@ -31,7 +31,7 @@ const inCorrect = {
   textAlign: "right",
   position: "absolute",
   right: "0",
-  bottom: "0"
+  bottom: "0",
 };
 const verified = {
   marginBottom: "-20px",
@@ -41,7 +41,7 @@ const verified = {
   textAlign: "right",
   position: "absolute",
   right: "0",
-  bottom: "0"
+  bottom: "0",
 };
 
 class WizardFormOne extends Component {
@@ -57,7 +57,7 @@ class WizardFormOne extends Component {
     // onChangeMobileNumber: PropTypes.func.isRequired,
     password: PropTypes.string.isRequired,
     // onChangePassword: PropTypes.func.isRequired,
-    onChangeHandler: PropTypes.func.isRequired
+    onChangeHandler: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -76,14 +76,14 @@ class WizardFormOne extends Component {
       emailEntered: false,
       emailExists: false,
       numberVerified: false,
-      emailVerified: false
+      emailVerified: false,
     };
   }
 
-  showPassword = e => {
+  showPassword = (e) => {
     e.preventDefault();
     this.setState({
-      showPassword: !this.state.showPassword
+      showPassword: !this.state.showPassword,
     });
   };
 
@@ -91,7 +91,7 @@ class WizardFormOne extends Component {
     var val = Math.floor(1000 + Math.random() * 9000);
     let data = {
       email: this.props.email,
-      message: `Verification message from unhr! use verification code: ${val}`
+      message: `Verification message from unhr! use verification code: ${val}`,
     };
     // console.log('OTP: ' ,val );
     this.props.verifyEmailMethod(data);
@@ -105,7 +105,7 @@ class WizardFormOne extends Component {
   handleclosedialog = () => {
     this.setState({
       open: false,
-      resendbutton: false
+      resendbutton: false,
     });
   };
 
@@ -139,7 +139,6 @@ class WizardFormOne extends Component {
   //     number: this.props.mobileNumber
   //   };
   //   console.log('no.' ,this.props.mobileNumber );
-    
 
   //   this.props.verifyPhoneNumber(data);
   //   this.setState({ open: true, resendbutton: false, verificationCode: val });
@@ -148,30 +147,31 @@ class WizardFormOne extends Component {
   handleresendbutton = () => {
     setTimeout(() => {
       this.setState({
-        resendbutton: true
+        resendbutton: true,
       });
     }, 30000);
   };
 
-  verifyCodeEnteredInOTp = otp => {
+  verifyCodeEnteredInOTp = (otp) => {
     // alert("Message by FormOne:perform number verification here" + otp);
     var verificationCode = this.state.verificationCode;
+    // alert(verificationCode);
     var typeOfVerification = this.state.verificationType;
     if (typeOfVerification === "email") {
       if (this.state.verificationCode == otp) {
         this.props.onEmailStatus(true);
         this.setState({
           emailVerified: true,
-          open: false
+          open: false,
         });
       } else {
         toast.error("Not Verified! Verification Code Incorrect");
         this.props.onEmailStatus(false);
         this.setState({
-          emailVerified: false
+          emailVerified: false,
         });
       }
-    } 
+    }
     // else if (typeOfVerification === "number") {
     //   if (this.state.verificationCode == otp) {
     //     this.props.onNumberStatus(true);
@@ -186,10 +186,10 @@ class WizardFormOne extends Component {
     //       numberVerified: false
     //     });
     //   }
-    // } 
+    // }
     else {
       this.setState({
-        verificationType: ""
+        verificationType: "",
       });
     }
   };
@@ -197,21 +197,21 @@ class WizardFormOne extends Component {
     if (this.state.emailVerified) {
       this.props.onEmailStatus(false);
       this.setState({
-        emailVerified: false
+        emailVerified: false,
       });
     }
   };
   checkNumberStatus = () => {
     this.props.onNumberStatus(false);
     this.setState({
-      numberVerified: false
+      numberVerified: false,
     });
   };
 
   resendPhoneCode = () => {
     if (this.state.verificationType == "email") {
       this.handleOpenDialog();
-    } 
+    }
     // else {
     //   this.openDialog();
     // }
@@ -232,7 +232,7 @@ class WizardFormOne extends Component {
       performNumberVerification,
       verifyEmail,
       verifyNumber,
-      validateEmail
+      validateEmail,
     } = this.props;
 
     return (
@@ -253,33 +253,36 @@ class WizardFormOne extends Component {
                 value={email}
                 placeholder="Email Address"
                 // onChange={onChangeHandler}
-                onChange={e => {
+                onChange={(e) => {
                   onChangeHandler(e);
                   this.checkEmailStatus();
                   if (e.target.value.length > 0) {
                     this.setState({
-                      emailExists: true
+                      emailExists: true,
                     });
                   } else {
                     this.setState({
-                      emailExists: false
+                      emailExists: false,
                     });
                   }
                   if (validateEmail(e.target.value)) {
                     this.setState({
-                      emailEntered: true
+                      emailEntered: true,
                     });
                   } else {
                     this.setState({
-                      emailEntered: false
+                      emailEntered: false,
                     });
                   }
                 }}
                 onBlur={performEmailVerification}
               />
-              <Tooltip TransitionComponent={Zoom} title="Enter your email address e.g abc@example.com">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your email address e.g abc@example.com"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -339,20 +342,20 @@ class WizardFormOne extends Component {
                   // performNumberVerification();
                   if (status) {
                     this.setState({
-                      numberStatus: true
+                      numberStatus: true,
                     });
                   } else {
                     this.setState({
-                      numberStatus: false
+                      numberStatus: false,
                     });
                   }
                   if (number.length > 0) {
                     this.setState({
-                      numberEntered: true
+                      numberEntered: true,
                     });
                   } else {
                     this.setState({
-                      numberEntered: false
+                      numberEntered: false,
                     });
                   }
                 }}
@@ -365,17 +368,21 @@ class WizardFormOne extends Component {
                   }
                 }}
               />
-              <Tooltip TransitionComponent={Zoom} title="Enter your mobile number">
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your mobile number"
+              >
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
-              {!this.state.numberVerified && this.state.numberEntered && (
+              {!this.state.numberVerified &&
+                this.state.numberEntered &&
                 // <p style={style}>Verify Number</p>
-                !this.state.numberStatus && 
-                  ( <p style={inCorrect}>Incorrect Number</p> )
-              )}
-                {/* (
+                !this.state.numberStatus && (
+                  <p style={inCorrect}>Incorrect Number</p>
+                )}
+              {/* (
                    <p
                      onClick={() => {
                        this.openDialog();
@@ -413,9 +420,12 @@ class WizardFormOne extends Component {
                   placeholder="First Name"
                   autoFocus
                 />
-                <Tooltip TransitionComponent={Zoom} title="Enter your first name">
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title="Enter your first name"
+                >
                   <IconButton className="helpButton">
-                    <img className="helpImage" src={HelpIcon} alt="help"/>
+                    <img className="helpImage" src={HelpIcon} alt="help" />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -431,9 +441,12 @@ class WizardFormOne extends Component {
                   placeholder="Last Name"
                   onChange={onChangeHandler}
                 />
-                <Tooltip TransitionComponent={Zoom} title="Enter your last name">
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title="Enter your last name"
+                >
                   <IconButton className="helpButton">
-                    <img className="helpImage" src={HelpIcon} alt="help"/>
+                    <img className="helpImage" src={HelpIcon} alt="help" />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -453,13 +466,13 @@ class WizardFormOne extends Component {
                   this.state.showPassword ? " active" : ""
                 }`}
                 tabIndex="-1"
-                onClick={e => this.showPassword(e)}
+                onClick={(e) => this.showPassword(e)}
               >
                 <EyeIcon />
               </button>
               <Tooltip TransitionComponent={Zoom} title="Enter your password">
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -476,7 +489,84 @@ class WizardFormOne extends Component {
               />
               <Tooltip TransitionComponent={Zoom} title="Reenter your password">
                 <IconButton className="helpButton">
-                  <img className="helpImage" src={HelpIcon} alt="help"/>
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Name</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankName"
+                component="input"
+                type="text"
+                placeholder="Enter Bank Name"
+                onChange={onChangeHandler}
+              />
+              <Tooltip TransitionComponent={Zoom} title="Enter Bank Name">
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Number </span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountNumber"
+                component="input"
+                type="text"
+                placeholder="Enter Bank Account Number"
+                onChange={onChangeHandler}
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter Bank Account Number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Routing Number</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankRoutingNumber"
+                component="input"
+                type="text"
+                placeholder="Enter Bank Routing Number"
+                onChange={onChangeHandler}
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter Bank Routing Number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Type</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountType"
+                component="input"
+                type="text"
+                placeholder="Enter Bank Account Type  "
+                onChange={onChangeHandler}
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter Bank Account Type "
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -491,9 +581,7 @@ class WizardFormOne extends Component {
             >
               Back
             </Button>
-            <Button color="success"
-             type="submit"
-              className="next">
+            <Button color="success" type="submit" className="next">
               Next
             </Button>
           </ButtonToolbar>
@@ -515,5 +603,5 @@ class WizardFormOne extends Component {
 export default reduxForm({
   form: "wizard", //                 <------ same form name
   destroyOnUnmount: false, //        <------ preserve form data
-  forceUnregisterOnUnmount: true // <------ unregister fields on unmount
+  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
 })(WizardFormOne);

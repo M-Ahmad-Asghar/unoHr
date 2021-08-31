@@ -55,10 +55,13 @@ class WizardForm extends Component {
       wcStates: [],
       industries: [],
       industry: "select industry",
-
       districts: [],
       searchText: "",
       district: {},
+      bankName: "",
+      bankAccountNumber: "",
+      bankRoutingNumber: "",
+      bankAccountType: "",
     };
     this.timer = null;
   }
@@ -156,6 +159,20 @@ class WizardForm extends Component {
       toast.error("Password Must be greater than 8 letters");
     } else if (this.state.cPassword != this.state.password) {
       toast.error("Password does not match");
+    } else if (this.state.bankname == "") {
+      toast.error("Please Enter Bank Name");
+    } else if (this.state.bankAccountNumber == "") {
+      toast.error("Please Enter Bank Account Number");
+    } else if (this.state.bankAccountNumber.length !== 12) {
+      toast.error(
+        "Bank Account Number Is Required & Must be Equal To 12 Digits"
+      );
+    } else if (this.state.bankRoutingNumber.length !== 9) {
+      toast.error(
+        "Bank Routing Number Is Required & Must be Equal To 9 Digits"
+      );
+    } else if (this.state.bankAccountType == "") {
+      toast.error("Please Enter Bank Account Type");
     } else {
       if (this.state.page == 1) {
         this.setState({ page: 2 });
@@ -209,6 +226,10 @@ class WizardForm extends Component {
         email: this.state.email.toLowerCase(),
         cell: this.state.mobileNumber,
         password: this.state.password,
+        bankName: this.state.bankname,
+        bankAccountNumber: this.state.bankAccountNumber,
+        bankRoutingNumber: this.state.bankRoutingNumber,
+        bankAccountType: this.state.bankAccountType,
         // street: this.state.street,
         // city: this.state.city,
         state: this.state.state,

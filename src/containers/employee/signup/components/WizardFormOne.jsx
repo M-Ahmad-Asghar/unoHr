@@ -396,6 +396,87 @@ class WizardFormOne extends Component {
               </Tooltip>
             </div>
           </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Name</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankName"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Name "
+              />
+              <Tooltip TransitionComponent={Zoom} title="Enter your bank name">
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Number</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountNumber"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Account Number "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank account number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Routing Number</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankRoutingNumber"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Routing Number "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank routing number"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="form__form-group">
+            <span className="form__form-group-label">Bank Account Type</span>
+            <div className="form__form-group-field">
+              <Field
+                name="bankAccountType"
+                component="input"
+                type="text"
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                placeholder="Bank Account Type "
+              />
+              <Tooltip
+                TransitionComponent={Zoom}
+                title="Enter your bank account type"
+              >
+                <IconButton className="helpButton">
+                  <img className="helpImage" src={HelpIcon} alt="help" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
           {/* <div className="form__form-group">
             <span className="form__form-group-label">First Name</span>
             <div className="form__form-group-field">

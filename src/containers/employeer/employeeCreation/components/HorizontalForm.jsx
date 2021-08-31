@@ -188,8 +188,10 @@ class HorizontalForm extends Component {
       this.setState({ loader: true });
       let uuidemp = uuidv4().slice(0, 8);
       let employeeData = {
-        status: "invite",
+        status: "active",
         employeruid: this.props.employeruid,
+        checkEmployerId: this.props.user.checkEmployerId,
+        checkWorkSpaceId: this.props.user.checkWorkSpaceId,
         employeeid: uuidemp,
         firstName: this.state.firstName,
         lastName: this.state.lastName,
@@ -208,6 +210,7 @@ class HorizontalForm extends Component {
         industry: this.state.industry,
         district: this.state.district || {},
       };
+
       this.props.getEmpData(employeeData);
       // this.props.addNewEmployee(employeeData);
       this.props.handleNext();

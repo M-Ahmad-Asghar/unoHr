@@ -49,6 +49,10 @@ class WizardForm extends Component {
       emailVerified: false,
       numberVerified: false,
       signupLoader: false,
+      bankName: "",
+      bankAccountNumber: "",
+      bankRoutingNumber: "",
+      bankAccountType: "",
     };
   }
 
@@ -115,6 +119,20 @@ class WizardForm extends Component {
       toast.error("Password does not match");
     } else if (!this.state.empData.employeeid) {
       toast.error("Id is incorrect provide correct id");
+    } else if (this.state.bankname == "") {
+      toast.error("Please Enter Bank Name");
+    } else if (this.state.bankAccountNumber == "") {
+      toast.error("Please Enter Bank Account Number");
+    } else if (this.state.bankAccountNumber.length !== 12) {
+      toast.error(
+        "Bank Account Number Is Required & Must be Equal To 12 Digits"
+      );
+    } else if (this.state.bankRoutingNumber.length !== 9) {
+      toast.error(
+        "Bank Routing Number Is Required & Must be Equal To 9 Digits"
+      );
+    } else if (this.state.bankAccountType == "") {
+      toast.error("Please Enter Bank Account Type");
     } else if (this.state.empData.status == "active") {
       toast.error("Id already in use!");
     } else {
@@ -154,6 +172,11 @@ class WizardForm extends Component {
           // street: this.state.street,
           // city: this.state.city,
           // state: this.state.state,
+          checkEmployeeId: this.state.empData.checkEmployeeId,
+          bankName: this.state.bankname,
+          bankAccountNumber: this.state.bankAccountNumber,
+          bankRoutingNumber: this.state.bankRoutingNumber,
+          bankAccountType: this.state.bankAccountType,
           zip: this.state.zip,
           address: this.state.address,
           email: this.state.email.toLowerCase(),
