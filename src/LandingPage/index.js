@@ -13,11 +13,13 @@ import { startGetCurrentUserEmployee } from "../redux/actions/employeeUserAction
 import { connect } from "react-redux";
 import EmployerNavigation from "../navigation/employerWrapper";
 import EmployeeNavigation from "../navigation/employeeWrapper";
+import { useHistory } from "react-router-dom";
 // import axios from 'axios';
 // import url from "../EndPoint";
 // testing code
 
 const Landing = (props) => {
+  const history = useHistory();
   const [currentScreen, setCurrentScreen] = useState(true);
   const [selectApp, setSelectApp] = useState(null);
   const [loader, setLoader] = useState(true);
@@ -73,11 +75,13 @@ const Landing = (props) => {
   // };
 
   const EmployerApp = () => {
+    history.replace("/");
     setSelectApp("employerApp");
     setCurrentScreen(false);
   };
 
   const EmployeeApp = () => {
+    history.replace("/");
     setSelectApp("employeeApp");
     setCurrentScreen(false);
   };
