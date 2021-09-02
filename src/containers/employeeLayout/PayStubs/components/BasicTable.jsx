@@ -40,7 +40,6 @@ function BasicTable({ searchQuery }) {
   );
 
   useEffect(() => {
-    console.log("USERHERE", user);
     dispatch(getCheckPayStubs(user.checkEmployeeId));
     dispatch(getStartPayStubs(user.employeeid));
   }, []);

@@ -261,6 +261,7 @@ export function createPayStub(payStubData) {
       .post(`${client_url}${payrollApi.generate_payStubs}`, payStubData)
       .then((res) => {
         console.log("PayStubResponse", res.data);
+        toast.success("Payroll successfully created!");
         if (res.data === "successfully work done") {
           dispatch({
             type: CREATE_PAYSTUB,

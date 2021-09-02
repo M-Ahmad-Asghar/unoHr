@@ -133,9 +133,11 @@ class WizardForm extends Component {
       );
     } else if (this.state.bankAccountType == "") {
       toast.error("Please Enter Bank Account Type");
-    } else if (this.state.empData.status == "active") {
-      toast.error("Id already in use!");
-    } else {
+    }
+    //  else if (this.state.empData.status == "active") {
+    //   toast.error("Id already in use!");
+    // }
+    else {
       if (this.state.page == 1) {
         this.setState({ page: 2 });
       }
