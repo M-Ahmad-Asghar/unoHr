@@ -8,7 +8,7 @@ const LogIn = () => (
       <div className="account__card">
         <div className="account__head">
           <h3 className="account__title">
-            Employee Login 
+            Employee Login
             <span className="account__logo">
               <img src={logo} alt="logo" />
               {/* <span className="account__logo-accent">DEV</span> */}
@@ -16,8 +16,8 @@ const LogIn = () => (
           </h3>
           {/* <h4 className="account__subhead subhead">Start your business easily</h4> */}
         </div>
-        <LogInForm  />
-        
+        <LogInForm />
+
       </div>
     </div>
   </div>

@@ -8,7 +8,7 @@ import employeeSignUp from "../containers/employee/signup/index";
 import addTask from "../containers/employee/MainTask/addTasks";
 import ownTask from "../containers/employee/MainTask/ownTasks";
 import paperWork from "../containers/employee/MainTask/paperWork";
-import paperworkForms from '../containers/employee/MainTask/paperWork/PaperworkForms';
+import paperworkForms from "../containers/employee/MainTask/paperWork/PaperworkForms";
 import activeTask from "../containers/employee/MainTask/activeTasks";
 import GettingUser from "../containers/employee/GetUser";
 import TimeSheet from "../containers/employeeLayout/Timesheet";
@@ -27,19 +27,19 @@ import EditSchedule from "../containers/employee/Schadule/ViewSchadule/component
 import ContactEmployer from "../containers/employee/Schadule/contactToEmployer";
 import TermsAndConditions from "../shared/components/termsAndCondition";
 import PrivacyPolicy from "../shared/components/privacyPolicy";
-import Dashboard from '../containers/employeeLayout/Dashboard';
+import Dashboard from "../containers/employeeLayout/Dashboard";
 
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       authUser ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
             pathname: "/",
-            state: { from: props.location }
+            state: { from: props.location },
           }}
         />
       )
@@ -61,16 +61,28 @@ const wrappedRoutesEmployee = () => (
       <Route path="/home/employee/profile" component={EmployeeProfile} />
       <Route path="/home/employee/changeaddress" component={ChangeAddress} />
       <Route path="/home/employee/paystubs" component={PayStub} />
-      <Route path="/home/employee/directdepositaccount" component={DirectDepositAccount} />
-      <Route path="/home/employee/transactionhistory" component={TransactionHistory} />
+      <Route
+        path="/home/employee/directdepositaccount"
+        component={DirectDepositAccount}
+      />
+      <Route
+        path="/home/employee/transactionhistory"
+        component={TransactionHistory}
+      />
       <Route path="/home/employee/settings" component={Settings} />
-     
+
       <Route path="/home/employee/reviewtimeline" component={reviewTimeLine} />
-      <Route path="/home/employee/termsandconditions" component={TermsAndConditions} />
+      <Route
+        path="/home/employee/termsandconditions"
+        component={TermsAndConditions}
+      />
       <Route path="/home/employee/privacypolicy" component={PrivacyPolicy} />
       <Route path="/home/employee/schedule" component={ViewSchedule} />
       <Route path="/home/employee/editschedule" component={EditSchedule} />
-      <Route path="/home/employee/contactemployer" component={ContactEmployer} />
+      <Route
+        path="/home/employee/contactemployer"
+        component={ContactEmployer}
+      />
     </div>
   </div>
 );
@@ -84,7 +96,7 @@ class Router extends React.Component {
         <main>
           <Switch>
             {/* <Route exact path="/" component={mainlanding} /> */}
-            <Route path="/employee/login" component={employeeLogin} />
+            {/* <Route path="/employee/login" component={employeeLogin} /> */}
 
             <Route path="/employee/backup" component={Backup} />
 
@@ -109,9 +121,9 @@ class Router extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.employeeUserReducer.userStatusEmp
+    user: state.employeeUserReducer.userStatusEmp,
   };
 };
 

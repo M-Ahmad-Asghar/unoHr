@@ -119,7 +119,7 @@ const Landing = (props) => {
 
   return props.userLoading ? (
     <Loading />
-  ) : currentScreen ? (
+  ) : (
     <>
       <div className="lp-body-styles">
         {/* test code */}
@@ -154,17 +154,18 @@ const Landing = (props) => {
         <Footer />
       </div>
     </>
-  ) : selectApp === "employerApp" ? (
-    props.userLoading ? (
-      <Loading />
-    ) : (
-      <EmployerNavigation />
-    )
-  ) : props.empLoading ? (
-    <Loading />
-  ) : (
-    <EmployeeNavigation />
   );
+  // : selectApp === "employerApp" ? (
+  //   props.userLoading ? (
+  //     <Loading />
+  //   ) : (
+  //     <EmployerNavigation />
+  //   )
+  // ) : props.empLoading ? (
+  //   <Loading />
+  // ) : (
+  //   <EmployeeNavigation />
+  // );
 };
 
 const mapStateToProps = (state) => {
@@ -177,11 +178,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  getStartAppFromStorage,
-  startGetCurrentUser,
-  startGetCurrentUserEmployee,
-})(Landing);
+export default connect(
+  mapStateToProps,
+  {
+    getStartAppFromStorage,
+    startGetCurrentUser,
+    startGetCurrentUserEmployee,
+  }
+)(Landing);
 
 const Loading = () => (
   <div className="load">
