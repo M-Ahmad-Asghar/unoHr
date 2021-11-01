@@ -17,7 +17,7 @@ const WizardForm = ({ t }) => (
               {/* <h3 className="page-subhead subhead">Please Fill Out All Fields Carefully</h3> */}
             </Col>
           </Row>
-          <Wizard  />
+          <Wizard />
         </Container>
       </div>
     </div>
