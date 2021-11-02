@@ -96,7 +96,7 @@ class Router extends React.Component {
         <main>
           <Switch>
             {/* <Route exact path="/" component={mainlanding} /> */}
-            {/* <Route path="/employee/login" component={employeeLogin} /> */}
+            <Route path="/employee/login" component={employeeLogin} />
 
             <Route path="/employee/backup" component={Backup} />
 

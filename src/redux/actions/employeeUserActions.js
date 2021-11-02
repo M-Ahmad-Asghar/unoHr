@@ -43,7 +43,7 @@ export function startLoginEmployee(data) {
                     ...datatoStore,
                     uid: user.uid,
                   };
-
+                  toast.success("Successfully Login!");
                   try {
                     localStorage.setItem("currentApp", "employeeApp");
                   } catch (error) {

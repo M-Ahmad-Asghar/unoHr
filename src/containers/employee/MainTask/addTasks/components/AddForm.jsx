@@ -124,12 +124,13 @@ function AddForm() {
               <span className="form__form-group-label">Due Date</span>
               <div className="form__form-group-field">
                 <Field
+                  id='clndrPicker'
                   name="default_date"
                   component={renderDatePickerField}
                   onChange={setDate}
                 />
                 <div className="form__form-group-icon">
-                  <CalendarBlankIcon />
+                  <CalendarBlankIcon className='calender_icon' />
                 </div>
                 <Tooltip
                   TransitionComponent={Zoom}

@@ -73,7 +73,7 @@
 
     .textBox textarea {
       border-width: 0px;
-      width: 100%
+      width: 100%;
     }
 
     .form__form-group-label {
@@ -118,7 +118,6 @@
         width: 100%;
         color: gray;
         font-size: 12px;
-     
 
         @include themify($themes) {
           border: 0.3px solid themed("colorFieldsBorder");
@@ -135,7 +134,6 @@
       .selectEmplyUpdate > div {
         width: 100%;
         font-size: 12px;
-     
 
         @include themify($themes) {
           border: 0.3px solid themed("colorFieldsBorder");
@@ -147,7 +145,6 @@
           border-color: $color-accent;
         }
       }
-
 
       // .selectEmply:first-child {
       //   padding-right: 0px;
@@ -167,7 +164,7 @@
       //   }
       // }
 
-      .selectPurpose > div:first-of-type{
+      .selectPurpose > div:first-of-type {
         padding-right: 0px;
         padding-left: 10px;
       }
@@ -454,7 +451,9 @@
     display: none;
   }
 }
-
+.calender_icon {
+  cursor: pointer;
+}
 .form__form-group-icon {
   padding: 6px;
   height: 32px;

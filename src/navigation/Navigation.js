@@ -5,6 +5,7 @@ import employeeLogin from "../containers/employee/LogIn/index";
 import employeerLogin from "../containers/employeer/LogIn/index";
 import employeerSignUp from "../containers/employeer/signup/index";
 import MainWrapper from "../containers/App/MainWrapper";
+import EmployeeNavigation from "./employeeWrapper";
 function Navigation() {
   return (
     <MainWrapper>
@@ -15,6 +16,7 @@ function Navigation() {
           <Route exact path="/employer/login" component={employeerLogin} />
           <Route exact path="/employeer/signup" component={employeerSignUp} />
         </Switch>
+        <EmployeeNavigation />
         {/* <Route exact path="/employee/login">
         <LogIn />
       </Route> */}

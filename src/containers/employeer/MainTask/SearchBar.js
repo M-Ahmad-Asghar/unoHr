@@ -106,16 +106,24 @@ function Bar(props) {
           </Typography>
           {calendar && (
             <>
-              <IconButton>
-                <CalendarToday />
+
+              <IconButton >
+                <label htmlFor='clndrIcon'>
+                  <CalendarToday />
+                </label>
               </IconButton>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils} >
+
                 <DatePicker
+                  id='clndrIcon'
                   margin="normal"
                   value={date}
                   onChange={filterDate}
                 />
+
               </MuiPickersUtilsProvider>
+
             </>
           )}
           <div className={classes.grow} />
