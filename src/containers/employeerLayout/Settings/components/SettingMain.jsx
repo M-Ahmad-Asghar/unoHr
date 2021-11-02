@@ -487,7 +487,7 @@ class SettingMain extends React.Component {
 
 
 
-              
+
               {/* lunch facility */}
               <ListItem>
                 <ListItemIcon>
@@ -585,7 +585,8 @@ class SettingMain extends React.Component {
                 <FontAwesomeIcon
                   icon="edit"
                   size="lg"
-                  style={{ marginRight: 8 }}
+                  style={{ marginRight: 4 }}
+
                 />
                 <Tooltip
                   TransitionComponent={Zoom}

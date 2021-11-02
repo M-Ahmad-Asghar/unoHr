@@ -107,6 +107,7 @@ function AddForm() {
   };
   const handleSwitch = (e) => {
     const { name, checked } = e.target;
+    setIsTaskNote(checked)
   };
 
   const handleDateChange = (date) => {
