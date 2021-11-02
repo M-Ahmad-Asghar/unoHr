@@ -19,9 +19,10 @@ class ToggleTheme extends Component {
           type="checkbox"
           name="theme_toggle"
           checked={theme.className === 'theme-dark'}
-          onChange={() => {}}
+          onChange={() => { }}
         />
         <button
+          style={{ position: "absolute", left: "50px" }}
           className="toggle-btn__input-label"
           onClick={theme.className === 'theme-dark' ? changeToLight : changeToDark}
         />

@@ -141,7 +141,7 @@ function EmployeeTasks({ searchQuery }) {
   };
 
   const searchingForName = (searchQuery) => {
-    return function(item) {
+    return function (item) {
       return (
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         moment(item.DueTime)

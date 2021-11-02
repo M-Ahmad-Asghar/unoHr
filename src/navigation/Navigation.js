@@ -13,9 +13,9 @@ function Navigation() {
       <Router>
         <Switch>
           <Route exact path="/" component={Landing} />
-          <Route exact path="/employee/login" component={employeeLogin} />
+          {/* <Route exact path="/employee/login" component={employeeLogin} /> */}
           <Route exact path="/employer/login" component={employeerLogin} />
-          <Route exact path="/employeer/signup" component={employeerSignUp} />
+          {/* <Route exact path="/employeer/signup" component={employeerSignUp} /> */}
         </Switch>
         <EmployerNavigation />
         {/* <EmployeeNavigation /> */}

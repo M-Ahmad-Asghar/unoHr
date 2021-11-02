@@ -18,9 +18,10 @@ class ToggleShadow extends Component {
           type="checkbox"
           name="shadow_toggle"
           checked={customizer.withBoxShadow}
-          onChange={() => {}}
+          onChange={() => { }}
         />
         <button
+          style={{ position: "absolute", left: "50px" }}
           className="toggle-btn__input-label"
           onClick={toggleBoxShadow}
         >
