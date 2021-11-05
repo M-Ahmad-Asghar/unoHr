@@ -44,7 +44,6 @@ function LogInForm() {
       setInvalidPswrd("Wrong password Try again!");
     }
     if (isLoading === "move") {
-      toast.success("Successfully Login!");
       history.push("/home/employeer/dashboard");
     }
   }, [isLoading, stateHasErroredErr]);

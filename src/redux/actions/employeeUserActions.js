@@ -17,84 +17,88 @@ export const USER_LOADING = "USER_LOADING";
 
 //Login
 export function startLoginEmployee(data) {
-  return (dispatch) => {
-    db.collection("employees")
-      .where("email", "==", data.email)
-      .get()
-      .then(function(querySnapshot) {
-        let datatoStore = {};
-        querySnapshot.forEach(function(doc) {
-          let data = doc.data();
-          let docid = doc.id;
-          let final = {
-            ...data,
-            docid,
-          };
-          datatoStore = final;
-        });
+  try {
+    return (dispatch) => {
+      db.collection("employees")
+        .where("email", "==", data.email)
+        .get()
+        .then(function(querySnapshot) {
+          let datatoStore = {};
+          querySnapshot.forEach(function(doc) {
+            let data = doc.data();
+            let docid = doc.id;
+            let final = {
+              ...data,
+              docid,
+            };
+            datatoStore = final;
+          });
 
-        if (datatoStore.employeeid) {
-          auth
-            .signInWithEmailAndPassword(data.email, data.password)
-            .then((user) => {
-              auth.onAuthStateChanged((user) => {
-                if (user) {
-                  let data = {
-                    ...datatoStore,
-                    uid: user.uid,
-                  };
-                  toast.success("Successfully Login!");
-                  try {
-                    localStorage.setItem("currentApp", "employeeApp");
-                  } catch (error) {
-                    console.log("err", error);
-                    // Error saving data
+          if (datatoStore.employeeid) {
+            auth
+              .signInWithEmailAndPassword(data.email, data.password)
+              .then((user) => {
+                auth.onAuthStateChanged((user) => {
+                  if (user) {
+                    let data = {
+                      ...datatoStore,
+                      uid: user.uid,
+                    };
+                    toast.success("Successfully Login!");
+                    try {
+                      localStorage.setItem("currentApp", "employeeApp");
+                    } catch (error) {
+                      console.log("err", error);
+                      // Error saving data
+                    }
+
+                    dispatch({
+                      type: EMPLOYEELOGIN,
+                      payload: data,
+                    });
+                  } else {
+                    console.log("Error occoured Try again!");
+                    // toast.error("Error Occoured! Try Again");
+
+                    dispatch({
+                      type: EMPLOYEELOGINERR,
+                      payload: new Date(),
+                    });
                   }
+                });
+              })
+              .catch(function(error) {
+                console.log("Wrong password Try again!");
+                toast.error("Wrong Password! Try Again");
 
-                  dispatch({
-                    type: EMPLOYEELOGIN,
-                    payload: data,
-                  });
-                } else {
-                  console.log("Error occoured Try again!");
-                  // toast.error("Error Occoured! Try Again");
-
-                  dispatch({
-                    type: EMPLOYEELOGINERR,
-                    payload: new Date(),
-                  });
-                }
+                dispatch({
+                  type: EMPLOYEELOGINERR,
+                  payload: new Date(),
+                });
+                // ...
               });
-            })
-            .catch(function(error) {
-              console.log("Wrong password Try again!");
-              toast.error("Wrong Password! Try Again");
-
-              dispatch({
-                type: EMPLOYEELOGINERR,
-                payload: new Date(),
-              });
-              // ...
+          } else {
+            console.log("User not Registerd yet,Please registerd first!");
+            toast.error("User Not Registered Yet! Try Again");
+            dispatch({
+              type: EMPLOYEELOGINERR,
+              payload: new Date(),
             });
-        } else {
-          console.log("User not Registerd yet,Please registerd first!");
-          toast.error("User Not Registered Yet! Try Again");
+          }
+        })
+        .catch(function(error) {
+          console.log("Error occoured Try again!");
+          toast.error("Error Occoureds! Try Again");
+
           dispatch({
             type: EMPLOYEELOGINERR,
             payload: new Date(),
           });
-        }
-      })
-      .catch(function(error) {
-        console.log("Error occoured Try again!");
-        toast.error("Error Occoureds! Try Again");
-
-        dispatch({
-          type: EMPLOYEELOGINERR,
-          payload: new Date(),
         });
-      });
-  };
+    };
+  } catch (error) {
+    alert(JSON.stringify(error));
+  }
 }
 
 //Logout
@@ -134,52 +138,56 @@ function loading() {
 
 //current user get;
 export function startGetCurrentUserEmployee() {
-  return (dispatch) => {
-    //   var user = auth.currentUser;
-    //   console.log('current user',user);
-    dispatch(loading);
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        db.collection("employees")
-          .where("email", "==", user.email)
-          .get()
-          .then(function(querySnapshot) {
-            let datatoStore = {};
-            querySnapshot.forEach(function(doc) {
-              let data = doc.data();
-              let docid = doc.id;
-              let final = {
-                ...data,
-                docid,
-              };
-              datatoStore = final;
+  try {
+    return (dispatch) => {
+      //   var user = auth.currentUser;
+      //   console.log('current user',user);
+      dispatch(loading);
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          db.collection("employees")
+            .where("email", "==", user.email)
+            .get()
+            .then(function(querySnapshot) {
+              let datatoStore = {};
+              querySnapshot.forEach(function(doc) {
+                let data = doc.data();
+                let docid = doc.id;
+                let final = {
+                  ...data,
+                  docid,
+                };
+                datatoStore = final;
+              });
+
+              if (datatoStore.employeeid) {
+                let data = {
+                  ...datatoStore,
+                  uid: user.uid,
+                };
+
+                dispatch({
+                  type: EMPLOYEEGETUSER,
+                  payload: data,
+                });
+              } else {
+                dispatch({
+                  type: EMPLOYEEGETUSERERR,
+                  payload: "nill",
+                });
+              }
             });
-
-            if (datatoStore.employeeid) {
-              let data = {
-                ...datatoStore,
-                uid: user.uid,
-              };
-
-              dispatch({
-                type: EMPLOYEEGETUSER,
-                payload: data,
-              });
-            } else {
-              dispatch({
-                type: EMPLOYEEGETUSERERR,
-                payload: "nill",
-              });
-            }
+        } else {
+          dispatch({
+            type: EMPLOYEEGETUSERERR,
+            payload: "nill",
           });
-      } else {
-        dispatch({
-          type: EMPLOYEEGETUSERERR,
-          payload: "nill",
-        });
-      }
-    });
-  };
+        }
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 //ForgetPassword

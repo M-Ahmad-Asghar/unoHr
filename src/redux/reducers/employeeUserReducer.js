@@ -14,6 +14,7 @@ import {
 import { UPDATE_EMPLOYEE_PROFILE } from "../actions/profileAction";
 
 var initialState = {
+  isLoading: "nill",
   loader: "nill",
   hasErroredErr: false,
   userStatusEmp: false,
@@ -32,6 +33,7 @@ export default function(state = initialState, action) {
       console.log("at reducer: ", action.payload);
       return {
         ...state,
+        isLoading: "move",
         userStatusEmp: true,
         LogoutEmp: "notdefine",
         currentEmp: action.payload,
@@ -83,6 +85,7 @@ export default function(state = initialState, action) {
         LogoutEmp: "donenow",
         userStatusEmp: false,
         currentEmp: {},
+        isLoading: "ssadf",
       };
     }
 

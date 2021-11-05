@@ -27,10 +27,10 @@ class TopbarProfile extends Component {
     // }
   }
 
+
   toggle = () => {
     this.setState({ collapse: !this.state.collapse });
   };
-
   render() {
     const { user } = this.props;
     return (
@@ -40,6 +40,7 @@ class TopbarProfile extends Component {
           onClick={this.toggle}
           style={{ display: "flex", alignItems: "center" }}
         >
+
           <p className="topbar__avatar-name">{user.name}</p>
           <DownIcon className="topbar__icon" />
         </button>

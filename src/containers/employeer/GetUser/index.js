@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 
   return {
     user: state.userReducer.user,
-    getuserErr: state.userReducer.getuserErr
+    getuserErr: state.userReducer.getuserErr,
   };
 }
 

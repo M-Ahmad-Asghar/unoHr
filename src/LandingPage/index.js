@@ -75,15 +75,11 @@ const Landing = (props) => {
   // };
 
   const EmployerApp = () => {
-    history.replace("/");
     setSelectApp("employerApp");
-    setCurrentScreen(false);
   };
 
   const EmployeeApp = () => {
-    history.replace("/");
     setSelectApp("employeeApp");
-    setCurrentScreen(false);
   };
 
   useEffect(() => {

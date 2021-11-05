@@ -116,7 +116,7 @@ const NavBar = (props) => {
         <p>Contact</p>
       </MenuItem>
       <MenuItem>
-        <Link to="/employer/login">
+        <Link to="/employeer/login">
           <button
             className={clsx("lp-empBtton", "lp-unoBtton")}
             onClick={EmployerApp}
@@ -210,7 +210,7 @@ const NavBar = (props) => {
                       Contact{" "}
                     </li>
                   </ul>
-                  <Link to="/employer/login">
+                  <Link to="/employeer/login">
                     <button
                       className={clsx("lp-empBtton", "lp-unoBtton")}
                       onClick={EmployerApp}
