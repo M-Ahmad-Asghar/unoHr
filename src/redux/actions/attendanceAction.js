@@ -147,41 +147,34 @@ export function getEmployeStatus(empid, timeMode) {
 }
 
 export function submitRecord(submitData) {
-  console.log("==========action==========================");
-  console.log(submitData);
-  console.log("====================================");
-
   try {
-    return (dispatch) => {
-      axios
-        .post(`${client_url}${payrollApi.create_payPeriod}`, submitData)
+    return async (dispatch) => {
+      console.log("==========submitRecord action==========================");
+      console.log(submitData);
+      console.log("====================================");
 
-        .then((res) => {
-          console.log("res subm", res);
+      let res = await axios.post(
+        `${client_url}${payrollApi.create_payPeriod}`,
+        submitData
+      );
 
-          if (res.data == "successfully work done") {
-            //everything working fine
-            dispatch({
-              type: SUBMIT_RECORD,
-              // payload: dataToStore
-            });
-            toast.success("Successfully Submitted.");
-          } else {
-            //err
+      console.log("res subm", res);
 
-            dispatch({
-              type: SUBMIT_RECORD_ERR,
-            });
-            toast.error("Error occured, try again");
-          }
-        })
-        .catch((err) => {
-          //err
-          console.error("err submit", err.response);
-          dispatch({
-            type: SUBMIT_RECORD_ERR,
-          });
+      if (res.data == "successfully work done") {
+        //everything working fine
+        dispatch({
+          type: SUBMIT_RECORD,
+          // payload: dataToStore
         });
+        toast.success("Successfully Submitted.");
+      } else {
+        //err
+
+        dispatch({
+          type: SUBMIT_RECORD_ERR,
+        });
+        toast.error("Error occured, try again");
+      }
     };
   } catch (error) {
     console.log("error in submit record action", error);
