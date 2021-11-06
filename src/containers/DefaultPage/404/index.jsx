@@ -10,7 +10,9 @@ export default function NotFound404() {
         <h3 className="not-found__info">
           Ooops! The page you are looking for could not be found :(
         </h3>
-        <Link className="btn btn-primary" to="/dashboard_default">
+        <Link className="btn btn-primary" to={location.pathname.includes('/home/employeer') ? '/home/employeer/dashboard'
+          : location.pathname.includes('/home/employee') ? '/home/employee/dashboard' : '/'
+        }>
           Back Home
         </Link>
       </div>

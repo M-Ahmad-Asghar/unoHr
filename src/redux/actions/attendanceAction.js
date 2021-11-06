@@ -151,62 +151,71 @@ export function submitRecord(submitData) {
   console.log(submitData);
   console.log("====================================");
 
-  return (dispatch) => {
-    axios
-      .post(`${client_url}${payrollApi.create_payPeriod}`, submitData)
+  try {
+    return (dispatch) => {
+      axios
+        .post(`${client_url}${payrollApi.create_payPeriod}`, submitData)
 
-      .then((res) => {
-        console.log("res subm", res);
+        .then((res) => {
+          console.log("res subm", res);
 
-        if (res.data == "successfully work done") {
-          //everything working fine
-          dispatch({
-            type: SUBMIT_RECORD,
-            // payload: dataToStore
-          });
-        } else {
+          if (res.data == "successfully work done") {
+            //everything working fine
+            dispatch({
+              type: SUBMIT_RECORD,
+              // payload: dataToStore
+            });
+            toast.success("Successfully Submitted.");
+          } else {
+            //err
+
+            dispatch({
+              type: SUBMIT_RECORD_ERR,
+            });
+            toast.error("Error occured, try again");
+          }
+        })
+        .catch((err) => {
           //err
-
+          console.error("err submit", err.response);
           dispatch({
             type: SUBMIT_RECORD_ERR,
           });
-        }
-      })
-      .catch((err) => {
-        //err
-        console.error("err submit", err.response);
-        dispatch({
-          type: SUBMIT_RECORD_ERR,
         });
-      });
-
-    // db.collection("payperiod")
-    //   .add(submitData)
-    //   .then(function(docRef) {
-    //     const id = docRef.id;
-    //     const dataToStore = { id, ...submitData };
-
-    //     dispatch({
-    //       type: SUBMIT_RECORD,
-    //       payload: dataToStore
-    //     });
-
-    //   })
-
-    //   .catch(function(error) {
-    //     console.log("====================================");
-    //     console.log(error);
-    //     console.log("====================================");
-    //     Toast.show({
-    //       text: "Error occoured Try again!",
-    //       buttonText: "ok",
-    //       position: "top",
-    //       type: "danger",
-    //       duration: 3000
-    //     });
-    //   });
-  };
+    };
+  } catch (error) {
+    console.log("error in submit record action", error);
+  }
 }
+// ====================================================Below code was comennted in upper action========================
+
+// db.collection("payperiod")
+//   .add(submitData)
+//   .then(function(docRef) {
+//     const id = docRef.id;
+//     const dataToStore = { id, ...submitData };
+
+//     dispatch({
+//       type: SUBMIT_RECORD,
+//       payload: dataToStore
+//     });
+
+//   })
+
+//   .catch(function(error) {
+//     console.log("====================================");
+//     console.log(error);
+//     console.log("====================================");
+//     Toast.show({
+//       text: "Error occoured Try again!",
+//       buttonText: "ok",
+//       position: "top",
+//       type: "danger",
+//       duration: 3000
+//     });
+//   });
+
+// ====================================================Below code was comennted in upper action========================
 
 // export function deleteRecord(id) {
 

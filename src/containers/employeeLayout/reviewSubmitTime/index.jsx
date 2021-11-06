@@ -307,7 +307,7 @@ class ReviewTimeLine extends React.Component {
         submitLoader: false,
       });
 
-      toast.success("Successfully Submitted.");
+      // toast.success("Successfully Submitted.");
 
       this.props.history.push("/home/employee/timesheet");
     } else if (nextProps.submitStatus == "error") {
@@ -315,7 +315,7 @@ class ReviewTimeLine extends React.Component {
         submitLoader: false,
         submitDisable: false,
       });
-      toast.error("Error occured, try again");
+      // toast.error("Error occured, try again");
     }
   };
 

@@ -236,7 +236,6 @@ function Navigation(props) {
 
           {/* =============================Employer Navigation Start========================================================== */}
           <Route path="/employeer/forgetpassword" component={ForgetPassword} />
-          <Route path="/404" component={NotFound404} />
           <Route exact path="/" component={GetUser} />
           <EmpPvtNavigation exact path="/employeer/login" auth={true}>
             <EmployeerLogin />
@@ -489,6 +488,7 @@ function Navigation(props) {
           <EmpPvtNavigation exact path="/home/employeer/inbox" auth={true}>
             <Contact />
           </EmpPvtNavigation>
+          <Route component={NotFound404} />
         </Switch>
       </Router>
     </MainWrapper>
