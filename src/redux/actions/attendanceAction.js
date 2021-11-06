@@ -175,7 +175,6 @@ export function submitRecord(submitData) {
         });
         toast.error("Error occured, try again");
       }
-      //everything working fine
     };
   } catch (error) {
     console.log("error in submit record action", error);
