@@ -14,6 +14,7 @@ export default function NotFound404() {
           : window.location.pathname.includes('/home/employee') ? '/home/employee/dashboard' : '/'
         }>
           Back Home
+
         </Link>
       </div>
     </div>
