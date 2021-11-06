@@ -164,7 +164,7 @@ export function submitRecord(submitData) {
         //everything working fine
         dispatch({
           type: SUBMIT_RECORD,
-          // payload:  dataToStore
+          // payload: dataToStore
         });
         toast.success("Successfully Submitted.");
       } else {

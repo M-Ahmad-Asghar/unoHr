@@ -201,7 +201,6 @@ export function startGetCurrentUser() {
                   type: GETUSERERR,
                   payload: "nill",
                 });
-                false;
               }
             });
         } else {
