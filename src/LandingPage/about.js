@@ -1,74 +1,84 @@
-import React from 'react';
+import React from "react";
 import { Grid } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { toast } from "react-toastify";
 
-
-const styles = theme => ({
-    aboutContainer: {
-        paddingTop: 96,
-        paddingBottom: 120,
+const styles = (theme) => ({
+  aboutContainer: {
+    paddingTop: 96,
+    paddingBottom: 120,
+  },
+  aboutTitle: {
+    fontSize: 30,
+    lineHeight: 1.3,
+    color: "#252728",
+    marginBottom: 16,
+    fontWeight: "bold",
+  },
+  aboutText: {
+    fontSize: 16,
+    fontWeight: 400,
+    width: "100%",
+    lineHeight: 1.6,
+    color: "rgb(110, 116, 119)",
+    opacity: 1,
+    marginBottom: 32,
+  },
+  aboutIconContainer: {
+    display: "inline-block",
+    fontSize: 24,
+    marginBottom: -6,
+    marginRight: 16,
+    color: "rgb(63, 81, 181)",
+    boxSizing: "border-box",
+  },
+  aboutStyleIcon: {
+    display: "block",
+    width: "1em",
+  },
+  "@media screen and (min-width: 600px)": {
+    contactForm: {
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
     },
-    aboutTitle: {
-        fontSize: 30,
-        lineHeight: 1.3,
-        color: '#252728',
-        marginBottom: 16,
-        fontWeight: 'bold',
-    },
-    aboutText: {
-        fontSize: 16,
-        fontWeight: 400,
-        width: '100%',
-        lineHeight: 1.6,
-        color: 'rgb(110, 116, 119)',
-        opacity: 1,
-        marginBottom: 32,
-    },
-    aboutIconContainer: {
-        display: 'inline-block',
-        fontSize: 24,
-        marginBottom: -6,
-        marginRight: 16,
-        color: 'rgb(63, 81, 181)',
-        boxSizing: 'border-box',
-    },
-    aboutStyleIcon: {
-        display: 'block',
-        width: '1em',
-    },
-    '@media screen and (min-width: 600px)': {
-        contactForm: {
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%'
-        },
-    },
+  },
 });
 
 const About = (props) => {
-    const { classes } = props;
-
-    return (
-        <div className={classes.aboutContainer}>
-        <Grid container >
-            <Grid item lg={6} md={12}>
-                <div className='lp-about'>
-                    <h2 className={classes.aboutTitle}>About us</h2>
-                    <div className='lp-aboutTextContainer'>
-                        <p className={classes.aboutText}>
-                        unoHR is all-in-one innovative, simple to use household employee management software
-                        that helps employers with all features needed to manage onboarding, background checks,
-                        task manager, timesheets, payroll and employee rewards . Our cloud-based platform is
-                        easy to use and can be run entirely from your mobile phone (IOS & Android).Alerts and
-                        Notifications, makes it easier not to miss daily tasks & deadlines.
-                        </p>
-                    </div>
-                    <div className='lp-contactsWrapper'>
-                        <div className="lp-contactContainer">
-                            <span className={classes.aboutIconContainer}>
-                                <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.9951 22.17C11.2863
+  const { classes } = props;
+  const notify = () => {
+    toast.success("Message Sent Successfully!");
+  };
+  return (
+    <div className={classes.aboutContainer}>
+      <Grid container>
+        <Grid item lg={6} md={12}>
+          <div className="lp-about">
+            <h2 className={classes.aboutTitle}>About us</h2>
+            <div className="lp-aboutTextContainer">
+              <p className={classes.aboutText}>
+                unoHR is all-in-one innovative, simple to use household employee
+                management software that helps employers with all features
+                needed to manage onboarding, background checks, task manager,
+                timesheets, payroll and employee rewards . Our cloud-based
+                platform is easy to use and can be run entirely from your mobile
+                phone (IOS & Android).Alerts and Notifications, makes it easier
+                not to miss daily tasks & deadlines.
+              </p>
+            </div>
+            <div className="lp-contactsWrapper">
+              <div className="lp-contactContainer">
+                <span className={classes.aboutIconContainer}>
+                  <svg
+                    className={classes.aboutStyleIcon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10.9951 22.17C11.2863
                                 22.3844 11.6384 22.5001 12.0001 22.5001C12.3617 22.5001 12.7138 22.3844 13.0051 22.17C15.0445
                                 20.6729 16.7025 18.7162 17.8447 16.4587C18.9868 14.2011 19.5809 11.7063 19.5788 9.17625V8.86875C19.3951
                                 -0.95625 4.60881 -0.95625 4.42506 8.86875V9.17625C4.42254 11.7059 5.01607 14.2006 6.15753 16.4581C7.29899
@@ -77,14 +87,24 @@ const About = (props) => {
                                 15.1762 11.1272 14.6517 11.6517C14.1273 12.1761 13.4591 12.5333 12.7316 12.6779C12.0042 12.8226 11.2502
                                 12.7484 10.565 12.4645C9.87977 12.1807 9.2941 11.7001 8.88205 11.0834C8.46999 10.4667 8.25006 9.74168
                                 8.25006 9C8.25006 8.00544 8.64514 7.05161 9.34841 6.34835C10.0517 5.64509 11.0055 5.25 12.0001 5.25Z"
-                                fill="currentColor"></path></svg>
-                            </span>
-                            <p className='lp-aboutIconText'>717 K Street STE207,<br/> Sacramento, CA 95814 <br/> United States</p>
-                        </div>
-                        <div className="lp-contactContainer">
-                            <span className={classes.aboutIconContainer}>
-                                <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path d="M7.7025 22.5H16.2975C17.1469 22.5 17.9614 22.1626 18.562 21.562C19.1626 20.9614 19.5 20.1469
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </span>
+                <p className="lp-aboutIconText">
+                  717 K Street STE207,
+                  <br /> Sacramento, CA 95814 <br /> United States
+                </p>
+              </div>
+              <div className="lp-contactContainer">
+                <span className={classes.aboutIconContainer}>
+                  <svg
+                    className={classes.aboutStyleIcon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7.7025 22.5H16.2975C17.1469 22.5 17.9614 22.1626 18.562 21.562C19.1626 20.9614 19.5 20.1469
                                     19.5 19.2975V4.7025C19.5 3.85314 19.1626 3.03858 18.562 2.43799C17.9614 1.83741 17.1469 1.5 16.2975
                                     1.5H7.7025C6.85314 1.5 6.03858 1.83741 5.43799 2.43799C4.83741 3.03858 4.5 3.85314 4.5 4.7025V19.2975C4.5
                                     20.1469 4.83741 20.9614 5.43799 21.562C6.03858 22.1626 6.85314 22.5 7.7025 22.5ZM9.72 19.6875C9.72 19.8367
@@ -131,7 +151,11 @@ const About = (props) => {
                                     7.08719 4.83719C7.30309 4.62129 7.59592 4.5 7.90125 4.5H16.0988C16.4041 4.5 16.6969 4.62129 16.9128 4.83719C17.1287
                                     5.05309 17.25 5.34592 17.25 5.65125V11.5988C17.25 11.9041 17.1287 12.1969 16.9128 12.4128C16.6969 12.6287
                                     16.4041 12.75 16.0988 12.75H7.90125C7.59592 12.75 7.30309 12.6287 7.08719 12.4128C6.87129 12.1969 6.75 11.9041
-                                    6.75 11.5988V5.65125Z" fill="currentColor"></path><path d="M9.77998 8.8611C10.3671 9.70591 11.1664 10.3811
+                                    6.75 11.5988V5.65125Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M9.77998 8.8611C10.3671 9.70591 11.1664 10.3811
                                     12.0975 10.8186C12.5688 11.0473 13.0764 11.192 13.5975 11.2461C13.7253 11.2479 13.8524 11.2263 13.9725
                                     11.1824C14.3034 11.0379 14.5637 10.7682 14.6962 10.4324C14.8058 10.1896 14.8258 9.91589 14.7525 9.65985C14.687
                                     9.57195 14.597 9.5054 14.4937 9.4686L14.4262 9.43485C14.4262 9.43485 13.6762 9.05985 13.5337 9.01485C13.4453
@@ -143,15 +167,22 @@ const About = (props) => {
                                     7.33278 11.2725 7.2711C11.25 7.22985 11.1075 6.8961 11.0137 6.65235L10.8862 6.34485C10.785 6.1086 10.5525
                                     5.99235 10.1925 5.99985H10.17C9.99194 6.01356 9.82392 6.08764 9.69373 6.20985C9.5272 6.36225 9.39519 6.54851
                                     9.30658 6.75613C9.21797 6.96375 9.17481 7.18792 9.17998 7.4136C9.22305 7.93609 9.42157 8.43371 9.74998
-                                    8.84235L9.77998 8.8611Z" fill="currentColor"></path>
-                                </svg>
-                            </span>
-                            <p className='lp-aboutIconText'>800-555-1212</p>
-                        </div>
-                        <div className="lp-contactContainer">
-                            <span className={classes.aboutIconContainer}>
-                                <svg className={classes.aboutStyleIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M10.2937 15.0975C10.0157 15.3753 9.83855 15.738 9.79031 16.128C9.74207 16.518 9.82555 16.9129 10.0275
+                                    8.84235L9.77998 8.8611Z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </span>
+                <p className="lp-aboutIconText">800-555-1212</p>
+              </div>
+              <div className="lp-contactContainer">
+                <span className={classes.aboutIconContainer}>
+                  <svg
+                    className={classes.aboutStyleIcon}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M10.2937 15.0975C10.0157 15.3753 9.83855 15.738 9.79031 16.128C9.74207 16.518 9.82555 16.9129 10.0275
                                 17.25L12.4837 21.345C12.7105 21.7168 13.0385 22.0163 13.4293 22.2084C13.8201 22.4005 14.2576 22.4773 14.6905
                                 22.4296C15.1234 22.382 15.5337 22.212 15.8735 21.9396C16.2132 21.6671 16.4682 21.3035 16.6087 20.8913L22.3612
                                 3.64125C22.4543 3.36182 22.4678 3.06199 22.4001 2.77535C22.3324 2.48871 22.1862 2.22658 21.9779 2.01831C21.7697
@@ -162,73 +193,105 @@ const About = (props) => {
                                 8.79076 13.9613 8.73483C14.0824 8.67889 14.2137 8.64822 14.347 8.64467C14.4804 8.64112 14.6131 8.66478 14.737
                                 8.71419C14.861 8.76361 14.9736 8.83775 15.0679 8.93209C15.1622 9.02643 15.2364 9.139 15.2858 9.26294C15.3352
                                 9.38687 15.3589 9.51957 15.3553 9.65295C15.3518 9.78632 15.3211 9.91758 15.2652 10.0387C15.2092 10.1598 15.1292
-                                10.2683 15.03 10.3575L10.2937 15.0975Z" fill="currentColor"></path>
-                                </svg>
-                            </span>
-                            <p className='lp-aboutIconText'>support@unohr.com</p>
-                        </div>
-                    </div>
-
-
-                </div>
-            </Grid>
-            <Grid item width="100%" lg={6} md={12} sm={12} className={classes.contactForm}>
-                <div color="gray.7" className="lp-contactFormWrapper">
-                    <h3 className='lp-contactFormTitle'>Contact us </h3>
-                    <form action="">
-                        {/** @NAME */}
-                        <div className="eUMQjj">
-                            <label htmlFor="" className="lp-contactFormInputLabel"> First Name</label>
-                            <div className="lp-contactFormInputContainer">
-                                <input className="lp-contactFormInput"
-                                name="name" type="text" id="name"
-                                placeholder="i.e. John Doe"/>
-                            </div>
-                            <div className="ReactCollapse--collapse"></div>
-                        </div>
-                        {/** @COMPANY */}
-                        <div className="eUMQjj">
-                            <label htmlFor="" className="lp-contactFormInputLabel">Company</label>
-                            <div className="lp-contactFormInputContainer">
-                                <input className="lp-contactFormInput"
-                                name="company" type="text" id="company"
-                                placeholder="i.e. Best Trade Ltd."/>
-                            </div>
-                            <div className="ReactCollapse--collapse"></div>
-                        </div>
-                        {/** @EMAIL */}
-                        <div className="eUMQjj">
-                            <label htmlFor="" className="lp-contactFormInputLabel">Email</label>
-                            <div className="lp-contactFormInputContainer">
-                                <input className="lp-contactFormInput"
-                                name="email" type="email" id="email"
-                                placeholder="i.e. john.doe@email.com"/>
-                            </div>
-                            <div className="ReactCollapse--collapse"></div>
-                        </div>
-                        {/** @MESSAGE */}
-                        <div className="eUMQjj">
-                            <label htmlFor="" className="lp-contactFormInputLabel">Message</label>
-                            <div className="lp-contactFormInputContainer">
-                                <textarea className="lp-contactFormInput lp-contact-textarea"
-                                name="message" type="text-area" id="message"
-                                placeholder="Message"></textarea>
-                            </div>
-                            <div className="ReactCollapse--collapse"></div>
-                        </div>
-                        <button className="lp-send-request">Send Request</button>
-                    </form>
-                </div>
-            </Grid>
+                                10.2683 15.03 10.3575L10.2937 15.0975Z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </span>
+                <p className="lp-aboutIconText">support@unohr.com</p>
+              </div>
+            </div>
+          </div>
         </Grid>
-
+        <Grid
+          item
+          width="100%"
+          lg={6}
+          md={12}
+          sm={12}
+          className={classes.contactForm}
+        >
+          <div color="gray.7" className="lp-contactFormWrapper">
+            <h3 className="lp-contactFormTitle">Contact us </h3>
+            <form action="">
+              {/** @NAME */}
+              <div className="eUMQjj">
+                <label htmlFor="" className="lp-contactFormInputLabel">
+                  {" "}
+                  First Name
+                </label>
+                <div className="lp-contactFormInputContainer">
+                  <input
+                    className="lp-contactFormInput"
+                    name="name"
+                    type="text"
+                    id="name"
+                    placeholder="i.e. John Doe"
+                  />
+                </div>
+                <div className="ReactCollapse--collapse"></div>
+              </div>
+              {/** @COMPANY */}
+              <div className="eUMQjj">
+                <label htmlFor="" className="lp-contactFormInputLabel">
+                  Company
+                </label>
+                <div className="lp-contactFormInputContainer">
+                  <input
+                    className="lp-contactFormInput"
+                    name="company"
+                    type="text"
+                    id="company"
+                    placeholder="i.e. Best Trade Ltd."
+                  />
+                </div>
+                <div className="ReactCollapse--collapse"></div>
+              </div>
+              {/** @EMAIL */}
+              <div className="eUMQjj">
+                <label htmlFor="" className="lp-contactFormInputLabel">
+                  Email
+                </label>
+                <div className="lp-contactFormInputContainer">
+                  <input
+                    className="lp-contactFormInput"
+                    name="email"
+                    type="email"
+                    id="email"
+                    placeholder="i.e. john.doe@email.com"
+                  />
+                </div>
+                <div className="ReactCollapse--collapse"></div>
+              </div>
+              {/** @MESSAGE */}
+              <div className="eUMQjj">
+                <label htmlFor="" className="lp-contactFormInputLabel">
+                  Message
+                </label>
+                <div className="lp-contactFormInputContainer">
+                  <textarea
+                    className="lp-contactFormInput lp-contact-textarea"
+                    name="message"
+                    type="text-area"
+                    id="message"
+                    placeholder="Message"
+                  ></textarea>
+                </div>
+                <div className="ReactCollapse--collapse"></div>
+              </div>
+              <button className="lp-send-request" onClick={notify}>
+                Send Request
+              </button>
+            </form>
+          </div>
+        </Grid>
+      </Grid>
     </div>
-    );
-}
-
+  );
+};
 
 About.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(About);

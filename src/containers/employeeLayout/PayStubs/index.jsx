@@ -10,9 +10,7 @@ function BasicTables() {
 
   const filterMessages = (query) => {
     setSearchQuery(query);
-    this.setState({
-      searchQuery: query,
-    });
+
   };
 
   return (
@@ -25,6 +23,7 @@ function BasicTables() {
         />
       </Row>
       <Row>
+        {console.log(searchQuery, 'searchQuery')}
         <BasicTable searchQuery={searchQuery} />
       </Row>
     </Container>

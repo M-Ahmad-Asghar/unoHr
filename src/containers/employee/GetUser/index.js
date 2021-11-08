@@ -17,7 +17,7 @@ const GettingUser = () => {
   }, []);
 
   useEffect(() => {
-      console.log("here is your curren user========>", user);
+    console.log("here is your curren user========>", user);
     if (user.uid) {
       history.push("/home/employee/dashboard");
     } else {

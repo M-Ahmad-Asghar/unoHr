@@ -14,7 +14,6 @@ import { config as i18nextConfig } from "../translations";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../containers/App/store";
 
-
 i18next.init(i18nextConfig);
 
 class App extends Component {
@@ -22,7 +21,7 @@ class App extends Component {
     super();
     this.state = {
       loading: true,
-      loaded: false
+      loaded: false,
     };
   }
 
@@ -43,7 +42,7 @@ class App extends Component {
             <Router />
           </ScrollToTop>
         </I18nextProvider>
-       </ConnectedRouter>
+      </ConnectedRouter>
       // </BrowserRouter>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DownIcon from "mdi-react/ChevronDownIcon";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Collapse } from "reactstrap";
 import TopbarMenuLink from "./TopbarMenuLink";

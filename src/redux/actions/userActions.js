@@ -28,6 +28,8 @@ export function startLogin(data) {
             ...data,
             docid,
           };
+
+          toast.success("Successfully Login!");
           datatoStore = final;
         });
 
@@ -154,57 +156,64 @@ export function startGetCurrentUser() {
   return (dispatch) => {
     //   var user = auth.currentUser;
     dispatch(loading);
-    auth.onAuthStateChanged((user) => {
-      console.log("current user", user);
-      if (user) {
-        db.collection("employers")
-          .where("email", "==", user.email)
-          .get()
-          .then(function(querySnapshot) {
-            let datatoStore = {};
-            querySnapshot.forEach(function(doc) {
-              let data = doc.data();
-              let docid = doc.id;
-              let final = {
-                ...data,
-                docid,
-              };
-              datatoStore = final;
-            });
-            if (datatoStore.stripeCustomer) {
-              if (datatoStore.status == "active") {
-                let datas = {
-                  ...datatoStore,
-                  uid: user.uid,
+    try {
+      console.log("control in action");
+
+      auth.onAuthStateChanged((user) => {
+        // console.log("current user", user);
+        if (user) {
+          db.collection("employers")
+            .where("email", "==", user.email)
+            .get()
+            .then(function(querySnapshot) {
+              let datatoStore = {};
+              querySnapshot.forEach(function(doc) {
+                let data = doc.data();
+                let docid = doc.id;
+                let final = {
+                  ...data,
+                  docid,
                 };
-                console.log("data from net", datas);
-                dispatch({
-                  type: GETUSER,
-                  payload: datas,
-                });
+                datatoStore = final;
+              });
+              if (datatoStore.stripeCustomer) {
+                if (datatoStore.status == "active") {
+                  let datas = {
+                    ...datatoStore,
+                    uid: user.uid,
+                  };
+                  // console.log("data from net", datas);
+                  dispatch({
+                    type: GETUSER,
+                    payload: datas,
+                  });
+                } else {
+                  dispatch({
+                    type: GETUSERERR,
+                    payload: "nill",
+                  });
+                  toast.error(
+                    "Your account is blocked by Admin, Contact to admin for more information"
+                  );
+                }
               } else {
                 dispatch({
                   type: GETUSERERR,
                   payload: "nill",
                 });
-                toast.error(
-                  "Your account is blocked by Admin, Contact to admin for more information"
-                );
               }
-            } else {
-              dispatch({
-                type: GETUSERERR,
-                payload: "nill",
-              });
-            }
+            });
+        } else {
+          dispatch({
+            type: GETUSERERR,
+            payload: "nill",
           });
-      } else {
-        dispatch({
-          type: GETUSERERR,
-          payload: "nill",
-        });
-      }
-    });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
   };
 }
 
@@ -292,7 +301,7 @@ export const SUPPORT_TICKET_REPONSE_FAILED = "SUPPORT_TICKET_REPONSE_FAILED";
 export const GET_ALL_MY_TICKETS = "GET_ALL_MY_TICKETS";
 export const GET_ALL_MY_TICKETS_FAILED = "GET_ALL_MY_TICKETS_FAILED";
 
-export const SubmitTicketAction = (data) => async (dispatch) => {
+export const SubmitTicketAction = (data) => (dispatch) => {
   try {
     dispatch({ type: SUPPORT_TICKET_STATRT });
     db.collection("supportTickets")
@@ -319,7 +328,7 @@ export const SubmitTicketAction = (data) => async (dispatch) => {
   }
 };
 
-export const getMyTicketsAction = (data) => async (dispatch) => {
+export const getMyTicketsAction = (data) => (dispatch) => {
   // console.log("========>called<==========",data);
   try {
     db.collection("supportTickets")

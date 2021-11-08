@@ -16,6 +16,7 @@ import { config as i18nextConfig } from "./translations";
 import Declaration from "./navigation/employerWrapper";
 import Landing from "./LandingPage";
 import { BrowserRouter as Router } from "react-router-dom";
+import Navigation from './navigation/Navigation'
 
 i18next.init(i18nextConfig);
 
@@ -43,9 +44,9 @@ class App extends Component {
     const { loaded, loading } = this.state;
     return (
       <Provider store={store}>
-        <Router>
+        <div>
           {/* <Declaration /> */}
-          <Landing />
+          <Navigation />
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -57,7 +58,7 @@ class App extends Component {
             draggable
             pauseOnHover
           />
-        </Router>
+        </div>
       </Provider>
     );
   }

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { reducer as reduxFormReducer } from "redux-form";
-
+import DataPassReducer from "./dataPassReducer";
 import themeReducer from "./themeReducer";
 import sidebarReducer from "./sidebarReducer";
 import cryptoTableReducer from "./cryptoTableReducer";
@@ -18,19 +18,18 @@ import employerReducer from "./employerReducer";
 import employeeTaskReducer from "./EmployeeTaskReducer";
 import payStubsReducer from "./payStubsReducer";
 import shaduleReducer from "./shaduleReducer";
-import shiftReducer from './shiftReducer';
+import shiftReducer from "./shiftReducer";
 import empScheduleReducer from "./empScheduleReducer";
 import paperWorkReducer from "./paperWorkReducer";
 import { connectRouter } from "connected-react-router";
 import Subscription from "./Subscriptions";
-import employeerBackupReducer from './employerBackupReducer';
-import dbReducers from './dbReducers';
+import employeerBackupReducer from "./employerBackupReducer";
+import dbReducers from "./dbReducers";
 import wcStateReducer from "./wcStateReducer";
-import directDepositReducer from './directDepositReducer';
-import SystemDocuments from './SystemDocuments';
+import directDepositReducer from "./directDepositReducer";
+import SystemDocuments from "./SystemDocuments";
 
-
-export default history =>
+export default (history) =>
   combineReducers({
     router: connectRouter(history),
     form: reduxFormReducer, // mounted under "form",
@@ -43,6 +42,7 @@ export default history =>
     userReducer,
     employeeUserReducer,
     TaskReducer,
+    DataPassReducer,
     employer,
     employeeReducer,
     storageReducer,
@@ -59,7 +59,7 @@ export default history =>
     dbReducers,
     wcStateReducer,
     directDepositReducer,
-    SystemDocuments
+    SystemDocuments,
   });
 
 // export {

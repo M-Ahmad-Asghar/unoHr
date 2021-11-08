@@ -13,11 +13,11 @@ const WizardForm = ({ t }) => (
         <Container>
           <Row>
             <Col md={12}>
-              <h3 className="page-title">{t('Employeer SignUp Form')}</h3>
+              <h3 className="page-title">{t('Employer SignUp Form')}</h3>
               {/* <h3 className="page-subhead subhead">Please Fill Out All Fields Carefully</h3> */}
             </Col>
           </Row>
-          <Wizard  />
+          <Wizard />
         </Container>
       </div>
     </div>

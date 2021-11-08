@@ -46,7 +46,7 @@ class Layout extends Component {
     // console.log('====================================');
     this.props.dispatch(getEmployeStatus(this.props.user.employeeid, this.props.user.timeMode));
     this.props.dispatch(getWeekStatus(this.props.user.employeeid));
-    
+
   }
 
 
@@ -99,20 +99,20 @@ class Layout extends Component {
           changeBorderRadius={this.changeBorderRadius}
           toggleBoxShadow={this.toggleBoxShadow}
         />
-      
-          <Topbar
-            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-            changeSidebarVisibility={this.changeSidebarVisibility}
-          />
-        
-       
-          <Sidebar
-            sidebar={sidebar}
-            changeToDark={this.changeToDark}
-            changeToLight={this.changeToLight}
-            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-          />
-        }
+
+        <Topbar
+          changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+          changeSidebarVisibility={this.changeSidebarVisibility}
+        />
+
+
+        <Sidebar
+          sidebar={sidebar}
+          changeToDark={this.changeToDark}
+          changeToLight={this.changeToLight}
+          changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+        />
+        )
       </div>
     );
   }

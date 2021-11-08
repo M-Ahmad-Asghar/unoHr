@@ -18,9 +18,10 @@ class ToggleCollapsedMenu extends Component {
           type="checkbox"
           name="collapse_toggle"
           checked={sidebar.collapse}
-          onChange={() => {}}
+          onChange={() => { }}
         />
         <button
+          style={{ position: "absolute", left: "50px" }}
           className="toggle-btn__input-label"
           onClick={changeSidebarVisibility}
         >Toggle

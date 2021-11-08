@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import MainWrapper from "../containers/App/MainWrapper";
@@ -46,14 +47,31 @@ import RewardEmployee from "../containers/employeer/rewardEmployee";
 import ReportingScreen from "../containers/employeer/reporting";
 import ContactSupport from "../containers/employeer/contactSupport";
 import MyTickets from "../containers/employeer/contactSupport/myTickets";
-
+import Landing from "../LandingPage/index";
+import { startGetCurrentUser } from "../redux/actions/userActions";
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(startGetCurrentUser());
+  }, [usr]);
+  const usr = useSelector((state) => state.userReducer.userLoading);
   return (
     <Route
       {...rest}
       render={(props) =>
         authUser.uid ? (
           <Component {...props} />
+        ) : usr ? (
+          <div className="load">
+            <div className="load__icon-wrap">
+              <svg className="load__icon">
+                <path
+                  fill="#3f51b5"
+                  d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"
+                />
+              </svg>
+            </div>
+          </div>
         ) : (
           <Redirect
             to={{
@@ -148,6 +166,7 @@ class Router extends React.Component {
       <MainWrapper>
         <main>
           <Switch>
+            {/* <Route exact path="/" component={Landing} /> */}
             <Route path="/employeer/login" component={employeerLogin} />
             <Route path="/employeer/signup" component={employeerSignUp} />
             <Route

@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons'
 
 
-library.add( faSlidersH)
+library.add(faSlidersH)
 
 
 
@@ -64,7 +64,7 @@ export default class Customizer extends Component {
     return (
       <div className="customizer">
         <button className="customizer__btn" onClick={this.handleOpen}>
-        <FontAwesomeIcon icon="sliders-h" color="#4e64b2" className="customizer__btn-icon"/>
+          <FontAwesomeIcon icon="sliders-h" color="#4e64b2" className="customizer__btn-icon" />
         </button>
         <div className={customizerClass}>
           <div className="customizer__title-wrap">

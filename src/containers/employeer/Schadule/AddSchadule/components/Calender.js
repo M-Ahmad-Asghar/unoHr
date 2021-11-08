@@ -37,7 +37,6 @@ function Selectable(props) {
     modal: false,
     color: "",
     shiftName: "",
-
     startTime: "",
     endTime: "",
     sm: "AM",
@@ -132,31 +131,11 @@ function Selectable(props) {
   };
 
   const onSMChange = () => {
-    setState((prevSt) => {
-      if (prevSt.sm === "AM") {
-        return {
-          sm: "PM",
-        };
-      } else if (prevSt.sm === "PM") {
-        return {
-          sm: "AM",
-        };
-      }
-    });
+    setState(state.sm === "AM" ? { sm: "PM" } : { sm: "AM" });
   };
 
   const onEMChange = () => {
-    setState((prevSt) => {
-      if (prevSt.em === "AM") {
-        return {
-          em: "PM",
-        };
-      } else if (prevSt.em === "PM") {
-        return {
-          em: "AM",
-        };
-      }
-    });
+    setState(state.em === "AM" ? { em: "PM" } : { em: "AM" });
   };
 
   const onSetDefaultHandler = () => {

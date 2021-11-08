@@ -29,20 +29,23 @@ import ContactEmployer from "../containers/employee/Schadule/contactToEmployer";
 import TermsAndConditions from "../shared/components/termsAndCondition";
 import PrivacyPolicy from "../shared/components/privacyPolicy";
 import Dashboard from "../containers/employeeLayout/Dashboard";
+import Landing from "../LandingPage/index";
 import { startGetCurrentUserEmployee } from "../redux/actions/employeeUserActions";
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(startGetCurrentUserEmployee());
+    dispatch(startGetCurrentUserEmployee);
   }, [usr]);
-  const usr = useSelector((state) => state.userReducer.userLoading);
+  const usr = useSelector((state) => state.userReducer.isLoading);
+  const emp = useSelector((state) => state.userReducer.currentEmp);
+  console.log("current emp", emp);
   return (
     <Route
       {...rest}
       render={(props) =>
         authUser ? (
           <Component {...props} />
-        ) : usr ? (
+        ) : usr === "nill" ? (
           <div className="load">
             <div className="load__icon-wrap">
               <svg className="load__icon">
@@ -114,7 +117,7 @@ class Router extends React.Component {
       <MainWrapper>
         <main>
           <Switch>
-            {/* <Route exact path="/" component={mainlanding} /> */}
+            {/* <Route exact path="/" component={Landing} /> */}
             <Route path="/employee/login" component={employeeLogin} />
 
             <Route path="/employee/backup" component={Backup} />
@@ -142,7 +145,7 @@ class Router extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.employeeUserReducer.userStatusEmp,
+    user: state.employeeUserReducer.currentEmp,
   };
 };
 

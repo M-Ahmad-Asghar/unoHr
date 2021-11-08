@@ -9,7 +9,7 @@ import Menu from "@material-ui/core/Menu";
 import { withStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
-
+import { Link } from "react-router-dom";
 import logo from "./images/logo.png";
 
 const styles = (theme) => ({
@@ -116,20 +116,24 @@ const NavBar = (props) => {
         <p>Contact</p>
       </MenuItem>
       <MenuItem>
-        <button
-          className={clsx("lp-empBtton", "lp-unoBtton")}
-          onClick={EmployerApp}
-        >
-          Employer
-        </button>
+        <Link to="/employeer/login">
+          <button
+            className={clsx("lp-empBtton", "lp-unoBtton")}
+            onClick={EmployerApp}
+          >
+            Employer
+          </button>
+        </Link>
       </MenuItem>
       <MenuItem>
-        <button
-          className={clsx("lp-empBtton", "lp-unoBtton")}
-          onClick={EmployeeApp}
-        >
-          Employee
-        </button>
+        <Link to="/employee/login">
+          <button
+            className={clsx("lp-empBtton", "lp-unoBtton")}
+            onClick={EmployeeApp}
+          >
+            Employee
+          </button>
+        </Link>
       </MenuItem>
       <MenuItem>
         <div>
@@ -149,7 +153,9 @@ const NavBar = (props) => {
             <div className={classes.sectionDesktop}>
               <div className={classes.navItemsContainer}>
                 <div className="">
-                  <img className="lp-logo" src={logo} alt="logo" />
+                  <Link to="/">
+                    <img className="lp-logo" src={logo} alt="logo" />
+                  </Link>
                 </div>
                 <div className="lp-navItems">
                   <ul style={{ display: "inline" }}>
@@ -204,18 +210,22 @@ const NavBar = (props) => {
                       Contact{" "}
                     </li>
                   </ul>
-                  <button
-                    className={clsx("lp-empBtton", "lp-unoBtton")}
-                    onClick={EmployerApp}
-                  >
-                    Employer
-                  </button>
-                  <button
-                    className={clsx("lp-empBtton", "lp-unoBtton")}
-                    onClick={EmployeeApp}
-                  >
-                    Employee
-                  </button>
+                  <Link to="/employeer/login">
+                    <button
+                      className={clsx("lp-empBtton", "lp-unoBtton")}
+                      onClick={EmployerApp}
+                    >
+                      Employer
+                    </button>
+                  </Link>
+                  <Link to="/employee/login">
+                    <button
+                      className={clsx("lp-empBtton", "lp-unoBtton")}
+                      onClick={EmployeeApp}
+                    >
+                      Employee
+                    </button>
+                  </Link>
                 </div>
                 <div>
                   {/* <button className={clsx('lp-signupButton', 'lp-unoBtton')}>
@@ -227,7 +237,9 @@ const NavBar = (props) => {
             <div className={classes.sectionMobile}>
               <div className={classes.mobielNavBar}>
                 <div style={{ display: "inline" }}>
-                  <img className="lp-logo" src={logo} alt="logo" />
+                  <Link to="/">
+                    <img className="lp-logo" src={logo} alt="logo" />
+                  </Link>
                 </div>
                 <IconButton
                   className={classes.menuButton}

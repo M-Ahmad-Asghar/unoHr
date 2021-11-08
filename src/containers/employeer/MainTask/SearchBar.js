@@ -107,10 +107,14 @@ function Bar(props) {
           {calendar && (
             <>
               <IconButton>
-                <CalendarToday />
+                <label htmlFor="clndrIcon">
+                  <CalendarToday />
+                </label>
               </IconButton>
+
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
+                  id="clndrIcon"
                   margin="normal"
                   value={date}
                   onChange={filterDate}

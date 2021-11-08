@@ -53,14 +53,14 @@ function BasicTable({ searchQuery }) {
   // viewPayStub = () => {};
 
   const searchingForName = (searchQuery) => {
-    return function(item) {
+    return function (item) {
       return (
-        moment(item.recordFrom)
-          .format("MMM/DD/YYYY")
+        moment(item.period_start)
+          .format("MM/DD/YYYY")
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) ||
-        moment(item.recordTo)
-          .format("MMM/DD/YYYY")
+        moment(item.period_end)
+          .format("MM/DD/YYYY")
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) ||
         !searchQuery
@@ -104,7 +104,7 @@ function BasicTable({ searchQuery }) {
         ) : (
           <CardBody style={{ padding: "0px" }}>
             {checkPayStubs.length ? (
-              checkPayStubs.map((item, index) => {
+              checkPayStubs.filter(searchingForName(searchQuery)).map((item, index) => {
                 let id = ++index;
                 return (
                   <Row className="taskRow" key={index} id={`toggler${index}`}>
@@ -119,7 +119,7 @@ function BasicTable({ searchQuery }) {
                       </p>
                     </Col>
                     <Col className="taskCol" xs={3} sm={3} md={3} lg={3} xl={3}>
-                      {moment(item.end).format("L")}
+                      {moment(item.period_end).format("L")}
                       {/* <p> {moment(item.recordTo).format("MMM/DD/YYYY")}</p> */}
                     </Col>
 

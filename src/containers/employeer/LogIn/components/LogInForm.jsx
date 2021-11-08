@@ -44,7 +44,6 @@ function LogInForm() {
       setInvalidPswrd("Wrong password Try again!");
     }
     if (isLoading === "move") {
-      toast.success("Successfully Login!");
       history.push("/home/employeer/dashboard");
     }
   }, [isLoading, stateHasErroredErr]);
@@ -143,9 +142,8 @@ function LogInForm() {
             onChange={onChangeHandler}
           />
           <button
-            className={`form__form-group-button${
-              showPassword ? " active" : ""
-            }`}
+            className={`form__form-group-button${showPassword ? " active" : ""
+              }`}
             onClick={(e) => togglePassword(e)}
           >
             <EyeIcon />
